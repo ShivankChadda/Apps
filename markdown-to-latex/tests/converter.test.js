@@ -167,7 +167,9 @@ test('math: structure TeX accepts passes, structure TeX rejects falls back to te
 
 test('math: an invalid formula becomes plain text with a note, the rest of the document is untouched', () => {
   const r = convert('Before $\\frac{a}$ and $x^2$ after.\n\n$$\n\\left( a \\\\ b\n$$\n');
-  assert.ok(r.warnings.some(w => w.code === 'math-invalid'));
+  const note = r.warnings.find(w => w.code === 'math-invalid');
+  assert.ok(note);
+  assert.match(note.message, /^2 formulas looked incomplete.*First one: “\$\\frac\{a\}\$”\.$/);
   const b = r.tex.slice(r.tex.indexOf('\\begin{document}'));
   assert.match(b, /Before \\texttt\{.*frac.*\} and \$x\^2\$ after\./);
   assert.match(b, /\\begin\{mdverb\}\n\\left\( a \\\\ b\n\\end\{mdverb\}/);   // shown verbatim instead of as math
@@ -205,6 +207,74 @@ test('\\begin{document} and \\end{document} appear exactly once, whatever the se
       assert.equal(tex.split('\\end{document}').length - 1, 1, font + '/' + engine);
     }
   }
+});
+
+test('control characters and terminal colour codes never reach LaTeX', () => {
+  const { cleanSource } = MD2TeX._internals;
+  assert.equal(cleanSource('a\u001b[32mgreen\u001b[0m b \u001b[1;34mc\u001b[0m'), 'agreen b c');
+  assert.equal(cleanSource('x\u001b]0;window title\u0007y'), 'xy');
+  assert.equal(cleanSource('a\u0000b\u007fc\u0007d\u0008e'), 'abcde');
+  assert.equal(cleanSource('a\u000cb\u000bc\u0085d\u2028e\u2029f'), 'a\nb\nc\nd\ne\n\nf');
+  assert.equal(cleanSource('tab\there\nnew line'), 'tab\there\nnew line');
+  assert.equal(cleanSource('ok \ud83d\ude00 bad \ud83d bad2 \ude00'), 'ok \ud83d\ude00 bad \ufffd bad2 \ufffd');
+  const r = convert('# T\n\nText \u001b[31mred\u001b[0m\u0000 and DEL\u007f.\n\n```\n$ ls \u001b[1;34mdir\u001b[0m\u0007\n```\n\n| a\u0000 | b |\n|---|---|\n| \u007f | x |\n');
+  assert.doesNotMatch(r.tex, /[\u0000-\u0008\u000b-\u001f\u007f-\u009f]/);
+  assert.match(r.tex, /Text red and DEL\./);
+  assert.match(r.tex, /\$ ls dir/);
+});
+
+test('lines too long for TeX are broken without changing the text', () => {
+  const { wrapLongLines } = MD2TeX._internals;
+  const words = Array.from({ length: 4000 }, (_, i) => 'word' + (i % 97)).join(' ');            // ~ 28,000 characters
+  const wrapped = wrapLongLines('before\n' + words + '\nafter');
+  const lines = wrapped.split('\n');
+  assert.ok(lines.length > 5 && lines.every(l => l.length <= 5000), 'every line is short enough');
+  assert.equal(lines.slice(1, -1).join(' '), words, 'a break at a space is a space');
+  // no space to break at: a comment sign joins the pieces again
+  const token = 'x'.repeat(12000);
+  const w2 = wrapLongLines(token).split('\n');
+  assert.ok(w2.length >= 3 && w2.slice(0, -1).every(l => l.endsWith('%')) && w2.every(l => l.length <= 5000));
+  assert.equal(w2.join('\n').replace(/%\n/g, ''), token);
+  // a control sequence is never cut in the middle
+  const macros = '\\textbackslash{}\\&\\allowbreak{}\\ abc'.repeat(1000);
+  const w3 = wrapLongLines(macros).split('\n');
+  assert.ok(w3.length > 3 && w3.every(l => l.length <= 5000));
+  assert.equal(w3.join('\n').replace(/%\n/g, ''), macros);
+  // a piece may end after a complete control word, but never inside one or right after a lone backslash
+  w3.slice(0, -1).forEach((l, i) => {
+    const end = l.replace(/%$/, '');
+    assert.ok(!(/\\[A-Za-z]+$/.test(end) && /^[A-Za-z]/.test(w3[i + 1])), 'control word cut in two');
+    assert.ok(!/(^|[^\\])(\\\\)*\\$/.test(end), 'cut right after a backslash');
+  });
+  // inside a verbatim block the break is a real line break
+  const code = 'y'.repeat(11000);
+  const w4 = wrapLongLines('\\begin{mdverb}\n' + code + '\n\\end{mdverb}').split('\n');
+  assert.deepEqual(w4.slice(1, -1).map(l => l.length), [5000, 5000, 1000]);
+  // short text is returned untouched
+  assert.equal(wrapLongLines('short\nlines'), 'short\nlines');
+  // end to end: the generated file has no overlong line
+  const r = convert('# T\n\n' + words.repeat(3) + '\n');
+  assert.ok(r.tex.split('\n').every(l => l.length <= 5000));
+});
+
+test('huge code blocks, code lines and quotes stay inside what TeX can typeset', () => {
+  const listing = Array.from({ length: 1500 }, (_, i) => 'line ' + i + ': the quick brown fox jumps over the lazy dog').join('\n');
+  const r = convert('```\n' + listing + '\n```\n');
+  const blocks = r.tex.match(/\\begin\{mdcode\}/g) || [];
+  assert.ok(blocks.length >= 3, 'a 1500-line listing is split into several boxes');
+  const parts = [...r.tex.matchAll(/\\begin\{mdverb\}\n([\s\S]*?)\n\\end\{mdverb\}/g)].map(m => m[1]);
+  assert.equal(parts.join('\n'), listing, 'nothing is lost or reordered');
+  assert.ok(parts.every(p => p.split('\n').length <= 600));
+  // a single very long line
+  const long = convert('```\n' + 'z'.repeat(2500) + '\n```\n');
+  assert.ok(long.warnings.some(w => w.code === 'long-code-line'));
+  assert.deepEqual([...long.tex.matchAll(/\\begin\{mdverb\}[^\n]*\n([\s\S]*?)\n\\end\{mdverb\}/g)][0][1].split('\n').map(l => l.length), [1000, 1000, 500]);
+  // a block quote the size of a book is set without its bar, an ordinary one keeps it
+  const quote = convert(Array.from({ length: 1300 }, (_, i) => '> paragraph ' + i + ' with some words in it\n>').join('\n') + '\n');
+  assert.match(quote.tex, /\\begin\{quote\}/);
+  assert.doesNotMatch(quote.tex, /\\begin\{mdquote\}/);
+  assert.ok(quote.warnings.some(w => w.code === 'long-quote'));
+  assert.match(convert('> short quote\n').tex, /\\begin\{mdquote\}/);
 });
 
 test('the .tex file name is made safe for every system', () => {

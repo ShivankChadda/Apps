@@ -99,6 +99,42 @@ test('pasting Markdown works and the quick preview shows it', { skip }, async ()
   await frame.locator('h1.doc-title').waitFor();
   assert.match(await frame.locator('body').innerText(), /Hello world/);
   assert.match(await frame.locator('blockquote').innerText(), /Note/);
+  // the Print button asks the preview (and only the preview) to print
+  const printed = await page.evaluate(() => {
+    const preview = document.querySelector('#preview-frame').contentWindow;
+    let calls = 0;
+    preview.print = () => { calls++; };
+    document.querySelector('#print-preview').click();
+    return calls;
+  });
+  assert.equal(printed, 1);
+  assert.deepEqual(page.problems, []);
+});
+
+test('files saved as UTF-8 (with or without BOM), UTF-16 or Windows-1252 are all read correctly', { skip }, async () => {
+  const text = '# Café → naïve\n\nZürich — über “quotes”.\n';
+  const be = Buffer.from('\uFEFF' + text, 'utf16le');
+  for (let i = 0; i < be.length; i += 2) { const t = be[i]; be[i] = be[i + 1]; be[i + 1] = t; }      // to big endian
+  const variants = {
+    'utf8.md': Buffer.from(text, 'utf8'),
+    'utf8-bom.md': Buffer.concat([Buffer.from([0xef, 0xbb, 0xbf]), Buffer.from(text, 'utf8')]),
+    'utf16le.md': Buffer.from('\uFEFF' + text, 'utf16le'),
+    'utf16be.md': be,
+    'latin1.md': Buffer.from('# Café naïve\n\nZürich über\n', 'latin1')
+  };
+  const page = await newPage();
+  await page.goto(fileUrl);
+  for (const [name, buffer] of Object.entries(variants)) {
+    await page.evaluate(() => { window.__md2latex.state.hasDoc = false; });
+    await page.setInputFiles('#file-input', { name, mimeType: 'text/markdown', buffer });
+    await page.waitForFunction(n => window.__md2latex.state.fileName === n && window.__md2latex.state.result, name);
+    const source = await page.evaluate(() => window.__md2latex.state.source);
+    assert.match(source, /^# Café /, name);
+    assert.match(source, /Zürich/, name);
+    assert.doesNotMatch(source, /[\u0000\ufffd\uFEFFÿþ]/, name + ' has no stray bytes');
+    const tex = await page.evaluate(() => window.__md2latex.state.result.tex);
+    assert.match(tex, /Café/, name);
+  }
   assert.deepEqual(page.problems, []);
 });
 

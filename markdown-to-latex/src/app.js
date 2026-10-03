@@ -95,6 +95,10 @@
   // ------------------------------------------------------- files and images
   async function readText(file) {
     const buf = await file.arrayBuffer();
+    // UTF-16 with a byte order mark (what Windows PowerShell and some editors write)
+    const head = new Uint8Array(buf, 0, Math.min(2, buf.byteLength));
+    if (head[0] === 0xff && head[1] === 0xfe) return new TextDecoder('utf-16le').decode(buf).replace(/^\uFEFF/, '');
+    if (head[0] === 0xfe && head[1] === 0xff) return new TextDecoder('utf-16be').decode(buf).replace(/^\uFEFF/, '');
     try {
       return new TextDecoder('utf-8', { fatal: true }).decode(buf).replace(/^\uFEFF/, '');
     } catch (e) {

@@ -1867,6 +1867,70 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   //  The converter
   // =====================================================================
 
+  // Control characters have no place in LaTeX input: TeX stops with "invalid character" on DEL and many
+  // others. Terminal colour codes (ESC [ 32 m) are removed whole so no stray "[32m" remains.
+  const RE_ANSI = /\u001b(?:\[[0-?]*[ -\/]*[@-~]|\][^\u0007\u001b]*(?:\u0007|\u001b\\)?|[()*+][0-9A-Za-z]|[@-Z\\-_])/g;
+  const RE_CONTROL = /[\u0000-\u0008\u000e-\u001f\u007f-\u009f\ufffe\uffff]/g;
+  function cleanSource(src) {
+    return src
+      .replace(RE_ANSI, '')
+      .replace(/[\u000b\u000c\u0085\u2028]/g, '\n')
+      .replace(/\u2029/g, '\n\n')
+      .replace(RE_CONTROL, '')
+      .replace(/[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff]/g, m => (m.length === 2 ? m : '\ufffd'));   // lone surrogates
+  }
+
+  // TeX cannot read an input line longer than about 200,000 characters ("Unable to read an entire line"),
+  // and a whole paragraph is one line in the generated file. Lines this long are broken where that changes
+  // nothing: at a space (a line end is a space), otherwise with a comment sign (which joins the pieces).
+  const LONG_LINE = 5000;
+  const MAX_CODE_LINE = 1000;
+  const MAX_BOX_ROWS = 600;       // rows of text one shaded/barred box may hold
+  /** Cut `line` into pieces of at most n UTF-16 units without splitting a surrogate pair. */
+  function splitEvery(line, n) {
+    if (line.length <= n) return [line];
+    const out = [];
+    for (let i = 0; i < line.length; ) {
+      let end = Math.min(line.length, i + n);
+      if (end < line.length && /[\udc00-\udfff]/.test(line[end])) end--;
+      out.push(line.slice(i, end));
+      i = end;
+    }
+    return out;
+  }
+  function wrapLongLines(tex) {
+    if (tex.length < LONG_LINE) return tex;
+    let verbatim = false;
+    const atoms = /\\[A-Za-z]+|\\[\s\S]|[\s\S]/g;       // control word, control symbol or one character
+    return tex.split('\n').map(line => {
+      const inVerbatim = verbatim;
+      if (line.indexOf('\\begin{mdverb}') === 0) verbatim = true;
+      else if (line.indexOf('\\end{mdverb}') === 0) verbatim = false;
+      if (line.length <= LONG_LINE) return line;
+      const out = [];
+      if (inVerbatim) return splitEvery(line, LONG_LINE).join('\n');
+      let start = 0;       // beginning of the piece being built
+      let lastSpace = -1;  // index of the last plain space inside it
+      atoms.lastIndex = 0;
+      let m;
+      while ((m = atoms.exec(line))) {
+        const at = m.index;
+        if (m[0] === ' ') lastSpace = at;
+        if (at + m[0].length - start < LONG_LINE) continue;
+        if (lastSpace > start + LONG_LINE / 2) {
+          out.push(line.slice(start, lastSpace));
+          start = lastSpace + 1;
+        } else {
+          out.push(line.slice(start, at) + '%');
+          start = at;
+        }
+        lastSpace = -1;
+      }
+      out.push(line.slice(start));
+      return out.join('\n');
+    }).join('\n');
+  }
+
   function convert(markdown, userOptions) {
     const o = normalizeOptions(userOptions);
     const lex = makeLexer(o);
@@ -1879,7 +1943,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       warned.add(key);
       warnings.push({ code, level: level || 'warn', message });
     };
-    const counts = { emojiRemoved: 0, unsupported: new Set(), relativeLinks: 0, htmlDropped: 0, linksStripped: 0, remoteImages: new Set(), missingImages: new Set() };
+    const counts = { emojiRemoved: 0, unsupported: new Set(), relativeLinks: 0, htmlDropped: 0, linksStripped: 0, remoteImages: new Set(), missingImages: new Set(), badMath: [], blockedMath: [] };
     const uses = { lists: false, tables: false, code: false, quote: false, images: false, strike: false, rule: false, mathPkgs: [] };
     const needs = { cyrillic: false, greekText: false, codeWide: false };
     const stats = { words: 0, headings: 0, tables: 0, codeBlocks: 0, images: 0, footnotes: 0, math: 0, links: 0, lists: 0 };
@@ -1889,7 +1953,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     let inFootnote = false;
 
     // ---------------------------------------------------------------- preprocessing
-    let src = String(markdown == null ? '' : markdown).replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n');
+    let src = cleanSource(String(markdown == null ? '' : markdown).replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n'));
     const fm = splitFrontMatter(src);
     const meta = fm.meta;
     src = fm.body;
@@ -2114,16 +2178,16 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       for (const [pkg, re] of MATH_ADDONS) if (re.test(tex) && uses.mathPkgs.indexOf(pkg) < 0) uses.mathPkgs.push(pkg);
     }
 
-    function warnBadMath(reason) {
-      if (reason === 'unbalanced') warn('math-invalid', 'A formula looked incomplete or invalid (unbalanced braces, a stray $ or &, a missing or doubled sub/superscript, unmatched \\begin/\\end or \\left/\\right) and was shown as plain text instead of breaking the document.');
-      else warn('math-blocked', 'A formula used a LaTeX command that is not allowed for safety (file access or low-level commands) and was shown as plain text.');
+    /** Remember a formula that was shown as text; one consolidated note is written at the end. */
+    function warnBadMath(reason, raw) {
+      (reason === 'unbalanced' ? counts.badMath : counts.blockedMath).push(String(raw || '').replace(/\s+/g, ' ').trim());
     }
 
     function renderInlineMath(t, ic) {
       stats.math++;
       const safe = sanitizeMath(t.text, !!t.display && ic.mode === 'body');
       if (!safe.ok) {
-        warnBadMath(safe.reason);
+        warnBadMath(safe.reason, t.raw);
         ic.st.prev = 'x';
         return '\\texttt{' + codeText(t.raw, true) + '}';
       }
@@ -2529,7 +2593,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       stats.math++;
       const safe = sanitizeMath(t.text, true);
       if (!safe.ok) {
-        warnBadMath(safe.reason);
+        warnBadMath(safe.reason, t.text);
         return codeBlockTex(t.text, '');
       }
       noteMathPackages(safe.tex);
@@ -2603,6 +2667,12 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       const inner = Object.assign({}, bc, { top: false, nested: true });
       let body = renderBlocks(kids, inner);
       if (heading) body = '\\textbf{' + escapeAscii(heading) + '}' + (body ? '\\par\n' + body : '');
+      // the barred quote is a box too (see MAX_BOX_ROWS); an enormous one is set as a plain indented quote instead
+      const rows = body.length / 70 + (body.match(/\n/g) || []).length;
+      if (rows > MAX_BOX_ROWS) {
+        warn('long-quote', 'A very long block quote was set without its side bar (LaTeX cannot draw a bar around something that tall).', 'info');
+        return '\\begin{quote}\n' + body + '\n\\end{quote}';
+      }
       return '\\begin{mdquote}\n' + body + '\n\\end{mdquote}';
     }
 
@@ -2622,11 +2692,29 @@ if(__exports != exports)module.exports = exports;return module.exports}));
         return ch;
       }).join('');
       code = code.replace(/\\end\{mdverb\}/g, '\\end {mdverb}');
+      // A single logical line is typeset as one unbreakable box; one that wraps to hundreds of rows is too tall
+      // for TeX ("Dimension too large") and cannot be split across pages. Break such lines into pieces.
+      if (code.split('\n').some(l => l.length > MAX_CODE_LINE)) {
+        code = code.split('\n').map(l => splitEvery(l, MAX_CODE_LINE).join('\n')).join('\n');
+        warn('long-code-line', 'Some lines of code were longer than ' + MAX_CODE_LINE + ' characters and were broken into several lines so that LaTeX can set them.', 'info');
+      }
       let longest = 0;
       for (const line of code.split('\n')) for (const w of line.split(/\s+/)) if (w.length > longest) longest = w.length;
       const opt = longest > 60 ? '[breakanywhere=true]' : '';
       stats.codeBlocks++;
-      return '\\begin{mdcode}\n\\begin{mdverb}' + opt + '\n' + code + '\n\\end{mdverb}\n\\end{mdcode}';
+      // A shaded block is one box, and TeX boxes are at most 16383pt tall (about 1,200 rows): a long listing
+      // becomes several consecutive blocks, which also lets every page break fall inside the listing.
+      const chunks = [];
+      let current = [];
+      let rows = 0;
+      for (const line of code.split('\n')) {
+        const r = Math.max(1, Math.ceil(line.length / 70));
+        if (rows + r > MAX_BOX_ROWS && current.length) { chunks.push(current.join('\n')); current = []; rows = 0; }
+        current.push(line);
+        rows += r;
+      }
+      chunks.push(current.join('\n'));
+      return chunks.map(c => '\\begin{mdcode}\n\\begin{mdverb}' + opt + '\n' + c + '\n\\end{mdverb}\n\\end{mdcode}').join('\n');
     }
 
     function renderCode(t, bc) {
@@ -2901,6 +2989,20 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       warn('remote-image', n + ' online image' + (n === 1 ? '' : 's') + ' (' + listUrls(counts.remoteImages) + ') cannot be downloaded here, so ' + (n === 1 ? 'it appears' : 'they appear') + ' as a placeholder. Save the picture next to your Markdown file and reference it by file name.');
     }
 
+    // Formulas that were shown as text (one note each kind, with the first one named)
+    const sample = list => {
+      const f = list[0];
+      return '“' + (f.length > 50 ? f.slice(0, 47) + '…' : f) + '”';
+    };
+    if (counts.badMath.length) {
+      const n = counts.badMath.length;
+      warn('math-invalid', n + ' formula' + (n === 1 ? ' looked' : 's looked') + ' incomplete or invalid (unbalanced braces, a stray $ or &, a missing or doubled sub/superscript, a command missing its argument, unmatched \\begin/\\end or \\left/\\right) and ' + (n === 1 ? 'was' : 'were') + ' shown as plain text instead of breaking the document. First one: ' + sample(counts.badMath) + '.');
+    }
+    if (counts.blockedMath.length) {
+      const n = counts.blockedMath.length;
+      warn('math-blocked', n + ' formula' + (n === 1 ? ' used' : 's used') + ' a LaTeX command that is not allowed for safety (file access or low-level commands) and ' + (n === 1 ? 'was' : 'were') + ' shown as plain text. First one: ' + sample(counts.blockedMath) + '.');
+    }
+
     // Missing-glyph notices
     const scripts = Array.from(counts.unsupported);
     if (counts.emojiRemoved) warn('emoji', counts.emojiRemoved + ' emoji/pictograph' + (counts.emojiRemoved === 1 ? ' was' : 's were') + ' removed: LaTeX cannot typeset colour emoji. (Common symbols such as ✓ ✗ → ★ were converted instead.)', 'info');
@@ -2934,7 +3036,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       .filter(x => x !== null).join('\n').replace(/\n{4,}/g, '\n\n\n');
 
     return {
-      tex,
+      tex: wrapLongLines(tex),
       warnings,
       assets: Array.from(assets.values()),
       meta: { title: titlePlain, author: authorPlain, date: dateTex, subtitle: subtitleSrc, hasTitle, titlePage: useTitlePage },
@@ -2947,7 +3049,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
 
   return {
     convert, sniffImage, DEFAULTS, version: VERSION,
-    _internals: { mathIsBalanced, mathSyntaxOk, parseYamlLite, splitFrontMatter, extractFootnotes, sanitizeMath, cleanUrl, slugify, plainOf, pdfString, escapeAscii, humanize, countWords, normalizeOptions }
+    _internals: { cleanSource, wrapLongLines, mathIsBalanced, mathSyntaxOk, parseYamlLite, splitFrontMatter, extractFootnotes, sanitizeMath, cleanUrl, slugify, plainOf, pdfString, escapeAscii, humanize, countWords, normalizeOptions }
   };
 });
 
@@ -3151,6 +3253,10 @@ if(__exports != exports)module.exports = exports;return module.exports}));
   // ------------------------------------------------------- files and images
   async function readText(file) {
     const buf = await file.arrayBuffer();
+    // UTF-16 with a byte order mark (what Windows PowerShell and some editors write)
+    const head = new Uint8Array(buf, 0, Math.min(2, buf.byteLength));
+    if (head[0] === 0xff && head[1] === 0xfe) return new TextDecoder('utf-16le').decode(buf).replace(/^\uFEFF/, '');
+    if (head[0] === 0xfe && head[1] === 0xff) return new TextDecoder('utf-16be').decode(buf).replace(/^\uFEFF/, '');
     try {
       return new TextDecoder('utf-8', { fatal: true }).decode(buf).replace(/^\uFEFF/, '');
     } catch (e) {

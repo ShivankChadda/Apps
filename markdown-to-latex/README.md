@@ -42,7 +42,7 @@ Click **Download project (.zip)**, then on [overleaf.com](https://www.overleaf.c
 
 ## Using the page
 
-1. **Add your file**: drag the `.md` onto the box, click it, or *Paste Markdown instead*. *Try an example* shows what the tool can do.
+1. **Add your file**: drag the `.md` onto the box, click it, or *Paste Markdown instead*. *Try an example* shows what the tool can do. UTF-8, UTF-16 and Windows-1252 text files are all read correctly.
 2. **Add pictures** if your Markdown has `![…](images/photo.png)`: use *Add pictures* or *Add a folder* (pick the folder that holds the `.md` and the images), or drag the whole folder onto the page. Files are matched by path, then by file name. GIF, WebP, SVG and 16-bit PNG pictures are converted to ordinary PNG automatically because LaTeX cannot read them directly.
 3. **Look and layout**: document type (article / report / book), paper, font, size, margins, line spacing, title page, contents, heading numbers, colours (or print-friendly grayscale), code line numbers.
 4. **Result tabs**: *PDF*, *LaTeX* (editable before you build), *Quick preview*, and *Notes* (everything the converter changed or could not do, in plain words).
@@ -79,7 +79,7 @@ Without front matter, a single top-level `# Heading` at the start becomes the ti
 | `**bold**`, `*italic*`, `~~strike~~`, `` `code` `` | `\textbf`, `\emph`, `\sout`, `\texttt` |
 | GFM tables | `booktabs` tables; wide ones get wrapping columns; long ones use `longtable` |
 | fenced code | shaded, line-wrapping verbatim box (no syntax colours); box-drawing characters become ASCII |
-| `$…$`, `$$…$$`, `\(…\)`, `\[…\]`, `\begin{align}…` | real math; currency such as `$5 and $10` stays text |
+| `$…$`, `$$…$$`, `\(…\)`, `\[…\]`, `\begin{align}…` | real math; currency such as `$5 and $10` stays text. Commands plain LaTeX lacks (`\bm`, `\cancel`, `\coloneqq`, `\ket`, `\ce{H2O}`, `\SI{3}{m}`, `\mathscr`) load the package behind them, when your TeX has it |
 | `[^1]` footnotes | LaTeX footnotes |
 | `![alt](pic.png "caption")` | numbered figure with caption (width limited to the page; never enlarged) |
 | raw HTML (`<br>`, `<b>`, `<img>`, `<details>`, centred blocks …) | the common parts are converted, the rest keeps its text |
@@ -128,6 +128,7 @@ node tests/compile.js                     # build every fixture with every insta
 node tests/matrix.js                      # build one fixture with 14 combinations of settings
 node tests/fuzz.js --docs=4000 --compile=240   # hostile random documents (add --engine=pdflatex)
 node tests/math-diff.js --count=800       # formula validator versus real pdfLaTeX
+node tests/stress.js                      # control characters, 200 KB lines, 3000-line code blocks, ...
 NODE_PATH=$(npm root -g) node --test tests/ui.test.js     # browser tests (needs Playwright)
 node tools/md2tex-cli.js notes.md -o notes.tex --font=times --class=report   # command line
 ```
@@ -148,9 +149,10 @@ The generated LaTeX compiles with XeLaTeX, LuaLaTeX and pdfLaTeX and loads only 
 
 Everything above was exercised on Linux with TeX Live 2023 (XeLaTeX, LuaLaTeX, pdfLaTeX) and headless Chromium:
 
-- 13 fixture documents × 3 engines, and 14 setting combinations × 3 engines;
-- 12,000+ randomly assembled hostile Markdown documents (converter must never throw and must always emit balanced LaTeX), several hundred of them built with each engine;
-- about 4,000 valid and deliberately damaged formulas compared with what real pdfLaTeX accepts (`tests/math-diff.js`): nothing that stops LaTeX gets through; misspelled commands do, by design, because only LaTeX knows every command;
+- 14 fixture documents × 3 engines, and 14 setting combinations × 3 engines;
+- 40,000+ randomly assembled hostile Markdown documents (the converter must never throw and must always emit balanced LaTeX), about 2,000 of them built with XeLaTeX, LuaLaTeX or pdfLaTeX;
+- inputs that are legal Markdown but hostile to TeX: terminal colour codes and control characters, single lines of 200 KB, a 3,000-line code block, a 1,200-paragraph quote (`tests/stress.js`);
+- more than 4,000 valid and deliberately damaged formulas compared with what real pdfLaTeX accepts (`tests/math-diff.js`): nothing that stops LaTeX gets through; misspelled commands do, by design, because only LaTeX knows every command;
 - helper security checks, the page end to end in a real browser (9 tests), and the generated PDFs looked at page by page.
 
 The Windows/macOS start scripts, MiKTeX/MacTeX command-line handling and Tectonic support follow those programs' documentation but have not been run on those systems.
