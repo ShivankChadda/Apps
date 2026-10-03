@@ -1,0 +1,12 @@
+{
+  "name": "markdown-to-latex",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Convert Markdown files into well-organised LaTeX documents (and PDFs), locally.",
+  "scripts": {
+    "build": "node tools/build.js",
+    "test": "node --test tests/converter.test.js",
+    "test:compile": "node tests/compile.js"
+  },
+  "license": "MIT"
+}
