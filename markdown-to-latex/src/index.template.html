@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="md2latex-token" content="">
+<title>Markdown to LaTeX</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232a5bd7'/%3E%3Cpath d='M7 22V10h3l3 5 3-5h3v12h-3v-7l-3 5-3-5v7z' fill='white'/%3E%3C/svg%3E">
+<style>
+/*__CSS__*/
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <div class="brand">
+    <svg width="38" height="38" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="var(--accent)"/><path d="M7 22V10h3l3 5 3-5h3v12h-3v-7l-3 5-3-5v7z" fill="var(--accent-ink)"/></svg>
+    <div>
+      <h1>Markdown to LaTeX</h1>
+      <p>Turn a .md file into a clean LaTeX document and a printable PDF. Runs on your computer.</p>
+    </div>
+  </div>
+  <div class="spacer"></div>
+  <button class="chip" id="helper-chip" type="button" aria-haspopup="dialog"><span class="dot"></span><span id="helper-text">Checking PDF export…</span></button>
+  <button class="icon-btn" id="theme-btn" type="button" title="Switch light / dark appearance" aria-label="Switch light or dark appearance">◐</button>
+</header>
+
+<main id="main" class="layout">
+  <!-- ======================================================= left column -->
+  <div class="input-col">
+    <section class="panel card" aria-labelledby="h-file">
+      <h2 id="h-file">1 · Your Markdown file</h2>
+      <div id="dropzone" class="dropzone" role="button" tabindex="0" aria-label="Choose a Markdown file or drop it here">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 17v-6"/><path d="m9.5 13.5 2.5-2.5 2.5 2.5"/></svg>
+        <div class="big">Drop your .md file here</div>
+        <div class="small">or click to choose it · .md, .markdown or .txt</div>
+      </div>
+      <div id="filecard" class="filecard" hidden>
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg>
+        <div class="meta"><div class="name" id="file-name"></div><div class="sub" id="file-sub"></div></div>
+        <button class="btn small" id="replace-btn" type="button">Replace</button>
+      </div>
+      <input id="file-input" type="file" accept=".md,.markdown,.mdown,.mkd,.txt,text/markdown,text/plain" hidden>
+      <details class="paste" id="paste-box" style="margin-top:14px">
+        <summary>Paste Markdown instead</summary>
+        <textarea id="paste-text" class="mono" spellcheck="false" placeholder="# My document&#10;&#10;Paste or type Markdown here…" aria-label="Markdown text"></textarea>
+      </details>
+      <div style="margin-top:12px"><button class="btn link" id="example-btn" type="button">Try an example</button></div>
+    </section>
+
+    <section class="panel card images" aria-labelledby="h-img">
+      <h2 id="h-img">Pictures (optional)</h2>
+      <p class="hint">If your Markdown shows images, add them too. Pictures stored in the same folder are matched by name.</p>
+      <div class="row">
+        <button class="btn small" id="add-images" type="button">Add pictures…</button>
+        <button class="btn small" id="add-folder" type="button">Add a folder…</button>
+      </div>
+      <input id="image-input" type="file" accept="image/*,.pdf" multiple hidden>
+      <input id="folder-input" type="file" webkitdirectory multiple hidden>
+      <ul id="image-list"></ul>
+    </section>
+
+    <section class="panel options" aria-labelledby="h-opt">
+      <h2 id="h-opt" style="padding:16px 16px 4px;margin:0;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)">2 · Look and layout</h2>
+
+      <details open>
+        <summary>Page</summary>
+        <div class="grid">
+          <div class="field two">
+            <div><label for="o-documentClass">Document type</label>
+              <select id="o-documentClass" data-opt="documentClass">
+                <option value="article">Article (sections)</option>
+                <option value="report">Report (chapters)</option>
+                <option value="book">Book (chapters)</option>
+              </select></div>
+            <div><label for="o-paper">Paper</label>
+              <select id="o-paper" data-opt="paper"><option value="a4">A4</option><option value="letter">US Letter</option></select></div>
+          </div>
+          <div class="field two">
+            <div><label for="o-font">Font</label>
+              <select id="o-font" data-opt="font">
+                <option value="latinmodern">Classic LaTeX</option>
+                <option value="times">Times-like</option>
+                <option value="palatino">Palatino-like</option>
+              </select></div>
+            <div><label for="o-fontSize">Size</label>
+              <select id="o-fontSize" data-opt="fontSize" data-type="number"><option value="10">10 pt</option><option value="11">11 pt</option><option value="12">12 pt</option></select></div>
+          </div>
+          <div class="field two">
+            <div><label for="o-margins">Margins</label>
+              <select id="o-margins" data-opt="margins"><option value="narrow">Narrow</option><option value="normal">Normal</option><option value="wide">Wide</option></select></div>
+            <div><label for="o-lineSpacing">Line spacing</label>
+              <select id="o-lineSpacing" data-opt="lineSpacing" data-type="number">
+                <option value="1">Single</option><option value="1.15">Relaxed</option><option value="1.25">One and a half</option><option value="1.66">Double</option>
+              </select></div>
+          </div>
+          <div class="field"><label for="o-paragraphStyle">Paragraphs</label>
+            <select id="o-paragraphStyle" data-opt="paragraphStyle"><option value="spaced">Space between paragraphs</option><option value="indented">Indented first line (classic)</option></select></div>
+        </div>
+      </details>
+
+      <details open>
+        <summary>Structure</summary>
+        <div class="grid">
+          <div class="field two">
+            <div><label for="o-titlePage">Title page</label>
+              <select id="o-titlePage" data-opt="titlePage"><option value="auto">Automatic</option><option value="yes">Always</option><option value="no">Never</option></select></div>
+            <div><label for="o-numbering">Heading numbers</label>
+              <select id="o-numbering" data-opt="numbering"><option value="auto">Automatic</option><option value="yes">Yes</option><option value="no">No</option></select></div>
+          </div>
+          <div class="field two">
+            <div><label class="check" style="color:var(--text)"><input type="checkbox" id="o-toc" data-opt="toc"> Table of contents</label></div>
+            <div><label for="o-tocDepth">Levels shown</label>
+              <select id="o-tocDepth" data-opt="tocDepth" data-type="number"><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
+          </div>
+          <label class="check"><input type="checkbox" id="o-headerFooter" data-opt="headerFooter"> <span>Running header and page numbers</span></label>
+          <label class="check"><input type="checkbox" data-opt="pageBreaks" data-on="sections" data-off="none"> <span>Start every top-level section on a new page</span></label>
+          <label class="check"><input type="checkbox" data-opt="stripMdToc"> <span>Replace a hand-written “Table of contents” section with a real one</span></label>
+        </div>
+      </details>
+
+      <details>
+        <summary>Title block</summary>
+        <div class="grid">
+          <p class="hint" style="margin:0;color:var(--muted);font-size:13px">Leave empty to use what the document says (front matter or first heading).</p>
+          <div class="field"><label for="o-title">Title</label><input type="text" id="o-title" data-opt="title" autocomplete="off"></div>
+          <div class="field"><label for="o-subtitle">Subtitle</label><input type="text" id="o-subtitle" data-opt="subtitle" autocomplete="off"></div>
+          <div class="field"><label for="o-author">Author(s)</label><input type="text" id="o-author" data-opt="author" placeholder="Separate several names with ;" autocomplete="off"></div>
+          <div class="field two">
+            <div><label for="o-dateMode">Date</label>
+              <select id="o-dateMode" data-opt="dateMode"><option value="auto">From the document, else today</option><option value="today">Today</option><option value="none">No date</option><option value="custom">Custom…</option></select></div>
+            <div id="date-text-wrap" hidden><label for="o-dateText">Date text</label><input type="text" id="o-dateText" data-opt="dateText" placeholder="e.g. Spring 2027" autocomplete="off"></div>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Content</summary>
+        <div class="grid">
+          <div class="field"><label for="o-theme">Colors</label>
+            <select id="o-theme" data-opt="theme"><option value="color">Blue accents</option><option value="print">Print-friendly (grayscale, plain links)</option></select></div>
+          <label class="check"><input type="checkbox" data-opt="codeLineNumbers"> <span>Number the lines of code blocks</span></label>
+          <label class="check"><input type="checkbox" data-opt="hardBreaks"> <span>Keep single line breaks inside paragraphs</span></label>
+        </div>
+      </details>
+
+      <details>
+        <summary>Advanced</summary>
+        <div class="grid">
+          <div class="field"><label for="o-engine">LaTeX engine</label>
+            <select id="o-engine" data-opt="engine">
+              <option value="xelatex">XeLaTeX (recommended: all Unicode)</option>
+              <option value="lualatex">LuaLaTeX</option>
+              <option value="pdflatex">pdfLaTeX (Western languages only)</option>
+            </select>
+            <span class="hint" id="engine-hint"></span></div>
+          <div class="field"><label for="o-extraPreamble">Extra LaTeX for the preamble</label>
+            <textarea id="o-extraPreamble" data-opt="extraPreamble" class="mono" rows="3" spellcheck="false" placeholder="\usepackage{…}   or   \setmainfont{…}"></textarea>
+            <span class="hint">Added just before the document starts. For experts.</span></div>
+        </div>
+      </details>
+    </section>
+  </div>
+
+  <!-- ======================================================= right column -->
+  <section class="panel output" aria-labelledby="h-out">
+    <div class="out-head">
+      <div class="status" aria-live="polite"><b id="h-out">Result</b><span id="out-sub">Choose a file to begin.</span></div>
+      <div class="actions" id="actions" hidden>
+        <label class="autopdf" id="auto-label" hidden><input type="checkbox" id="auto-pdf"> Update automatically</label>
+        <button class="btn" id="btn-pdf" type="button" hidden>Create PDF</button>
+        <button class="btn primary" id="btn-pdf-dl" type="button" hidden>Download PDF</button>
+        <button class="btn" id="btn-tex" type="button">Download .tex</button>
+        <button class="btn" id="btn-zip" type="button">Download project (.zip)</button>
+      </div>
+    </div>
+
+    <div id="empty" class="empty">
+      <h2>From Markdown to a polished PDF in three steps</h2>
+      <p class="lead">Drop in a Markdown file and get a well-organised LaTeX document: title, table of contents, numbered headings, tables, code blocks, math, footnotes and pictures.</p>
+      <ol class="steps">
+        <li><div><b>Add your .md file</b><br><span style="color:var(--muted)">Drag it onto the box on the left, or click it. You can also paste text.</span></div></li>
+        <li><div><b>Adjust the look</b> <span style="color:var(--muted)">(optional)</span><br><span style="color:var(--muted)">Paper size, fonts, margins, title page and more. The defaults already look good.</span></div></li>
+        <li><div><b>Get your document</b><br><span style="color:var(--muted)">Download the <code>.tex</code> file, or create the PDF right here when PDF export is on.</span></div></li>
+      </ol>
+      <button class="btn primary" id="example-btn-2" type="button">Try an example</button>
+      <div class="features">
+        <div><b>Private</b>Your file is converted in this page. Nothing is uploaded anywhere.</div>
+        <div><b>Real LaTeX</b>You get the <code>.tex</code> source, so you can edit it or send it to Overleaf.</div>
+        <div><b>Made for print</b>Page numbers, headers, a print-friendly color option and sensible page breaks.</div>
+      </div>
+    </div>
+
+    <div id="work" hidden style="display:flex;flex-direction:column;flex:1;min-height:0">
+      <div class="tabs" role="tablist" aria-label="Result views">
+        <button class="tab" role="tab" id="tab-pdf" aria-controls="pane-pdf" aria-selected="true" type="button">PDF</button>
+        <button class="tab" role="tab" id="tab-tex" aria-controls="pane-tex" aria-selected="false" type="button">LaTeX</button>
+        <button class="tab" role="tab" id="tab-preview" aria-controls="pane-preview" aria-selected="false" type="button">Quick preview</button>
+        <button class="tab" role="tab" id="tab-notes" aria-controls="pane-notes" aria-selected="false" type="button">Notes<span class="badge" id="notes-badge" hidden>0</span></button>
+      </div>
+
+      <div class="pane" id="pane-pdf" role="tabpanel" aria-labelledby="tab-pdf">
+        <div id="pdf-msg"></div>
+        <iframe class="frame" id="pdf-frame" title="PDF result" hidden></iframe>
+      </div>
+
+      <div class="pane" id="pane-tex" role="tabpanel" aria-labelledby="tab-tex" hidden>
+        <div class="texbar">
+          <button class="btn small" id="copy-tex" type="button">Copy</button>
+          <button class="btn small" id="edit-tex" type="button">Edit…</button>
+          <button class="btn small" id="reset-tex" type="button" hidden>Back to generated version</button>
+          <span class="note" id="tex-note">Generated LaTeX. Compile it with XeLaTeX, LuaLaTeX or pdfLaTeX (twice, for the table of contents).</span>
+        </div>
+        <textarea id="tex" readonly spellcheck="false" aria-label="Generated LaTeX source"></textarea>
+      </div>
+
+      <div class="pane" id="pane-preview" role="tabpanel" aria-labelledby="tab-preview" hidden>
+        <div class="callout"><b>Approximate preview.</b> This shows your content as a web page, not the LaTeX layout. Use it to check that the Markdown was understood; use the PDF tab for the real result.
+          <div style="margin-top:8px"><button class="btn small" id="print-preview" type="button">Print / save this preview as PDF</button></div></div>
+        <iframe class="frame" id="preview-frame" title="Quick preview" sandbox="allow-same-origin allow-modals"></iframe>
+      </div>
+
+      <div class="pane" id="pane-notes" role="tabpanel" aria-labelledby="tab-notes" hidden>
+        <ul class="notes" id="notes-list"></ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>Everything happens in your browser. The only program contacted is the optional helper on this computer (127.0.0.1); your file is never sent to the internet.</footer>
+
+<div class="overlay" id="drop-overlay" hidden><div>Drop to convert</div></div>
+
+<dialog id="help-dialog" aria-labelledby="help-title">
+  <div class="dlg-body">
+    <h2 id="help-title">Getting a PDF</h2>
+    <p>A PDF is made from the LaTeX file by a LaTeX engine. You have three ways to get one:</p>
+    <div class="routes">
+      <div class="route"><h4>A · Create it on this computer (best)</h4>
+        <p>1. Install a LaTeX distribution: <b>MiKTeX</b> (Windows), <b>MacTeX</b> (macOS) or <b>TeX Live</b> (Linux). <b>Tectonic</b> is a small alternative.</p>
+        <p>2. Start the helper in this folder: <code>python3 serve.py</code> (Windows: <code>py serve.py</code>). It opens this page with <b>Create PDF</b> switched on.</p>
+        <p id="help-status" style="margin-top:8px"></p></div>
+      <div class="route"><h4>B · Use Overleaf (nothing to install)</h4>
+        <p>Click <b>Download project (.zip)</b>, then on overleaf.com choose <i>New Project → Upload Project</i> and select the zip. In the project menu set the compiler to <b>XeLaTeX</b>. Overleaf is a third-party website: your document is uploaded there.</p></div>
+      <div class="route"><h4>C · Print the quick preview</h4>
+        <p>The <b>Quick preview</b> tab can be printed or saved as a PDF by your browser. It is not typeset by LaTeX, so fonts and layout differ.</p></div>
+    </div>
+  </div>
+  <div class="dlg-foot"><button class="btn primary" id="help-close" type="button">Close</button></div>
+</dialog>
+
+<!--__SCRIPTS__-->
+</body>
+</html>

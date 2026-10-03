@@ -138,6 +138,88 @@ test('math: dangerous commands are refused, % and # are escaped, Unicode is tran
   assert.equal(MD2TeX._internals.sanitizeMath('\\frac{a}{b}').ok, true);
 });
 
+test('math: structure TeX accepts passes, structure TeX rejects falls back to text', () => {
+  const ok = (s, amp) => MD2TeX._internals.mathSyntaxOk(s, !!amp);
+  // verified against pdfLaTeX and XeLaTeX (see tests/math-diff.js)
+  const good = [
+    'a_1 + b_2', '_a', '\\frac{a}{b}', "x'^2", "x''", "x_1'", '\\sqrt[3]{x}', '\\frac12', '\\frac\\alpha\\beta', 'x_\\frac12', '\\mathrm x',
+    '\\text x', '\\left. \\frac{a}{b} \\right|_{x=0}', 'a\\\\[2pt]b', '\\left( \\begin{array}{c} a \\\\ b \\end{array} \\right)',
+    '\\left( a \\\\ b \\right)', '\\begin{aligned} a &= b \\\\ c &= d \\end{aligned}', '\\text{a \\\\ b}', '\\text{user\\_id}',
+    '\\operatorname*{argmax}_x f', 'x \\in \\{1\\}', 'a \\, b', '\\left( \\middle| x \\right)', '\\sum_{\\substack{a \\\\ b}} x', 'x^\\#', 'S\\S'
+  ];
+  const bad = [
+    'x^', 'a^b^c', 'x_1_2', "x^2'", "x'^2'", "x^'", 'a & b', '$', '{', '}', '\\left(', 'x_{', '\\frac{a}', '{\\frac{a}}', '\\sqrt',
+    '\\sqrt[3]', '\\hat', '\\mathrm{a', "f'(x\\", 'b_\\2', '\\(x\\)', 'a\\@b', '\\left x \\right.', '\\left( \\right', '{ \\left( a } \\right)',
+    '\\left( {a \\right) }', '\\begin{aligned} \\left( a \\\\ b \\right) \\end{aligned}', '\\begin{aligned} {a & b} \\end{aligned}',
+    '\\begin{array} a & b \\end{array}', 'x^\\\\', 'x^\\,', 'x^\\left(', '\\text{a_b}', '\\text{a^b}', '\\text{a&b}', '\\t^ext',
+    '\\begin{aligned} a \\end{aligned', 'a\\é'
+  ];
+  good.forEach(s => assert.equal(ok(s), true, 'should pass: ' + s));
+  bad.forEach(s => assert.equal(ok(s), false, 'should be refused: ' + s));
+  // display math is wrapped in gathered/aligned by the converter, so "&" and "\\" are fine there, but not beside an open \left
+  assert.equal(ok('a & b', true), true);
+  assert.equal(ok('\\left( a \\\\ b \\right)', true), false);
+  assert.equal(ok('x_1 & x_2', false), false);
+  // absurd nesting must neither hang nor throw
+  assert.equal(ok('{'.repeat(50000) + '}'.repeat(50000)), false);
+  assert.equal(MD2TeX._internals.sanitizeMath('  ').tex, '{}');
+});
+
+test('math: an invalid formula becomes plain text with a note, the rest of the document is untouched', () => {
+  const r = convert('Before $\\frac{a}$ and $x^2$ after.\n\n$$\n\\left( a \\\\ b\n$$\n');
+  assert.ok(r.warnings.some(w => w.code === 'math-invalid'));
+  const b = r.tex.slice(r.tex.indexOf('\\begin{document}'));
+  assert.match(b, /Before \\texttt\{.*frac.*\} and \$x\^2\$ after\./);
+  assert.match(b, /\\begin\{mdverb\}\n\\left\( a \\\\ b\n\\end\{mdverb\}/);   // shown verbatim instead of as math
+  assert.doesNotMatch(b, /\\\[/);
+});
+
+test('math: packages for commands plain LaTeX lacks are loaded on demand, and only then', () => {
+  const pre = (md, o) => { const r = convert(md, o); return r.tex.slice(0, r.tex.indexOf('\\begin{document}')); };
+  assert.doesNotMatch(pre('$x^2$, $\\frac{a}{b}$, $\\operatorname{argmax}_x f$, a $\\bmod n$ and $\\sin x$'), /bm\.sty|mathtools|braket|cancel|mhchem|siunitx|mathrsfs|dsfont|bbm/);
+  assert.match(pre('$\\bm{x}$'), /\\IfFileExists\{bm\.sty\}\{\\usepackage\{bm\}\}/);
+  assert.match(pre('$\\cancel{a}$'), /\\IfFileExists\{cancel\.sty\}\{\\usepackage\{cancel\}\}/);
+  assert.match(pre('$$a \\coloneqq b$$'), /\\IfFileExists\{mathtools\.sty\}\{\\usepackage\{mathtools\}\}/);
+  assert.match(pre('$\\ket{\\psi}$'), /\\IfFileExists\{braket\.sty\}\{\\usepackage\{braket\}\}/);
+  assert.match(pre('$\\ce{H2O}$'), /\\IfFileExists\{mhchem\.sty\}\{\\usepackage\[version=4\]\{mhchem\}\}/);
+  assert.match(pre('$\\SI{3}{m}$'), /\\IfFileExists\{siunitx\.sty\}\{\\usepackage\{siunitx\}\}/);
+  assert.match(pre('$\\mathds{1}$ and $\\mathbbm{1}$'), /dsfont[\s\S]*bbm/);
+  assert.match(pre('$\\mathscr{L}$'), /\\IfFileExists\{mathrsfs\.sty\}\{\\usepackage\{mathrsfs\}\}/);
+  // each package once, in front of unicode-math
+  const twice = pre('$\\bm{a}$ $\\bm{b}$ $\\ket{a}$ $\\ket{b}$');
+  assert.equal((twice.match(/bm\.sty/g) || []).length, 1);
+  // a formula that is shown as text does not pull its package in
+  assert.doesNotMatch(pre('$\\bm{x$'), /bm\.sty/);
+  // with unicode-math (Times/Palatino) bm is mapped to \mathbfit and mathrsfs is only a fallback
+  const times = pre('$\\bm{x}$ $\\mathscr{L}$', { font: 'times' });
+  assert.match(times, /\\providecommand\{\\bm\}\[1\]\{\\mathbfit\{#1\}\}/);
+  assert.ok(times.indexOf('mathtools') < 0 && times.indexOf('\\usepackage{unicode-math}') > 0);
+  assert.match(times, /\\else\n  \\usepackage\{amssymb\}\n  \\IfFileExists\{bm\.sty\}[\s\S]*mathrsfs\.sty/);
+});
+
+test('\\begin{document} and \\end{document} appear exactly once, whatever the settings', () => {
+  for (const font of ['latinmodern', 'times', 'palatino']) {
+    for (const engine of ['xelatex', 'pdflatex']) {
+      const tex = convert('Text with $\\bm{x}$ and a quote\n\n> q\n', { font, engine, extraPreamble: '' }).tex;
+      assert.equal(tex.split('\\begin{document}').length - 1, 1, font + '/' + engine);
+      assert.equal(tex.split('\\end{document}').length - 1, 1, font + '/' + engine);
+    }
+  }
+});
+
+test('the .tex file name is made safe for every system', () => {
+  const name = f => MD2TeX.convert('x', { fileName: f }).texName;
+  assert.equal(name('notes.md'), 'notes.tex');
+  assert.equal(name('My Notes (final) v2.md'), 'My-Notes-final-v2.tex');
+  assert.equal(name('C:\\Users\\me\\Docs\\report 1.markdown'), 'report-1.tex');
+  assert.equal(name('../../etc/passwd.md'), 'passwd.tex');
+  assert.equal(name('\u0437\u0430\u043c\u0435\u0442\u043a\u0438.md'), '\u0437\u0430\u043c\u0435\u0442\u043a\u0438.tex');
+  assert.equal(name('.md'), 'document.tex');
+  assert.equal(name('???.md'), 'document.tex');
+  assert.equal(name(undefined), 'document.tex');
+  assert.equal(name('a'.repeat(300) + '.md').length, 84);
+});
+
 test('footnotes: numbering follows reading order, repeated and missing references', () => {
   const r = convert('A[^1] B[^2] C[^1] D[^zzz]\n\n[^1]: First.\n[^2]: Second\n    continued.');
   const b = r.tex.slice(r.tex.indexOf('\\begin{document}'));

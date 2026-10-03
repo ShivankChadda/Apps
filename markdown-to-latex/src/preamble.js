@@ -27,6 +27,27 @@
     palatino: { main: 'TeX Gyre Pagella', sans: 'TeX Gyre Heros', math: 'TeX Gyre Pagella Math' }
   };
 
+  const ADDON_OPTIONS = { mhchem: '[version=4]' };
+  const loadAddon = pkg => '\\IfFileExists{' + pkg + '.sty}{\\usepackage' + (ADDON_OPTIONS[pkg] || '') + '{' + pkg + '}}{}';
+
+  /**
+   * Packages for commands that formulas use but plain LaTeX lacks (see MATH_ADDONS in md2tex.js).
+   * unicode-math wants amsmath, mathtools and the like loaded before it ("early"). Two packages depend on
+   * whether unicode-math is active (`uni`): bm does not work with it (\bm becomes \mathbfit), and mathrsfs
+   * is not needed because unicode-math has \mathscr.
+   */
+  function mathAddons(s, which) {
+    const fam = FONT_FAMILIES[s.font];
+    const pkgs = s.uses.mathPkgs || [];
+    const lines = [];
+    for (const pkg of pkgs) {
+      if (which === 'early' && pkg !== 'bm' && pkg !== 'mathrsfs') lines.push(loadAddon(pkg));
+      else if (which === 'uni' && pkg === 'bm') lines.push('\\providecommand{\\bm}[1]{\\mathbfit{#1}}');
+      else if (which === 'plain' && (pkg === 'bm' || pkg === 'mathrsfs')) lines.push(loadAddon(pkg));
+    }
+    return lines;
+  }
+
   function fontBlock(s) {
     const fam = FONT_FAMILIES[s.font];
     const lines = [];
@@ -72,14 +93,16 @@
     lines.push('');
     lines.push('%% ---------- Mathematics ----------');
     lines.push('\\usepackage{amsmath}');
+    mathAddons(s, 'early').forEach(l => lines.push(l));
     if (fam) {
       lines.push('\\newif\\ifmdunimath');
       lines.push('\\ifPDFTeX\\else\\IfFontExistsTF{' + fam.math + '}{\\mdunimathtrue}{}\\fi');
       lines.push('\\ifmdunimath');
       lines.push('  \\usepackage{unicode-math}');
       lines.push('  \\setmathfont{' + fam.math + '}');
+      mathAddons(s, 'uni').forEach(l => lines.push('  ' + l));
       lines.push('  % A few shapes (star, black triangles, black lozenge) are missing from the TeX Gyre math fonts.');
-      lines.push('  % unicode-math defines its symbols at \\begin{document}, so the replacements run after it.');
+      lines.push('  % unicode-math defines its symbols when the document starts, so the replacements run after it.');
       lines.push('  \\IfFontExistsTF{DejaVu Sans}{%');
       lines.push('    \\newfontfamily\\mdsymfont{DejaVu Sans}%');
       lines.push('    \\AtBeginDocument{%');
@@ -105,9 +128,11 @@
       lines.push('  \\providecommand{\\circlearrowright}{\\cwopencirclearrow}');
       lines.push('\\else');
       lines.push('  \\usepackage{amssymb}');
+      mathAddons(s, 'plain').forEach(l => lines.push('  ' + l));
       lines.push('\\fi');
     } else {
       lines.push('\\usepackage{amssymb}');
+      mathAddons(s, 'plain').forEach(l => lines.push(l));
     }
     return lines.join('\n');
   }
@@ -137,6 +162,10 @@
       lines.push('\\setstretch{' + s.lineSpacing + '}');
     }
     lines.push('\\emergencystretch=3em');
+    lines.push('% A line break after text that came out empty (characters the engine had to skip) must not stop the build.');
+    lines.push('\\makeatletter');
+    lines.push('\\DeclareRobustCommand{\\newline}{\\leavevmode\\@normalcr\\relax}');
+    lines.push('\\makeatother');
     lines.push('\\widowpenalty=10000 \\clubpenalty=10000');
     lines.push('\\raggedbottom');
     return lines.join('\n');
@@ -237,11 +266,15 @@
   function quoteBlock(s) {
     const lines = ['%% ---------- Block quotes ----------'];
     if (!s.uses.code) lines.push('\\usepackage{framed}');
+    // \if@newlist: a quote that is the very first thing in a list would otherwise stop LaTeX with "perhaps a missing \item"
     lines.push(
+      '\\makeatletter',
       '\\newenvironment{mdquote}{%',
+      '  \\if@newlist\\leavevmode\\fi',
       '  \\def\\FrameCommand{{\\color{mdbar}\\vrule width 3pt}\\hspace{0.9em}}%',
       '  \\MakeFramed{\\advance\\hsize-\\width\\FrameRestore}}%',
-      ' {\\endMakeFramed}'
+      ' {\\endMakeFramed}',
+      '\\makeatother'
     );
     return lines.join('\n');
   }

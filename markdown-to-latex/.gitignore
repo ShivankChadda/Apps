@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+node_modules/
+.DS_Store
+Thumbs.db
+# LaTeX build files produced when you compile a .tex by hand
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz

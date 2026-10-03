@@ -332,8 +332,214 @@
     'InputIfFileExists|detokenize|lowercase|uppercase|lccode|uccode|outer|long|jobname|string)(?![A-Za-z])|' +
     '\\\\[A-Za-z]*@|\\^\\^|\\\\begin\\{document\\}|\\\\end\\{document\\}');
 
-  function sanitizeMath(s) {
-    if (RE_MATH_BLOCKED.test(s)) return { ok: false, tex: '' };
+  // Packages that formulas written for GitHub, KaTeX, MathJax or by a chatbot often rely on. A package is loaded
+  // only when a formula uses one of its commands, and only if the TeX installation has it.
+  const MATH_ADDONS = [
+    ['bm', /\\bm(?![A-Za-z])/],
+    ['cancel', /\\(?:cancel|bcancel|xcancel|cancelto)(?![A-Za-z])/],
+    ['mathtools', /\\(?:coloneqq|eqqcolon|coloneq|eqcolon|dblcolon|vcentcolon|ordinarycolon|mathclap|mathllap|mathrlap|xrightleftharpoons|xleftrightarrow|xLeftrightarrow|xLeftarrow|xRightarrow|xhookrightarrow|xhookleftarrow|xmapsto|prescript|underbracket|overbracket|Aboxed|MoveEqLeft|mathmakebox|smashoperator|splitdfrac|splitfrac)(?![A-Za-z])/],
+    ['braket', /\\(?:bra|ket|braket|Bra|Ket|Braket)(?![A-Za-z])/],
+    ['mathrsfs', /\\mathscr(?![A-Za-z])/],
+    ['mhchem', /\\(?:ce|pu)(?![A-Za-z])/],
+    ['siunitx', /\\(?:SI|si|num|qty|unit|ang|SIrange|numrange|qtyrange|numlist|qtylist|sisetup)(?![A-Za-z])/],
+    ['dsfont', /\\mathds(?![A-Za-z])/],
+    ['bbm', /\\mathbbm(?![A-Za-z])/]
+  ];
+
+  // Control symbols (a backslash plus one non-letter) that pdfLaTeX and XeLaTeX both accept in math:
+  // spaces, \, \; \: \! \> \\ \{ \} \| \# \$ \% \& \_ \* \- \/
+  const MATH_CONTROL_SYMBOLS = ' !#$%&*,-/:;>\\_{|}';
+
+  /**
+   * Braces, \begin/\end and \left/\right must pair up, or one bad formula would break the whole
+   * document. Control sequences are read properly, so "\\end" (a line break followed by "end") and
+   * "\{" are not mistaken for commands or braces.
+   */
+  function mathIsBalanced(s) {
+    let depth = 0;
+    let lefts = 0;
+    let rights = 0;
+    const envs = [];
+    for (let i = 0; i < s.length; i++) {
+      const c = s[i];
+      if (c === '\\') {
+        let j = i + 1;
+        if (/[A-Za-z]/.test(s[j] || '')) {
+          while (/[A-Za-z]/.test(s[j] || '')) j++;
+          const name = s.slice(i + 1, j);
+          if (name === 'begin' || name === 'end') {
+            const m = /^\s*\{([^{}]*)\}/.exec(s.slice(j));
+            if (!m) return false;
+            if (name === 'begin') envs.push(m[1]);
+            else if (envs.pop() !== m[1]) return false;
+            j += m[0].length;
+          } else if (name === 'left') lefts++;
+          else if (name === 'right') rights++;
+          i = j - 1;
+        } else {
+          i = j;        // a control symbol such as \\ \{ \} \,
+        }
+      } else if (c === '{') depth++;
+      else if (c === '}' && --depth < 0) return false;
+    }
+    return depth === 0 && envs.length === 0 && lefts === rights;
+  }
+
+  // Commands whose mandatory arguments must all be present, or TeX stops ("\frac{a}", "{\hat}").
+  const MATH_ARGS = {};
+  [
+    [2, 'frac dfrac tfrac cfrac binom dbinom tbinom overset underset stackrel'],
+    [1, 'sqrt xrightarrow xleftarrow mathrm mathbf mathit mathsf mathtt mathcal mathbb mathfrak mathscr mathnormal boldsymbol bm ' +
+        'hat widehat tilde widetilde bar overline underline vec dot ddot dddot check breve acute grave overbrace underbrace ' +
+        'overrightarrow overleftarrow mathop mathrel mathbin mathord mathpunct mathopen mathclose phantom hphantom vphantom ' +
+        'substack boxed']
+  ].forEach(([count, names]) => names.split(' ').forEach(name => { MATH_ARGS[name] = count; }));
+  const MATH_OPTIONAL_FIRST = new Set(['sqrt', 'xrightarrow', 'xleftarrow']);
+  // Arguments set as text: a sub/superscript or alignment tab inside them is an error
+  const MATH_TEXT_ARGS = new Set(['text', 'textrm', 'textbf', 'textit', 'textsf', 'texttt', 'textnormal', 'textup', 'textsl', 'textsc', 'mbox', 'hbox', 'fbox']);
+  const MATH_ENV_WITH_ARGUMENT = new Set(['array', 'subarray', 'alignat', 'alignedat', 'xalignat', 'xxalignat']);
+  const MATH_DELIMITER_CHARS = '()[]|/<>.';
+  const MATH_NOT_A_SCRIPT = /^\\(?:left|right|middle|begin|end|over|atop|choose|above|limits|nolimits|displaystyle|textstyle|scriptstyle|scriptscriptstyle|hline)(?![A-Za-z])/;
+
+  /**
+   * Structural check for math that TeX would reject and that would abort the build: a bare "$", an "&"
+   * outside an alignment, dangling or doubled sub/superscripts, missing command arguments, a \left that is
+   * not closed in the same group, and control symbols TeX does not know. It follows TeX's own rules and
+   * was compared with pdfLaTeX on thousands of damaged formulas (tests/math-diff.js).
+   *
+   * What it cannot know is whether a command exists: a misspelled or package-specific name passes, and
+   * the helper's recovery run reports it.
+   *
+   * `allowAmp` is true for display math, which the converter wraps in gathered/aligned when needed.
+   */
+  function mathSyntaxOk(s, allowAmp) {
+    let i = 0;
+    const n = s.length;
+    let bad = false;
+    const skipSpace = () => { while (i < n && /\s/.test(s[i])) i++; };
+    // one TeX "token": a control sequence or a single character
+    const token = () => {
+      if (s[i] === '\\') {
+        let j = i + 1;
+        if (/[A-Za-z]/.test(s[j] || '')) while (/[A-Za-z]/.test(s[j] || '')) j++;
+        else {
+          // a control symbol: only those every engine accepts inside math (\2, \(, \@ ... are errors)
+          if (j >= n || MATH_CONTROL_SYMBOLS.indexOf(s[j]) < 0) bad = true;
+          j++;
+        }
+        const t = s.slice(i, j);
+        i = j;
+        return t;
+      }
+      return s[i++];
+    };
+    const environmentName = () => {
+      skipSpace();
+      const m = /^\{([^{}]*)\}/.exec(s.slice(i, i + 80));
+      if (m) i += m[0].length;
+      return m ? m[1] : null;
+    };
+    // a mandatory argument: a {group} or one token
+    function argument(text, depth) {
+      skipSpace();
+      if (i >= n || /[}$&_^#]/.test(s[i])) return false;
+      if (s[i] === '{') { i++; return group(true, text, false, depth + 1); }
+      token();
+      return true;
+    }
+
+    function group(closing, text, align, depth) {
+      if (depth > 200) return false;                       // TeX allows 255 nested groups
+      let sub = false;
+      let sup = 0;                                         // 0 none, 1 only primes so far, 2 an explicit ^
+      // one entry per \begin ... \end level inside this group; `lefts` counts the open \left
+      const scopes = [{ lefts: 0, align, name: null }];
+      const top = () => scopes[scopes.length - 1];
+      const closed = () => scopes.length === 1 && scopes[0].lefts === 0;
+      while (true) {
+        skipSpace();
+        if (i >= n) return !closing && closed();
+        const c = s[i];
+        if (c === '}') { if (!closing) return false; i++; return closed(); }
+        if (c === '$') return false;
+        if (c === '&') {
+          if (text || !top().align || top().lefts > 0) return false;
+          i++; sub = false; sup = 0; continue;
+        }
+        if (c === '{') {
+          i++;
+          if (!group(true, text, false, depth + 1)) return false;
+          sub = false; sup = 0; continue;
+        }
+        if (c === "'" && !text) {
+          if (sup === 2) return false;                     // x^2' is a double superscript
+          sup = 1; i++; continue;
+        }
+        if (c === '_' || c === '^') {
+          if (text) return false;
+          if (c === '_') { if (sub) return false; sub = true; }
+          else { if (sup === 2) return false; sup = 2; }
+          i++; skipSpace();
+          if (i >= n || /[}_^&$'~]/.test(s[i])) return false;      // a script needs an argument it can take
+          if (s[i] === '{') { i++; if (!group(true, false, false, depth + 1)) return false; }
+          else {
+            // spacing symbols (\, \\ ...) and commands that are not atoms (\left, \over ...) cannot be scripts
+            const nx = s[i] === '\\' ? s[i + 1] || '' : '';
+            if (nx && !/[A-Za-z]/.test(nx) && '#$%&_{|}'.indexOf(nx) < 0) return false;
+            if (MATH_NOT_A_SCRIPT.test(s.slice(i, i + 14))) return false;
+            token();
+          }
+          continue;
+        }
+        const t = token();
+        const name = t.slice(1);
+        sub = false; sup = 0;
+        // one-letter commands are text accents and letters (\t \c \l ...): errors or warnings in math. \S and \P are fine.
+        if (/^\\[A-Za-z]$/.test(t) && name !== 'S' && name !== 'P') bad = true;
+        if (t === '\\begin') {
+          const env = environmentName();
+          if (env == null) return false;
+          scopes.push({ lefts: 0, align: true, name: env });
+          if (MATH_ENV_WITH_ARGUMENT.has(env.replace(/\*$/, ''))) {          // the column specification must be a {group}
+            skipSpace();
+            if (s[i] !== '{') return false;
+            i++;
+            if (!group(true, false, false, depth + 1)) return false;
+          }
+        } else if (t === '\\end') {
+          const env = environmentName();
+          if (env == null || scopes.length < 2 || top().name !== env || top().lefts > 0) return false;
+          scopes.pop();
+        } else if (t === '\\left' || t === '\\middle' || t === '\\right') {
+          skipSpace();
+          if (i >= n) return false;
+          const d = token();
+          const delimiter = d.length === 1 ? MATH_DELIMITER_CHARS.indexOf(d) >= 0
+            : (/^\\[A-Za-z]+$/.test(d) || d === '\\{' || d === '\\}' || d === '\\|');
+          if (!delimiter) return false;
+          if (t === '\\left') top().lefts++;
+          else if (top().lefts === 0) return false;
+          else if (t === '\\right') top().lefts--;
+        } else if (t === '\\\\') {
+          if (!text && top().align && top().lefts > 0) return false;   // a \left ... \right cannot span rows
+        } else if (MATH_TEXT_ARGS.has(name)) {
+          if (!argument(true, depth)) return false;
+        } else if (MATH_ARGS[name]) {
+          if (MATH_OPTIONAL_FIRST.has(name)) {
+            skipSpace();
+            if (s[i] === '[') { const close = s.indexOf(']', i); if (close < 0) return false; i = close + 1; }
+          }
+          for (let k = 0; k < MATH_ARGS[name]; k++) if (!argument(false, depth)) return false;
+        }
+      }
+    }
+    return group(false, false, !!allowAmp, 0) && !bad;
+  }
+
+  function sanitizeMath(s, block) {
+    if (!s.trim()) return { ok: true, tex: '{}' };            // "$$" would start display math
+    if (RE_MATH_BLOCKED.test(s)) return { ok: false, reason: 'blocked', tex: '' };
+    if (!mathIsBalanced(s) || !mathSyntaxOk(s, !!block)) return { ok: false, reason: 'unbalanced', tex: '' };
     // `%` starts a LaTeX comment and `#` is a macro parameter: escape them unless already escaped.
     let out = '';
     for (let i = 0; i < s.length; i++) {
@@ -472,7 +678,7 @@
       warnings.push({ code, level: level || 'warn', message });
     };
     const counts = { emojiRemoved: 0, unsupported: new Set(), relativeLinks: 0, htmlDropped: 0, linksStripped: 0, remoteImages: new Set(), missingImages: new Set() };
-    const uses = { lists: false, tables: false, code: false, quote: false, images: false, strike: false, rule: false };
+    const uses = { lists: false, tables: false, code: false, quote: false, images: false, strike: false, rule: false, mathPkgs: [] };
     const needs = { cyrillic: false, greekText: false, codeWide: false };
     const stats = { words: 0, headings: 0, tables: 0, codeBlocks: 0, images: 0, footnotes: 0, math: 0, links: 0, lists: 0 };
     const assets = new Map();       // id -> asset record
@@ -639,8 +845,10 @@
       const ic = newInlineContext(mode);
       let out = inline(toks, ic);
       while (ic.html.length) out += ic.html.pop()[1];
-      // a line break at the very start or end of a block would make LaTeX fail ("no line here to end")
-      return out.replace(/^(?:\s|\\newline)+/, '').replace(/(?:\s|\\newline)+$/, '');
+      // a line break at the very start or end of a block would make LaTeX fail ("no line here to end"), and a
+      // blank line (left behind when a tag between two line breaks is dropped) would end the paragraph inside
+      // an open \textbf{ ... }
+      return out.replace(/^(?:\s|\\newline)+/, '').replace(/(?:\s|\\newline)+$/, '').replace(/\n[ \t]*\n+/g, '\n');
     }
 
     function inline(toks, ic) {
@@ -700,15 +908,25 @@
       }
     }
 
+    function noteMathPackages(tex) {
+      for (const [pkg, re] of MATH_ADDONS) if (re.test(tex) && uses.mathPkgs.indexOf(pkg) < 0) uses.mathPkgs.push(pkg);
+    }
+
+    function warnBadMath(reason) {
+      if (reason === 'unbalanced') warn('math-invalid', 'A formula looked incomplete or invalid (unbalanced braces, a stray $ or &, a missing or doubled sub/superscript, unmatched \\begin/\\end or \\left/\\right) and was shown as plain text instead of breaking the document.');
+      else warn('math-blocked', 'A formula used a LaTeX command that is not allowed for safety (file access or low-level commands) and was shown as plain text.');
+    }
+
     function renderInlineMath(t, ic) {
       stats.math++;
-      const safe = sanitizeMath(t.text);
+      const safe = sanitizeMath(t.text, !!t.display && ic.mode === 'body');
       if (!safe.ok) {
-        warn('math-blocked', 'A formula used a LaTeX command that is not allowed for safety (file access or low-level commands) and was shown as plain text.');
+        warnBadMath(safe.reason);
         ic.st.prev = 'x';
         return '\\texttt{' + codeText(t.raw, true) + '}';
       }
       ic.st.prev = 'x';
+      noteMathPackages(safe.tex);
       if (t.display && ic.mode === 'body') return '\n\\[' + fixMultiline(safe.tex) + '\\]\n';
       return '$' + safe.tex.replace(/\n/g, ' ') + '$';
     }
@@ -972,19 +1190,34 @@
     // ------------------------------------------------------------- block rendering
     function renderBlocks(list, bc) {
       const out = [];
-      for (const t of list) {
-        const s = renderBlock(t, bc);
+      for (let i = 0; i < list.length; i++) {
+        // the block that follows tells a heading how much room it must keep
+        let next = null;
+        for (let j = i + 1; j < list.length; j++) if (list[j].type !== 'space' && list[j].type !== 'def') { next = list[j]; break; }
+        const s = renderBlock(list[i], bc, next);
         if (s !== '' && s != null) out.push(s);
       }
       return out.join('\n\n');
     }
 
+    /** Lines a block wants to keep together on one page (0 = may split anywhere). */
+    function keepTogether(tok) {
+      if (!tok) return 0;
+      if (tok.type === 'code') {
+        const lang = (tok.lang || '').trim().split(/\s+/)[0].toLowerCase();
+        const lines = tok.text.replace(/\n+$/, '').split('\n').length;
+        return lang === 'math' || lines > 30 ? 0 : lines + 2;
+      }
+      if (tok.type === 'table') return tok.rows.length <= 14 ? tok.rows.length + 4 : 0;
+      return 0;
+    }
+
     const RE_PAGEBREAK = /^\\(?:newpage|pagebreak|clearpage)(?:\{\})?$/;
 
-    function renderBlock(t, bc) {
+    function renderBlock(t, bc, next) {
       switch (t.type) {
         case 'space': case 'def': return '';
-        case 'heading': return renderHeading(t, bc);
+        case 'heading': return renderHeading(t, bc, next);
         case 'paragraph': return renderParagraph(t, bc);
         case 'text': return t.tokens ? renderInline(t.tokens, 'body').trim() : escapeAscii(t.text || '');
         case 'list': return renderList(t, bc);
@@ -1003,7 +1236,7 @@
 
     function needsPdfString(content) { return /\\(?![&%$#_{}])/.test(content); }
 
-    function renderHeading(t, bc) {
+    function renderHeading(t, bc, next) {
       stats.headings++;
       const plain = plainOf(t.tokens);
       stats.words += countWords(plain);
@@ -1018,7 +1251,8 @@
       let pre = '';
       if (o.pageBreaks === 'sections' && info.level === 1 && docClass === 'article' && bc.seenSection) pre = '\\clearpage\n';
       bc.seenSection = true;
-      const keep = cmd === 'chapter' ? '' : '\\needspace{5\\baselineskip}\n';
+      // keep the heading with what follows it: at least five lines, or the whole short block after it
+      const keep = cmd === 'chapter' ? '' : '\\needspace{' + Math.max(5, keepTogether(next) + 2) + '\\baselineskip}\n';
       return pre + keep + '\\' + cmd + '{' + arg + '}\\label{' + info.label + '}';
     }
 
@@ -1091,11 +1325,12 @@
 
     function renderMathBlock(t) {
       stats.math++;
-      const safe = sanitizeMath(t.text);
+      const safe = sanitizeMath(t.text, true);
       if (!safe.ok) {
-        warn('math-blocked', 'A formula used a LaTeX command that is not allowed for safety (file access or low-level commands) and was shown as text.');
+        warnBadMath(safe.reason);
         return codeBlockTex(t.text, '');
       }
+      noteMathPackages(safe.tex);
       if (t.env) return safe.tex;
       return '\\[\n' + fixMultiline(safe.tex.trim()) + '\n\\]';
     }
@@ -1192,11 +1427,14 @@
       return '\\begin{mdcode}\n\\begin{mdverb}' + opt + '\n' + code + '\n\\end{mdverb}\n\\end{mdcode}';
     }
 
-    function renderCode(t) {
+    function renderCode(t, bc) {
       const lang = (t.lang || '').trim().split(/\s+/)[0].toLowerCase();
       if (lang === 'math' || lang === 'latex-math') return renderMathBlock({ text: t.text });
       if (DIAGRAM_LANGS.has(lang)) warn('diagram', 'Diagram code blocks (' + lang + ') cannot be drawn; they are shown as code. Export the diagram as an image and reference it instead.');
-      return codeBlockTex(t.text, lang);
+      const tex = codeBlockTex(t.text, lang);
+      // a block of up to 30 lines starts on a fresh page rather than being cut in two
+      const lines = t.text.replace(/\n+$/, '').split('\n').length;
+      return tex && bc && bc.top && lines <= 30 ? '\\needspace{' + (lines + 2) + '\\baselineskip}\n' + tex : tex;
     }
 
     // ------------------------------------------------------------------ tables
@@ -1256,7 +1494,8 @@
       const body = rows.map(r => r.map(c => cellTex(c, false)).join(' & ') + ' \\\\').join('\n');
       const size = n >= 7 ? '\\footnotesize\n' : n >= 4 ? '\\small\n' : '';
       const nested = bc.nested;
-      let tex = '\\begingroup\n' + size + setup + '\\rowcolors{2}{mdshade}{white}\n';
+      let tex = (!nested && rows.length <= 14 ? '\\needspace{' + (rows.length + 4) + '\\baselineskip}\n' : '') +
+        '\\begingroup\n' + size + setup + '\\rowcolors{2}{mdshade}{white}\n';
       if (!nested) {
         tex += '\\begin{longtable}{' + colSpec + '}\n\\toprule\n' + head + '\\midrule\n\\endfirsthead\n\\toprule\n' + head + '\\midrule\n\\endhead\n' +
           '\\bottomrule\n\\endfoot\n\\bottomrule\n\\endlastfoot\n' + body + '\n\\end{longtable}';
@@ -1441,7 +1680,10 @@
     const secnumdepth = numbered ? (book ? 2 : 3) : (book ? -1 : 0);
     const footerTitle = titlePlain.length > 70 ? titlePlain.slice(0, 67).replace(/\s+\S*$/, '') + '…' : titlePlain;
     const shortTitleTex = hasTitle ? (titlePlain.length > 70 ? escapeAscii(footerTitle) : titleTex.replace(/\\(?:newline|\\)\s*/g, ' ')) : '';
-    const texName = (o.fileName ? o.fileName.replace(/^.*[\\/]/, '').replace(/\.[A-Za-z0-9]+$/, '') : 'document') + '.tex';
+    // a file name every system and LaTeX/Overleaf accepts: letters, digits, dot, dash, underscore
+    const stem = (o.fileName ? o.fileName.replace(/^.*[\\/]/, '').replace(/\.[A-Za-z0-9]+$/, '') : 'document')
+      .replace(/[^\p{L}\p{N}._-]+/gu, '-').replace(/^[-.]+|[-.]+$/g, '').slice(0, 80);
+    const texName = (stem || 'document') + '.tex';
 
     // Image notices (one line each, however many pictures are affected)
     const listUrls = set => {
@@ -1503,6 +1745,6 @@
 
   return {
     convert, sniffImage, DEFAULTS, version: VERSION,
-    _internals: { parseYamlLite, splitFrontMatter, extractFootnotes, sanitizeMath, cleanUrl, slugify, plainOf, pdfString, escapeAscii, humanize, countWords, normalizeOptions }
+    _internals: { mathIsBalanced, mathSyntaxOk, parseYamlLite, splitFrontMatter, extractFootnotes, sanitizeMath, cleanUrl, slugify, plainOf, pdfString, escapeAscii, humanize, countWords, normalizeOptions }
   };
 });
