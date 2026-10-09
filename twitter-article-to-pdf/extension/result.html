@@ -3,13 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>X Article to LaTeX PDF</title>
+<title>X Article to PDF</title>
+<link rel="stylesheet" href="vendor/katex/katex.min.css">
 <link rel="stylesheet" href="result.css">
+<link rel="stylesheet" href="print.css">
 </head>
 <body>
 <main>
-  <h1>X Article → LaTeX PDF</h1>
-  <p class="lead">Paste the link of an X Article (or click the toolbar button while it is open). You get a LaTeX project and, with the optional helper, a PDF.</p>
+  <h1>X Article → PDF</h1>
+  <p class="lead">Paste the link of an X Article (or click the toolbar button while it is open) and press Convert. The PDF is made right here and downloads by itself.</p>
 
   <form id="form">
     <label class="grow">Article link
@@ -22,7 +24,7 @@
     <summary>Layout options</summary>
     <div class="grid">
       <label>Font
-        <select id="font"><option value="latinmodern">Latin Modern</option><option value="times">Times</option><option value="palatino">Palatino</option></select>
+        <select id="font"><option value="latinmodern">Latin Modern (LaTeX look)</option><option value="times">Times</option><option value="palatino">Palatino</option></select>
       </label>
       <label>Paper
         <select id="paper"><option value="a4">A4</option><option value="letter">US Letter</option></select>
@@ -33,8 +35,8 @@
       <label>Links
         <select id="citations"><option value="references">Numbered references at the end</option><option value="inline">Clickable only</option></select>
       </label>
-      <label class="check"><input id="toc" type="checkbox"> Table of contents</label>
       <label class="check"><input id="print" type="checkbox"> Print-friendly (grayscale)</label>
+      <label class="check"><input id="toc" type="checkbox"> Table of contents <span class="muted small">(LaTeX source only)</span></label>
     </div>
   </details>
 
@@ -45,27 +47,37 @@
     <h2 id="title"></h2>
     <p id="meta" class="muted"></p>
     <div class="actions">
-      <button id="dl-zip" type="button">Download project (.zip)</button>
-      <button id="dl-tex" type="button" class="secondary">Download .tex</button>
-      <button id="mk-pdf" type="button" class="secondary">Create PDF</button>
       <button id="dl-pdf" type="button" hidden>Download PDF</button>
+      <button id="print-pdf" type="button" class="secondary" hidden>Print…</button>
     </div>
-    <p id="helper" class="muted"></p>
     <iframe id="pdf" title="PDF preview" hidden></iframe>
-  </section>
 
-  <section class="muted small">
-    <h2>About the PDF</h2>
-    <p>The <b>.zip</b> works anywhere: upload it to <a href="https://www.overleaf.com" target="_blank" rel="noopener">Overleaf</a> (set the compiler to XeLaTeX) or compile it yourself. <b>Create PDF</b> asks the small helper that runs on your own computer (<code>serve.py</code>, see the README) — it needs LaTeX installed and must be started with this extension's id:</p>
-    <pre id="cmd"></pre>
+    <details class="latex">
+      <summary>LaTeX source and real-LaTeX PDF (optional)</summary>
+      <p class="muted small">The PDF above is typeset by Chrome with LaTeX-style fonts and math (KaTeX). If you want a PDF produced by an actual TeX engine, use the LaTeX project instead.</p>
+      <div class="actions">
+        <button id="dl-zip" type="button" class="secondary">Download project (.zip)</button>
+        <button id="dl-tex" type="button" class="secondary">Download .tex</button>
+        <button id="mk-pdf" type="button" class="secondary">Create PDF with LaTeX</button>
+      </div>
+      <ul id="latex-notes" class="notes"></ul>
+      <p id="helper" class="muted small"></p>
+      <p class="muted small">The .zip also works on <a href="https://www.overleaf.com" target="_blank" rel="noopener">Overleaf</a> (compiler: XeLaTeX). "Create PDF with LaTeX" needs LaTeX installed and the local helper started with this extension's id:</p>
+      <pre id="cmd"></pre>
+    </details>
   </section>
 </main>
+
+<article id="print-root" aria-hidden="true"></article>
+
 <script src="lib/marked.umd.js"></script>
+<script src="vendor/katex/katex.min.js"></script>
 <script src="lib/tables.js"></script>
 <script src="lib/preamble.js"></script>
 <script src="lib/md2tex.js"></script>
 <script src="lib/zip.js"></script>
 <script src="lib/article2md.js"></script>
+<script src="lib/render.js"></script>
 <script src="lib/pipeline.js"></script>
 <script src="result.js"></script>
 </body>

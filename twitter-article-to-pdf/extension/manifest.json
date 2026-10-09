@@ -1,12 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "X Article to LaTeX PDF",
-  "version": "1.0.0",
-  "description": "Turn an X (Twitter) Article into a LaTeX document and a PDF for reading: pictures, equations, code and links are kept.",
+  "name": "X Article to PDF",
+  "version": "1.1.0",
+  "description": "One click from an X (Twitter) Article to a PDF for reading: pictures, equations, code and links are kept. Also exports the LaTeX source.",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4A4nfVt9M2O1oN7cLOkaV2B8jyG+/p0PQfVG0nMZcSwlYllKlhT6LxJB8fJxSSH4ghtVcJu4qX+AE97Pshdn6NMm9rR9a2EA6UwRwpOGlpyDIFQC0/4nWov0wTJP8XCb++IbpVhumvuraUy7CDXIffqxesUkh3SepXv9zhsvgsBHfHk7B63PDS4925YHJZeedO45PRtYiFmGTCPct40fZL8ibj6jw+/VmiB/zGCsYm3zp2NF7QWDZ4JHGqBoDlYJM4qxRva9lT5tc+yiNEYbaDaV9xwah9HZMdqUNO88vOt6GrSXGO5DzObUbMlxvgfcRSvcQvFNoKtDILAiW/FbxwIDAQAB",
-  "action": { "default_title": "Convert this X Article to LaTeX / PDF" },
+  "action": { "default_title": "Convert this X Article to PDF" },
   "background": { "service_worker": "background.js" },
-  "permissions": ["activeTab"],
+  "permissions": ["activeTab", "debugger"],
   "host_permissions": [
     "https://api.fxtwitter.com/*",
     "https://pbs.twimg.com/*",

@@ -1,0 +1,73 @@
+/* The article as it appears in the PDF. On screen it is parked off-canvas so fonts and pictures load. */
+@font-face { font-family: "LM Roman"; font-weight: 400; font-style: normal; src: url(fonts/lm-regular.woff2) format("woff2"); }
+@font-face { font-family: "LM Roman"; font-weight: 400; font-style: italic; src: url(fonts/lm-italic.woff2) format("woff2"); }
+@font-face { font-family: "LM Roman"; font-weight: 700; font-style: normal; src: url(fonts/lm-bold.woff2) format("woff2"); }
+@font-face { font-family: "LM Roman"; font-weight: 700; font-style: italic; src: url(fonts/lm-bolditalic.woff2) format("woff2"); }
+@font-face { font-family: "LM Mono"; font-weight: 400; font-style: normal; src: url(fonts/lm-mono.woff2) format("woff2"); }
+@font-face { font-family: "LM Sans"; font-weight: 700; font-style: normal; src: url(fonts/lm-sans-bold.woff2) format("woff2"); }
+
+#print-root {
+  --body: "LM Roman", "Latin Modern Roman", "Times New Roman", Times, serif;
+  --head: "LM Sans", "Latin Modern Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "LM Mono", "Latin Modern Mono", "Courier New", monospace;
+  --fs: 11pt; --ink: #111; --accent: #1d3557; --link: #1a4f8b; --rule: #888; --wash: #f4f4f2;
+  position: absolute; left: -10000px; top: 0; width: 170mm;
+  font: var(--fs)/1.38 var(--body); color: var(--ink); background: #fff;
+  text-align: justify; hyphens: auto; -webkit-hyphens: auto; overflow-wrap: break-word;
+}
+#print-root[data-font="times"] { --body: "Times New Roman", Times, "Liberation Serif", serif; }
+#print-root[data-font="palatino"] { --body: "Palatino Linotype", Palatino, "Book Antiqua", "URW Palladio L", serif; }
+#print-root[data-theme="print"] { --accent: #000; --link: #000; }
+
+#print-root .doc-head { text-align: center; margin: 0 0 1.6em; }
+#print-root .doc-title { font: 700 1.9em/1.15 var(--head); color: var(--accent); margin: 0 0 .5em; text-align: center; hyphens: manual; }
+#print-root .doc-author { font-size: 1.1em; margin: 0 0 .15em; text-align: center; }
+#print-root .doc-date { margin: 0 0 .5em; text-align: center; }
+#print-root .doc-source { font-size: .85em; margin: 0; text-align: center; color: #444; word-break: break-all; }
+
+#print-root h1, #print-root h2, #print-root h3, #print-root h4, #print-root h5, #print-root h6 {
+  font-family: var(--head); font-weight: 700; color: var(--accent); text-align: left; hyphens: manual;
+  break-after: avoid; page-break-after: avoid; line-height: 1.2;
+}
+#print-root h1 { font-size: 1.45em; margin: 1.5em 0 .5em; }
+#print-root h2 { font-size: 1.2em; margin: 1.3em 0 .4em; }
+#print-root h3 { font-size: 1.05em; margin: 1.1em 0 .3em; }
+#print-root h4, #print-root h5, #print-root h6 { font-size: 1em; margin: 1em 0 .3em; }
+
+#print-root p { margin: 0 0 .65em; orphans: 3; widows: 3; }
+#print-root a { color: var(--link); text-decoration: none; }
+#print-root strong { font-weight: 700; } #print-root em { font-style: italic; }
+#print-root del { text-decoration: line-through; }
+#print-root hr { border: 0; border-top: .6pt solid var(--rule); margin: 1.4em 25%; }
+
+#print-root ul, #print-root ol { margin: 0 0 .65em; padding-left: 1.6em; text-align: left; }
+#print-root li { margin: .15em 0; } #print-root li > p { margin: 0 0 .3em; }
+
+#print-root blockquote { margin: .8em 0; padding: .1em 0 .1em 1em; border-left: 2.2pt solid #b8bcc2; color: #222; break-inside: avoid; }
+#print-root blockquote p:last-child { margin-bottom: 0; }
+
+#print-root figure { margin: 1em 0; text-align: center; break-inside: avoid; page-break-inside: avoid; }
+#print-root figure img, #print-root p > img { max-width: 100%; max-height: 21cm; object-fit: contain; }
+#print-root figcaption { font-size: .88em; font-style: italic; margin-top: .4em; text-align: center; color: #333; }
+#print-root .missing-image { font-style: italic; color: #666; }
+
+#print-root code { font-family: var(--mono); font-size: .88em; }
+#print-root pre { font-family: var(--mono); font-size: .8em; line-height: 1.3; background: var(--wash); border: .5pt solid #ddd; border-radius: 2pt;
+  padding: .6em .8em; margin: .8em 0; white-space: pre-wrap; overflow-wrap: anywhere; text-align: left; hyphens: none; break-inside: avoid; }
+#print-root pre code { font-size: 1em; }
+
+#print-root table { border-collapse: collapse; margin: 1em auto; font-size: .92em; max-width: 100%; border-top: 1.1pt solid #000; border-bottom: 1.1pt solid #000; }
+#print-root th, #print-root td { padding: .25em .7em; text-align: left; vertical-align: top; }
+#print-root thead th { border-bottom: .6pt solid #000; font-weight: 700; }
+#print-root tr { break-inside: avoid; }
+
+#print-root .katex { font-size: 1.04em; }
+#print-root .math-display { margin: .8em 0; text-align: center; overflow-x: auto; overflow-y: hidden; break-inside: avoid; }
+#print-root .math-fallback { background: #fdf0ef; color: #8a1c14; padding: 0 .2em; }
+
+@media print {
+  html, body { background: #fff; }
+  body > main { display: none !important; }
+  #print-root { position: static; left: auto; width: auto; }
+  .math-display { overflow: visible !important; }
+}

@@ -16,6 +16,7 @@ const FILES = [
   [path.join(md, 'src/md2tex.js'), 'md2tex.js'],
   [path.join(md, 'src/zip.js'), 'zip.js'],
   [path.join(root, 'src/article2md.js'), 'article2md.js'],
+  [path.join(root, 'src/render.js'), 'render.js'],
   [path.join(root, 'src/pipeline.js'), 'pipeline.js']
 ];
 const check = process.argv.includes('--check');

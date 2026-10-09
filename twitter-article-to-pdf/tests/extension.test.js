@@ -79,11 +79,41 @@ test('the extension loads with the pinned id', { skip }, async () => {
   assert.equal(new URL(sw.url()).host, EXT_ID);
 });
 
+test('Convert makes the PDF by itself: no LaTeX, no helper, nothing to click', { skip }, async () => {
+  const { page, errors } = await openPage();       // note: no helper involved; this page never presses Create PDF
+  const pdfDownload = page.waitForEvent('download', { timeout: 120000 });
+  await page.fill('#url', 'https://x.com/ada/status/999');
+  await page.click('#go');
+  const download = await pdfDownload;
+  assert.equal(download.suggestedFilename(), 'Attention-Equations-a-100-test.pdf');
+  const pdfPath = path.join(userDir, 'direct.pdf');
+  await download.saveAs(pdfPath);
+  assert.equal(fs.readFileSync(pdfPath).subarray(0, 5).toString(), '%PDF-');
+  const text = spawnSync('pdftotext', ['-layout', pdfPath, '-'], { encoding: 'utf8' }).stdout;
+  assert.match(text, /Attention & “Equations”: a 100% \[test\]/);
+  assert.match(text, /Why attention works/);
+  assert.match(text, /original paper/);
+  assert.match(text, /a sandwich \$10/);                      // currency stayed text
+  assert.match(text, /def attention\(q, k, v\):/);            // code
+  assert.match(text, /References/);
+  assert.match(text, /arxiv\.org\/abs\/1706\.03762/);
+  const pages = Number((/Pages:\s+(\d+)/.exec(spawnSync('pdfinfo', [pdfPath], { encoding: 'utf8' }).stdout) || [])[1]);
+  assert.ok(pages >= 2 && pages <= 6, 'page count ' + pages);
+  const images = spawnSync('pdfimages', ['-list', pdfPath], { encoding: 'utf8' }).stdout.split('\n').filter(l => /^\s*\d+\s+\d+\s+image/.test(l));
+  assert.ok(images.length >= 3, 'pictures in the PDF: ' + images.length);   // cover, photo, gif poster
+  const fonts = spawnSync('pdffonts', [pdfPath], { encoding: 'utf8' }).stdout;
+  assert.match(fonts, /KaTeX/, 'formulas are set in the math fonts');
+  assert.deepEqual(errors, []);
+  await page.close();
+});
+
 test('converts an article and offers the project zip with pictures', { skip }, async () => {
   const { page, errors } = await openPage('?u=' + encodeURIComponent('https://x.com/ada/status/999'));
-  await page.waitForSelector('#result:not([hidden])', { timeout: 30000 });
+  await page.waitForSelector('#result:not([hidden])', { timeout: 120000 });
+  await page.waitForFunction(() => !document.querySelector('#go').disabled, null, { timeout: 120000 });
   assert.match(await page.textContent('#title'), /Attention/);
   assert.match(await page.textContent('#meta'), /3 pictures/);
+  await page.click('.latex summary');
   const [download] = await Promise.all([page.waitForEvent('download'), page.click('#dl-zip')]);
   const zipPath = path.join(userDir, 'out.zip');
   await download.saveAs(zipPath);
@@ -99,17 +129,20 @@ test('converts an article and offers the project zip with pictures', { skip }, a
 
 test('a link that is not an article gives a readable message', { skip }, async () => {
   const { page } = await openPage('?u=' + encodeURIComponent('https://x.com/ada/status/12345'));
-  await page.waitForFunction(() => /not found/i.test(document.querySelector('#status').textContent), null, { timeout: 30000 });
+  await page.waitForFunction(() => /not found/i.test(document.querySelector('#status').textContent), null, { timeout: 60000 });
   assert.equal(await page.isHidden('#result'), true);
   await page.close();
 });
 
 test('Create PDF works through the local helper', { skip: skip || (hasTeX ? false : 'No TeX engine installed') }, async () => {
   const { page } = await openPage('?u=' + encodeURIComponent('https://x.com/ada/status/999'));
-  await page.waitForSelector('#result:not([hidden])', { timeout: 30000 });
+  await page.waitForSelector('#result:not([hidden])', { timeout: 120000 });
+  await page.waitForFunction(() => !document.querySelector('#go').disabled, null, { timeout: 120000 });
+  await page.click('.latex summary');
   await page.click('#mk-pdf');
-  await page.waitForSelector('#dl-pdf:not([hidden])', { timeout: 240000 });
+  await page.waitForFunction(() => /LaTeX PDF ready/.test(document.querySelector('#status').textContent), null, { timeout: 240000 });
   const [download] = await Promise.all([page.waitForEvent('download'), page.click('#dl-pdf')]);
+  assert.match(download.suggestedFilename(), /-latex\.pdf$/);
   const pdfPath = path.join(userDir, 'out.pdf');
   await download.saveAs(pdfPath);
   const head = fs.readFileSync(pdfPath).subarray(0, 5).toString();

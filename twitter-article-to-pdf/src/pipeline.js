@@ -11,7 +11,9 @@
  *     texOptions: { ... }                 // forwarded to MD2TeX.convert
  *     onProgress(message)
  *   });
- *   -> { tex, files: { 'images/fig-001.jpg': Uint8Array }, markdown, title, warnings, stats }
+ *   -> { tex, files: { 'images/fig-001.png': Uint8Array },   // LaTeX-ready pictures
+ *        images: { 'images/fig-001.jpg': Uint8Array },        // pictures as downloaded (for the HTML/PDF path)
+ *        markdown, title, author, date, source, warnings, stats }
  */
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) module.exports = factory();
@@ -66,7 +68,7 @@
 
     say('Converting the text…');
     const md = A2M.build(tweet, { quoted, citations: (deps.citations || 'references') });
-    md.warnings.forEach(w => warnings.push({ level: 'warn', message: w }));
+    md.warnings.forEach(w => warnings.push({ level: 'warn', message: w, scope: 'article' }));
 
     say('Downloading ' + md.images.length + ' picture' + (md.images.length === 1 ? '' : 's') + '…');
     const bytesByFile = new Map();
@@ -92,7 +94,7 @@
     const result = MD2TeX.convert(md.markdown, Object.assign({
       documentClass: 'article', fileName: 'article.md', toc: false, pageBreaks: 'none', titlePage: 'no'
     }, deps.texOptions || {}, { resolveAsset }));
-    result.warnings.forEach(w => warnings.push({ level: w.level || 'warn', message: w.message }));
+    result.warnings.forEach(w => warnings.push({ level: w.level || 'warn', message: w.message, scope: 'latex' })); // limits of the LaTeX source only
 
     const files = {};
     for (const a of result.assets) {
@@ -109,7 +111,9 @@
       }
     }
 
-    return { tex: result.tex, files, markdown: md.markdown, title: md.title, author: md.author, date: md.date,
+    const images = {};
+    bytesByFile.forEach((bytes, file) => { images[file] = bytes; }); // as downloaded, keyed by the path used in the Markdown
+    return { tex: result.tex, files, images, markdown: md.markdown, title: md.title, author: md.author, date: md.date,
       source: md.source, warnings, stats: Object.assign({}, md.stats, { words: result.stats && result.stats.words }) };
   }
 
