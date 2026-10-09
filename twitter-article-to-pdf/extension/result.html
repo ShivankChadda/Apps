@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>X Article to LaTeX PDF</title>
+<link rel="stylesheet" href="result.css">
+</head>
+<body>
+<main>
+  <h1>X Article → LaTeX PDF</h1>
+  <p class="lead">Paste the link of an X Article (or click the toolbar button while it is open). You get a LaTeX project and, with the optional helper, a PDF.</p>
+
+  <form id="form">
+    <label class="grow">Article link
+      <input id="url" type="url" placeholder="https://x.com/username/status/1234567890" required autocomplete="off">
+    </label>
+    <button id="go" type="submit">Convert</button>
+  </form>
+
+  <details class="opts">
+    <summary>Layout options</summary>
+    <div class="grid">
+      <label>Font
+        <select id="font"><option value="latinmodern">Latin Modern</option><option value="times">Times</option><option value="palatino">Palatino</option></select>
+      </label>
+      <label>Paper
+        <select id="paper"><option value="a4">A4</option><option value="letter">US Letter</option></select>
+      </label>
+      <label>Size
+        <select id="size"><option>10</option><option selected>11</option><option>12</option></select>
+      </label>
+      <label>Links
+        <select id="citations"><option value="references">Numbered references at the end</option><option value="inline">Clickable only</option></select>
+      </label>
+      <label class="check"><input id="toc" type="checkbox"> Table of contents</label>
+      <label class="check"><input id="print" type="checkbox"> Print-friendly (grayscale)</label>
+    </div>
+  </details>
+
+  <p id="status" role="status" aria-live="polite"></p>
+  <ul id="notes"></ul>
+
+  <section id="result" hidden>
+    <h2 id="title"></h2>
+    <p id="meta" class="muted"></p>
+    <div class="actions">
+      <button id="dl-zip" type="button">Download project (.zip)</button>
+      <button id="dl-tex" type="button" class="secondary">Download .tex</button>
+      <button id="mk-pdf" type="button" class="secondary">Create PDF</button>
+      <button id="dl-pdf" type="button" hidden>Download PDF</button>
+    </div>
+    <p id="helper" class="muted"></p>
+    <iframe id="pdf" title="PDF preview" hidden></iframe>
+  </section>
+
+  <section class="muted small">
+    <h2>About the PDF</h2>
+    <p>The <b>.zip</b> works anywhere: upload it to <a href="https://www.overleaf.com" target="_blank" rel="noopener">Overleaf</a> (set the compiler to XeLaTeX) or compile it yourself. <b>Create PDF</b> asks the small helper that runs on your own computer (<code>serve.py</code>, see the README) — it needs LaTeX installed and must be started with this extension's id:</p>
+    <pre id="cmd"></pre>
+  </section>
+</main>
+<script src="lib/marked.umd.js"></script>
+<script src="lib/tables.js"></script>
+<script src="lib/preamble.js"></script>
+<script src="lib/md2tex.js"></script>
+<script src="lib/zip.js"></script>
+<script src="lib/article2md.js"></script>
+<script src="lib/pipeline.js"></script>
+<script src="result.js"></script>
+</body>
+</html>

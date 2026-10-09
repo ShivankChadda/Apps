@@ -115,6 +115,7 @@ Without front matter, a single top-level `# Heading` at the start becomes the ti
 
 - Your Markdown is converted inside the page; nothing is sent to the internet. The page contains no external scripts, fonts or images.
 - The optional helper listens on `127.0.0.1` only, answers only to this page (host and origin checks plus a secret token created each time you start it) and serves nothing but `index.html`.
+- By default the helper refuses everything except its own page. `python3 serve.py --allow-extension <id>` additionally lets one named Chrome extension (such as [`twitter-article-to-pdf`](../twitter-article-to-pdf/README.md)) ask for a PDF; websites and other extensions are still refused.
 - LaTeX is compiled in a temporary folder with shell commands disabled and file access limited to that folder, and the temporary files are deleted afterwards. Math from your Markdown is screened so it cannot read other files.
 - Still, treat `.md` files from strangers like any other downloaded document, and be aware that *Extra LaTeX* and the editable LaTeX tab run whatever you type.
 

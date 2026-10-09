@@ -296,5 +296,66 @@ class EngineFlagFallbackTest(unittest.TestCase):
         self.assertIn("-no-shell-escape", serve.flag_sets({"path": "xelatex", "miktex": False})[0])
 
 
+class ExtensionAccessTest(unittest.TestCase):
+    """--allow-extension: off by default, and only the named extension gets in."""
+    EXT = "a" * 32
+
+    @classmethod
+    def setUpClass(cls):
+        cls.engines = serve.detect_engines()
+        cls.open = serve.make_server(0, cls.engines)
+        cls.allowed = serve.make_server(0, cls.engines, extension_origins=["chrome-extension://" + cls.EXT])
+        for srv in (cls.open, cls.allowed):
+            threading.Thread(target=srv.serve_forever, daemon=True).start()
+
+    @classmethod
+    def tearDownClass(cls):
+        for srv in (cls.open, cls.allowed):
+            srv.shutdown()
+            srv.server_close()
+
+    def get(self, srv, path, **headers):
+        port = srv.server_address[1]
+        conn = http.client.HTTPConnection("127.0.0.1", port, timeout=30)
+        hdrs = {"Host": "127.0.0.1:%d" % port}
+        hdrs.update({k.replace("_", "-"): v for k, v in headers.items()})
+        conn.request("GET", path, headers=hdrs)
+        resp = conn.getresponse()
+        body = resp.read()
+        conn.close()
+        return resp.status, body
+
+    def test_extensions_are_refused_by_default(self):
+        status, _ = self.get(self.open, "/api/token", X_Extension_Id=self.EXT, Sec_Fetch_Site="none")
+        self.assertEqual(status, 403)
+
+    def test_allowed_extension_gets_the_token_and_can_use_the_api(self):
+        # what Chrome really sends from an extension page: no Origin, Sec-Fetch-Site: none
+        status, body = self.get(self.allowed, "/api/token", X_Extension_Id=self.EXT, Sec_Fetch_Site="none")
+        self.assertEqual(status, 200)
+        token = json.loads(body)["token"]
+        self.assertEqual(token, self.allowed.token)
+        status, _ = self.get(self.allowed, "/api/status", X_MD2LaTeX_Token=token, Sec_Fetch_Site="none")
+        self.assertEqual(status, 200)
+
+    def test_allowed_extension_may_post_with_its_origin(self):
+        port = self.allowed.server_address[1]
+        conn = http.client.HTTPConnection("127.0.0.1", port, timeout=30)
+        conn.request("POST", "/api/compile", body="{}", headers={
+            "Host": "127.0.0.1:%d" % port, "Origin": "chrome-extension://" + self.EXT, "Sec-Fetch-Site": "cross-site",
+            "Content-Type": "application/json", "X-MD2LaTeX-Token": self.allowed.token})
+        status = conn.getresponse().status
+        conn.close()
+        self.assertIn(status, (400, 200, 422))   # past the guards; the body itself is bad
+
+    def test_other_extensions_and_websites_are_still_refused(self):
+        self.assertEqual(self.get(self.allowed, "/api/token", X_Extension_Id="b" * 32)[0], 403)
+        self.assertEqual(self.get(self.allowed, "/api/token")[0], 403)          # e.g. a plain page load
+        self.assertEqual(self.get(self.allowed, "/api/token", X_Extension_Id=self.EXT,
+                                  Origin="https://evil.example.com", Sec_Fetch_Site="cross-site")[0], 403)
+        self.assertEqual(self.get(self.allowed, "/api/status", X_MD2LaTeX_Token=self.allowed.token,
+                                  Origin="https://evil.example.com")[0], 403)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

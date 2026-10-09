@@ -395,10 +395,12 @@ class Handler(BaseHTTPRequestHandler):
             self._json(403, {"ok": False, "error": "Forbidden host."})
             return False
         origin = self.headers.get("Origin")
-        if origin and origin.lower() not in {"http://" + h for h in self._allowed_hosts()}:
+        # Browser extensions the user explicitly allowed with --allow-extension (empty by default).
+        from_extension = bool(origin) and origin in self.server.extension_origins
+        if origin and not from_extension and origin.lower() not in {"http://" + h for h in self._allowed_hosts()}:
             self._json(403, {"ok": False, "error": "Forbidden origin."})
             return False
-        if self.headers.get("Sec-Fetch-Site", "same-origin") not in ("same-origin", "none"):
+        if not from_extension and self.headers.get("Sec-Fetch-Site", "same-origin") not in ("same-origin", "none"):
             self._json(403, {"ok": False, "error": "Cross-site requests are not allowed."})
             return False
         return True
@@ -430,6 +432,15 @@ class Handler(BaseHTTPRequestHandler):
                    "img-src 'self' data: blob:; connect-src 'self'; frame-src blob:; object-src blob:; "
                    "font-src 'self'; base-uri 'none'; form-action 'none'")
             self._send(200, html, "text/html; charset=utf-8", {"Content-Security-Policy": csp})
+        elif path == "/api/token":
+            # Only an extension allowed on the command line may ask for the session token. Chrome sends no
+            # Origin on an extension's GET, so it identifies itself with a custom header; a web page cannot
+            # add one without a CORS preflight, which this server never answers.
+            ext_id = self.headers.get("X-Extension-Id", "")
+            if ("chrome-extension://" + ext_id) not in self.server.extension_origins:
+                self._json(403, {"ok": False, "error": "Not available."})
+                return
+            self._json(200, {"ok": True, "token": self.server.token})
         elif path == "/api/status":
             if not self._token_ok():
                 return
@@ -486,17 +497,18 @@ class Server(ThreadingHTTPServer):
     daemon_threads = True
     allow_reuse_address = True
 
-    def __init__(self, addr, handler, engines):
+    def __init__(self, addr, handler, engines, extension_origins=()):
         super().__init__(addr, handler)
         self.token = secrets.token_urlsafe(24)
         self.engines = engines
+        self.extension_origins = frozenset(extension_origins)
 
 
-def make_server(port, engines, tries=20):
+def make_server(port, engines, tries=20, extension_origins=()):
     last = None
     for p in range(port, port + tries):
         try:
-            return Server(("127.0.0.1", p), Handler, engines)
+            return Server(("127.0.0.1", p), Handler, engines, extension_origins)
         except OSError as exc:
             last = exc
     raise last
@@ -506,14 +518,19 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description="Markdown -> LaTeX converter with PDF export (local only).")
     ap.add_argument("--port", type=int, default=8765, help="port to listen on (default 8765)")
     ap.add_argument("--no-browser", action="store_true", help="do not open a browser window")
+    ap.add_argument("--allow-extension", action="append", default=[], metavar="ID",
+                    help="let this Chrome extension (32-letter id) use the PDF builder; repeat for several")
     args = ap.parse_args(argv)
+    for ext_id in args.allow_extension:
+        if not re.fullmatch(r"[a-p]{32}", ext_id):
+            ap.error("--allow-extension expects the 32-letter extension id shown on chrome://extensions")
 
     if not os.path.exists(INDEX):
         print("index.html not found next to serve.py - run `node tools/build.js` first.", file=sys.stderr)
         return 1
     print("Looking for a TeX installation ...")
     engines = detect_engines()
-    server = make_server(args.port, engines)
+    server = make_server(args.port, engines, extension_origins=["chrome-extension://" + i for i in args.allow_extension])
     url = "http://127.0.0.1:%d/" % server.server_address[1]
     print()
     print("  Markdown -> LaTeX converter is running at:  %s" % url)

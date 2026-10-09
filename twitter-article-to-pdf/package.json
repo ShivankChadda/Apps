@@ -1,0 +1,12 @@
+{
+  "name": "twitter-article-to-pdf",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Turn an X (Twitter) Article into a LaTeX document and a PDF, from the command line or a Chrome extension.",
+  "scripts": {
+    "build": "node tools/build-extension.js",
+    "test": "node tools/build-extension.js --check && node --test tests/pipeline.test.js tests/cli.test.js",
+    "test:extension": "NODE_PATH=$(npm root -g) node --test tests/extension.test.js"
+  },
+  "license": "MIT"
+}
