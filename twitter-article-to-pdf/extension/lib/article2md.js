@@ -426,7 +426,8 @@
     const date = isoDate(article.created_at || tweet.created_at || tweet.created_timestamp * 1000);
     const source = tweet.url || (author.screen_name && tweet.id ? 'https://x.com/' + author.screen_name + '/status/' + tweet.id : '');
     const title = (article.title || '').trim() || 'X Article';
-    const abstract = [article.preview_text && article.preview_text.trim(), source ? 'Source: ' + source : ''].filter(Boolean).join('\n\n');
+    // preview_text is X's own truncated teaser (it stops mid-sentence), so only the source link goes under the title
+    const abstract = source ? 'Source: ' + source : '';
     const front = ['---', 'title: ' + yamlString(title), authorName ? 'author: ' + yamlString(authorName) : null,
       date ? 'date: ' + date : null,
       abstract ? 'abstract: |\n' + abstract.split('\n').map(l => '  ' + l).join('\n') : null, '---'].filter(Boolean).join('\n');

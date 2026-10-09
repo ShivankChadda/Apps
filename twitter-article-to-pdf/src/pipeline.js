@@ -90,7 +90,7 @@
 
     say('Typesetting…');
     const result = MD2TeX.convert(md.markdown, Object.assign({
-      documentClass: 'article', fileName: 'article.md', toc: false, pageBreaks: 'none'
+      documentClass: 'article', fileName: 'article.md', toc: false, pageBreaks: 'none', titlePage: 'no'
     }, deps.texOptions || {}, { resolveAsset }));
     result.warnings.forEach(w => warnings.push({ level: w.level || 'warn', message: w.message }));
 
