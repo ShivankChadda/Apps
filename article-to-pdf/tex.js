@@ -26,153 +26,49 @@
 
   const urlEsc = (u) => u.replace(/[\\{}\s]/g, '').replace(/%/g, '\\%').replace(/#/g, '\\#');
 
-  const SKIP = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'IFRAME', 'SVG', 'BUTTON', 'FORM', 'INPUT',
-    'SELECT', 'TEXTAREA', 'NAV', 'ASIDE', 'AUDIO', 'VIDEO', 'CANVAS', 'TEMPLATE']);
-  const HEADING = { H1: 'section', H2: 'section', H3: 'subsection', H4: 'subsubsection',
-    H5: 'paragraph', H6: 'paragraph' };
+  function runTex(runs) {
+    return runs.map((r) => {
+      if (r.s === '\n') return '\\newline ';
+      let x = esc(r.s);
+      if (!x.trim()) return x;
+      if (r.code) x = `\\texttt{${x}}`;
+      if (r.b) x = `\\textbf{${x}}`;
+      if (r.i) x = `\\textit{${x}}`;
+      if (r.u) x = `\\underline{${x}}`;
+      if (r.sup) x = `\\textsuperscript{${x}}`;
+      if (r.sub) x = `\\textsubscript{${x}}`;
+      if (r.href) x = `\\href{${urlEsc(r.href)}}{${x}}`;
+      return x;
+    }).join('');
+  }
 
-  /* Converts the children of `rootEl` to a LaTeX body.
-   * Returns { body, images: [{id, url, alt}] }. */
-  function domToTex(rootEl, opts) {
-    opts = opts || {};
-    const images = [];
-    const title = (opts.title || '').trim().toLowerCase();
+  function listTex(l) {
+    const env = l.ordered ? 'enumerate' : 'itemize';
+    const items = l.items.map((it) => `\\item ${runTex(it.runs)}${it.children.map((c) => '\n' + listTex(c)).join('')}`);
+    return `\\begin{${env}}\n${items.join('\n')}\n\\end{${env}}`;
+  }
 
-    function inline(node) {
-      let out = '';
-      for (const n of node.childNodes) out += inlineNode(n);
-      return out;
-    }
-
-    function inlineNode(n) {
-      if (n.nodeType === 3) return esc(n.nodeValue.replace(/\s+/g, ' '));
-      if (n.nodeType !== 1 || SKIP.has(n.tagName.toUpperCase())) return '';
-      const t = n.tagName.toUpperCase();
-      if (t === 'IMG') return ''; // images are handled at block level
-      if (t === 'BR') return '\\newline ';
-      const inner = inline(n);
-      if (!inner.trim()) return inner;
-      switch (t) {
-        case 'STRONG': case 'B': return `\\textbf{${inner}}`;
-        case 'EM': case 'I': case 'CITE': return `\\textit{${inner}}`;
-        case 'U': return `\\underline{${inner}}`;
-        case 'CODE': case 'KBD': case 'SAMP': return `\\texttt{${inner}}`;
-        case 'SUP': return `\\textsuperscript{${inner}}`;
-        case 'SUB': return `\\textsubscript{${inner}}`;
-        case 'A': {
-          const href = n.getAttribute('href') || '';
-          return /^https?:\/\//i.test(href) ? `\\href{${urlEsc(href)}}{${inner}}` : inner;
+  /* blocks -> LaTeX body */
+  function renderBlocks(blocks) {
+    return blocks.map((b) => {
+      switch (b.type) {
+        case 'h': return b.level === 1 ? `\\section*{${runTex(b.runs)}}`
+          : b.level === 2 ? `\\subsection*{${runTex(b.runs)}}` : `\\subsubsection*{${runTex(b.runs)}}`;
+        case 'p': return runTex(b.runs);
+        case 'img': return b.caption ? `\\articleimagecap{${b.id}}{${runTex(b.caption)}}` : `\\articleimage{${b.id}}`;
+        case 'list': return listTex(b);
+        case 'quote': return `\\begin{quote}\n${renderBlocks(b.blocks)}\n\\end{quote}`;
+        case 'pre': return `\\begin{quote}\\ttfamily\\small\n${b.lines.map((l) => esc(l).replace(/ /g, '~')).join('\\newline\n')}\n\\end{quote}`;
+        case 'table': {
+          const w = Math.max(...b.rows.map((r) => r.length));
+          const spec = `p{${(0.95 / w).toFixed(2)}\\linewidth}`.repeat(w);
+          const lines = b.rows.map((r) => r.map(runTex).concat(Array(w - r.length).fill('')).join(' & ') + ' \\\\');
+          return `\\begin{center}\\small\\begin{tabular}{${spec}}\\hline\n${lines.join('\n')}\n\\hline\\end{tabular}\\end{center}`;
         }
-        default: return inner;
+        case 'hr': return '\\medskip\\hrule\\medskip';
+        default: return '';
       }
-    }
-
-    function imageMacro(img, caption) {
-      const url = img.currentSrc || img.src || img.getAttribute('src') || '';
-      if (!/^https?:\/\//i.test(url)) return '';
-      const id = images.length + 1;
-      images.push({ id, url, alt: img.getAttribute('alt') || '' });
-      const cap = (caption || '').trim();
-      return cap ? `\\articleimagecap{${id}}{${cap}}` : `\\articleimage{${id}}`;
-    }
-
-    function list(el, depth) {
-      const env = el.tagName.toUpperCase() === 'OL' ? 'enumerate' : 'itemize';
-      const items = [];
-      for (const li of el.children) {
-        if (li.tagName.toUpperCase() !== 'LI') continue;
-        let text = '', nested = '';
-        for (const c of li.childNodes) {
-          const ct = c.nodeType === 1 ? c.tagName.toUpperCase() : '';
-          if (ct === 'UL' || ct === 'OL') nested += '\n' + list(c, depth + 1);
-          else if (ct === 'P' || ct === 'DIV') text += ' ' + inline(c);
-          else text += inlineNode(c);
-        }
-        text = text.trim();
-        if (text || nested) items.push(`\\item ${text}${nested}`);
-      }
-      if (!items.length) return '';
-      return `\\begin{${env}}\n${items.join('\n')}\n\\end{${env}}`;
-    }
-
-    function table(el) {
-      const rows = [...el.querySelectorAll('tr')]
-        .map((r) => [...r.children].filter((c) => /^(TD|TH)$/i.test(c.tagName)).map((c) => inline(c).trim()))
-        .filter((r) => r.some(Boolean));
-      if (!rows.length) return '';
-      const w = Math.max(...rows.map((r) => r.length));
-      const spec = `p{${(0.95 / w).toFixed(2)}\\linewidth}`.repeat(w);
-      const lines = rows.map((r) => r.concat(Array(w - r.length).fill('')).join(' & ') + ' \\\\');
-      return `\\begin{center}\\small\\begin{tabular}{${spec}}\\hline\n${lines.join('\n')}\n\\hline\\end{tabular}\\end{center}`;
-    }
-
-    const INLINE_TAGS = new Set(['A', 'STRONG', 'B', 'EM', 'I', 'U', 'CODE', 'KBD', 'SAMP', 'SUP', 'SUB',
-      'SPAN', 'SMALL', 'MARK', 'ABBR', 'CITE', 'TIME', 'BR', 'LABEL']);
-
-    function blocks(node) {
-      const out = [];
-      let run = ''; // loose text and inline elements between blocks
-      const flush = () => { if (run.trim()) out.push(run.trim()); run = ''; };
-
-      for (const n of node.childNodes) {
-        if (n.nodeType === 3) { run += esc(n.nodeValue.replace(/\s+/g, ' ')); continue; }
-        if (n.nodeType !== 1) continue;
-        const t = n.tagName.toUpperCase();
-        if (SKIP.has(t)) continue;
-        if (INLINE_TAGS.has(t)) {
-          // an inline wrapper around a lone image is a figure (linked images)
-          const img = n.querySelector && n.querySelector('img');
-          if (img && !n.textContent.trim()) { flush(); const m = imageMacro(img); if (m) out.push(m); }
-          else run += inlineNode(n);
-          continue;
-        }
-        flush();
-        if (HEADING[t]) {
-          const text = inline(n).trim();
-          const repeatsTitle = !out.length && (t === 'H1' || t === 'H2')
-            && n.textContent.trim().replace(/\s+/g, ' ').toLowerCase() === title;
-          if (text && !repeatsTitle) {
-            out.push(HEADING[t] === 'paragraph' ? `\\paragraph*{${text}}` : `\\${HEADING[t]}*{${text}}`);
-          }
-        } else if (t === 'P') {
-          const plain = n.textContent.trim();
-          if (!out.some((x) => !x.startsWith('\\section')) && plain.length < 100
-              && (/^by\s/i.test(plain) || (opts.byline && plain === opts.byline))) continue; // repeated byline
-          const imgs = n.querySelectorAll('img');
-          const text = inline(n).trim();
-          if (text) out.push(text);
-          if (imgs.length && !text) imgs.forEach((i) => { const m = imageMacro(i); if (m) out.push(m); });
-        } else if (t === 'IMG') {
-          const m = imageMacro(n); if (m) out.push(m);
-        } else if (t === 'FIGURE') {
-          const cap = n.querySelector('figcaption');
-          const img = n.querySelector('img');
-          if (img) { const m = imageMacro(img, cap ? inline(cap) : ''); if (m) out.push(m); }
-          else if (cap && cap.textContent.trim()) out.push(`{\\small\\itshape ${inline(cap)}}`);
-        } else if (t === 'UL' || t === 'OL') {
-          const l = list(n, 0); if (l) out.push(l);
-        } else if (t === 'BLOCKQUOTE') {
-          const inner = blocks(n).join('\n\n');
-          if (inner) out.push(`\\begin{quote}\n${inner}\n\\end{quote}`);
-        } else if (t === 'PRE') {
-          const lines = n.textContent.replace(/\s+$/, '').split('\n').map((l) => esc(l).replace(/ /g, '~'));
-          out.push(`\\begin{quote}\\ttfamily\\small\n${lines.join('\\newline\n')}\n\\end{quote}`);
-        } else if (t === 'TABLE') {
-          const tb = table(n); if (tb) out.push(tb);
-        } else if (t === 'HR') {
-          out.push('\\medskip\\hrule\\medskip');
-        } else if (t === 'FIGCAPTION') {
-          /* handled with its figure */
-        } else {
-          // DIV, SECTION, ARTICLE, MAIN, …: descend
-          out.push(...blocks(n));
-        }
-      }
-      flush();
-      return out;
-    }
-
-    return { body: blocks(rootEl).join('\n\n'), images };
+    }).filter(Boolean).join('\n\n');
   }
 
   const PREAMBLE = String.raw`\documentclass[11pt,a4paper]{article}
@@ -201,5 +97,5 @@
       + `\n\n\\bigskip\\hrule\\medskip\n{\\small Source: \\url{${urlEsc(meta.url || '')}}\\par}\n\\end{document}\n`;
   }
 
-  root.TeX = { esc, urlEsc, domToTex, assemble };
+  root.TeX = { esc, urlEsc, renderBlocks, assemble };
 })(typeof self !== 'undefined' ? self : this);

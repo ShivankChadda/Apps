@@ -2,31 +2,35 @@
 
 Click the toolbar button on an article and get a typeset PDF in your Downloads folder: title block, headings, lists, quotes, tables, links and the article's pictures, with menus, ads and footers left out.
 
-It has two parts, both on your own computer:
-
-1. **The extension** reads the page you are looking at (in your own browser, so logins and bot checks are not a problem), finds the article with Mozilla's Readability, and writes it as LaTeX.
-2. **The helper** (`helper/helper.py`) turns that LaTeX into a PDF with `pdflatex`. A browser extension cannot run LaTeX itself.
-
 ## Set up (once)
 
-1. Install a LaTeX program: [MacTeX](https://www.tug.org/mactex/) (Mac), [MiKTeX](https://miktex.org/download) (Windows) or `sudo apt install texlive-latex-base texlive-latex-recommended texlive-fonts-recommended texlive-latex-extra` (Linux). The command `pdflatex` must work in a terminal.
-2. Open `chrome://extensions`, switch on **Developer mode**, click **Load unpacked** and pick this `article-to-pdf` folder.
+Open `chrome://extensions`, switch on **Developer mode**, click **Load unpacked** and pick this `article-to-pdf` folder (the one that contains `manifest.json`). That is all.
 
 ## Use
 
-1. Start the helper and leave it running: `python3 helper/helper.py` (needs Python 3, nothing else).
-2. Open an article, click the extension's button, then **Save article as PDF**. (Right-click on the page → *Save article as PDF* does the same.)
+Open an article, click the extension's button, then **Save article as PDF**. (Right-click on the page → *Save article as PDF* does the same.) The PDF goes to your Downloads folder.
 
-If the helper is not running you still get the `.tex` file, so nothing is lost.
+## Two ways the PDF is made
+
+| | Built-in (default) | Real LaTeX (optional) |
+|---|---|---|
+| Needs | nothing | LaTeX installed ([MacTeX](https://www.tug.org/mactex/), [MiKTeX](https://miktex.org/download), or TeX Live) and `python3 helper/helper.py` running |
+| Look | laid out like a LaTeX article: Latin Modern font, justified text, same title block, pictures, links, page numbers. It is **not typeset by TeX**, so line breaks can differ slightly and there is no hyphenation | true LaTeX output |
+
+The extension checks for the helper on every click and uses real LaTeX when it is there, the built-in layout when it is not.
 
 ## What to know
 
-- **Permissions:** the extension asks for access to all websites, because it has to read whichever page you click it on and download that page's pictures. It sends nothing anywhere except to the helper on `127.0.0.1`.
-- **Safety of the helper:** it listens only on your computer and only answers browser extensions (a web page's own requests are refused). `pdflatex` runs with shell escape off and cannot read files outside its job folder.
-- **Limits:** pictures are converted to JPEG (SVG pictures are skipped, and so are tiny icons); at most 25 per article. Letters outside Latin scripts (Greek capitals, Chinese, emoji) are dropped, because `pdflatex` cannot set them. Maths on the page is kept as plain text.
+- **Permissions:** the extension asks for access to all websites, because it has to read whichever page you click it on and download that page's pictures. It sends nothing anywhere except, if running, to the helper on `127.0.0.1`.
+- **Safety of the optional helper:** it listens only on your computer and only answers browser extensions (a web page's own requests are refused). `pdflatex` runs with shell escape off and cannot read files outside its job folder.
+- **Limits:** pictures are converted to JPEG (SVG pictures are skipped, and so are tiny icons); at most 25 per article. Letters outside Latin scripts (Greek, Chinese, emoji) are dropped in both modes. Maths on the page is kept as plain text, and superscripts and subscripts are shown smaller but not raised in the built-in layout.
 - **X (Twitter) articles:** there is code for them, but its page selectors were written from memory and have **not** been tested against the live site. If one comes out empty or messy, tell me and send the page's HTML.
 - **Not tested:** the popup button and the right-click item in a real, visible Chrome window. The test below drives the same code path through the extension's service worker.
 
 ## Test
 
-`python3 tests/e2e.py` loads the extension in Chromium, runs it on a local sample article (`tests/fixture/`) and checks the PDF's text, that the pictures are in, and that the menus and footer are not. Needs `pip install playwright`, Chromium, `pdflatex` and `pdftotext`.
+`python3 tests/e2e.py` loads the extension in Chromium and runs it on a local sample article (`tests/fixture/`) twice, once without the helper (built-in layout) and once with it (real LaTeX). Each PDF is checked for its text, the picture, and that the menus and footer are not in it. Needs `pip install playwright`, Chromium, `pdflatex` and `pdftotext`/`pdfimages`/`pdffonts` (poppler).
+
+## Credits
+
+[Mozilla Readability](https://github.com/mozilla/readability) (Apache-2.0) finds the article; [pdfmake](http://pdfmake.org) (MIT) writes the built-in PDF; the Latin Modern fonts are under the [GUST Font License](vendor/fonts/GUST-FONT-LICENSE.TXT).

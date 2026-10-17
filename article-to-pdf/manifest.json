@@ -3,7 +3,7 @@
   "name": "Article to PDF (LaTeX)",
   "version": "0.1.0",
   "description": "Turns the article you are reading into a typeset PDF using LaTeX on your own computer.",
-  "permissions": ["scripting", "downloads", "contextMenus"],
+  "permissions": ["scripting", "downloads", "contextMenus", "offscreen"],
   "host_permissions": ["<all_urls>"],
   "background": { "service_worker": "background.js" },
   "action": { "default_title": "Save article as PDF", "default_popup": "popup.html" }

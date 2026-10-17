@@ -1,4 +1,4 @@
-importScripts('tex.js');
+importScripts('tex.js'); // LaTeX output, used when the optional helper is running
 
 const HELPER = 'http://127.0.0.1:8765';
 const MAX_IMAGES = 25;
@@ -7,7 +7,7 @@ function status(text, extra) {
   chrome.runtime.sendMessage({ type: 'status', text, ...extra }).catch(() => {}); // popup may be closed
 }
 
-const slug = (s) => (s || 'article').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60) || 'article';
+const slug = (s) => (s || 'article').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60) || 'article';
 
 function toBase64(bytes) {
   let s = '';
@@ -42,17 +42,35 @@ async function download(bytes, mime, filename) {
   await chrome.downloads.download({ url, filename, saveAs: false });
 }
 
+async function helperIsUp() {
+  try { return (await fetch(`${HELPER}/`, { signal: AbortSignal.timeout(800) })).ok; } catch (e) { return false; }
+}
+
+async function ensureOffscreen() {
+  if (await chrome.offscreen.hasDocument()) return;
+  await chrome.offscreen.createDocument({ url: 'offscreen.html', reasons: ['BLOBS'], justification: 'Lay out and write the PDF' });
+}
+
+/* Built-in writer: no LaTeX needed. */
+async function builtInPdf(meta, blocks, files) {
+  await ensureOffscreen();
+  const images = {};
+  for (const [name, b64] of Object.entries(files)) images[name.replace(/\D/g, '')] = b64;
+  const r = await chrome.runtime.sendMessage({ target: 'offscreen', type: 'render-pdf', meta, blocks, images });
+  if (!r || !r.ok) throw new Error(`PDF writer failed: ${r && r.error}`);
+  return Uint8Array.from(atob(r.pdf), (c) => c.charCodeAt(0));
+}
+
 async function makePdf(tabId, withImages) {
   status('Reading the article…');
-  await chrome.scripting.executeScript({ target: { tabId }, files: ['vendor/Readability.js', 'tex.js', 'content/extract.js'] });
+  await chrome.scripting.executeScript({ target: { tabId }, files: ['vendor/Readability.js', 'blocks.js', 'content/extract.js'] });
   const [{ result }] = await chrome.scripting.executeScript({
     target: { tabId },
     func: () => { try { return window.__articleToPdf(); } catch (e) { return { error: e.message }; } },
   });
-  const error = result && result.error;
-  if (error) throw new Error(error);
+  if (result && result.error) throw new Error(result.error);
 
-  const { meta, body, images } = result;
+  const { meta, blocks, images } = result;
   const files = {};
   if (withImages && images.length) {
     const wanted = images.slice(0, MAX_IMAGES);
@@ -62,29 +80,27 @@ async function makePdf(tabId, withImages) {
       if (b64) files[`img${wanted[i].id}.jpg`] = b64;
     }
   }
-
-  const tex = TeX.assemble(meta, body);
   const name = slug(meta.title);
+  const pics = Object.keys(files).length ? ` (${Object.keys(files).length} pictures)` : '';
 
-  status('Typesetting with LaTeX…');
-  let resp;
-  try {
-    resp = await fetch(`${HELPER}/compile`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tex, files }),
-    });
-  } catch (e) {
-    // helper not running: hand over the LaTeX so the work isn't lost
-    await download(new TextEncoder().encode(tex), 'application/x-tex', `${name}.tex`);
-    return { ok: true, title: meta.title, text: 'Helper not running, so I saved the .tex instead. Start the helper (see README) for a PDF.' };
+  // Real LaTeX if the optional helper is running...
+  if (await helperIsUp()) {
+    status('Typesetting with LaTeX…');
+    const tex = TeX.assemble(meta, TeX.renderBlocks(blocks));
+    const resp = await fetch(`${HELPER}/compile`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tex, files }),
+    }).catch(() => null);
+    if (resp && resp.ok) {
+      await download(new Uint8Array(await resp.arrayBuffer()), 'application/pdf', `${name}.pdf`);
+      return { ok: true, title: meta.title, text: `Saved ${name}.pdf${pics}, typeset with LaTeX.` };
+    }
+    status('LaTeX failed, using the built-in layout…');
   }
-  if (!resp.ok) {
-    const err = await resp.json().catch(() => ({}));
-    await download(new TextEncoder().encode(tex), 'application/x-tex', `${name}.tex`);
-    throw new Error(`LaTeX failed: ${err.error || resp.status}. The .tex was saved so you can inspect it.`);
-  }
-  await download(new Uint8Array(await resp.arrayBuffer()), 'application/pdf', `${name}.pdf`);
-  return { ok: true, title: meta.title, text: `Saved ${name}.pdf to Downloads` + (Object.keys(files).length ? ` (${Object.keys(files).length} pictures).` : '.') };
+
+  // ...otherwise the built-in LaTeX-style layout.
+  status('Laying out the PDF…');
+  await download(await builtInPdf(meta, blocks, files), 'application/pdf', `${name}.pdf`);
+  return { ok: true, title: meta.title, text: `Saved ${name}.pdf${pics}.` };
 }
 
 chrome.runtime.onMessage.addListener((msg, _sender, reply) => {

@@ -36,8 +36,9 @@ window.__articleToPdf = function () {
   const h1 = document.querySelector('article h1, main h1, h1');
   if (h1 && h1.textContent.trim()) title = h1.textContent.trim().replace(/\s+/g, ' ');
   title = title || meta('og:title') || document.title;
-  const { body, images } = TeX.domToTex(root, { title, byline });
-  if (body.length < 200) throw new Error('Found very little text on this page. Is it an article?');
+  const { blocks, images } = Blocks.domToBlocks(root, { title, byline });
+  const words = blocks.map((b) => (b.runs ? Blocks.plain(b.runs) : '')).join(' ');
+  if (words.length < 200) throw new Error('Found very little text on this page. Is it an article?');
 
   return {
     meta: {
@@ -47,7 +48,7 @@ window.__articleToPdf = function () {
       site: meta('og:site_name') || host,
       url: location.href,
     },
-    body,
+    blocks,
     images,
   };
 };
