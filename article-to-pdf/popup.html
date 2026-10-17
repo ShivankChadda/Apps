@@ -1,0 +1,13 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>
+  body { font: 14px system-ui, sans-serif; width: 280px; margin: 12px; }
+  button { width: 100%; padding: 9px; font-size: 14px; cursor: pointer; }
+  label { display: block; margin: 10px 0; }
+  #msg { min-height: 2.6em; color: #333; }
+  #msg.err { color: #b00020; }
+</style>
+<button id="go">Save article as PDF</button>
+<label><input type="checkbox" id="img" checked> Include pictures</label>
+<div id="msg"></div>
+<script src="popup.js"></script>
