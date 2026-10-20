@@ -105,6 +105,59 @@ free; QCAD Professional (about €41, one-time, perpetual) adds DWG if someone
 you deliver to insists on it. CADCraft is free and improving but pre-alpha.
 There is no reason to renew AutoCAD at 15 uses a year.
 
+## 0.3 Who uses it: you and your staff, with as little skill as possible
+
+The end goal is your own software, shaped by your own jobs, usable by staff
+who are not surveyors or CAD operators. That is a different product from
+"Terra plus AutoCAD" and it changes the design more than any other input in
+this document.
+
+**The tension to resolve.** AutoCAD is powerful because it exposes everything:
+layers, osnaps, a command line, typed coordinates. That is exactly what makes
+it unusable without training. Low-skill use means hiding all of it behind the
+handful of jobs you actually do. So the product is **task-shaped, not
+tool-shaped**: a staff member picks a job type, follows a short wizard, draws
+with three or four guided tools, and presses one export button. The full CAD
+toolbox exists, but behind an "expert" switch that only you open.
+
+**Design principles**
+
+1. **One URL, no installs for staff.** The browser-plus-helper architecture
+   already allows this: one machine in the office runs the helper and the
+   processing engine; everyone else opens a web address. Nothing to install,
+   update or configure on staff laptops.
+2. **Job types, not blank canvases.** Define your three to five recurring jobs
+   (for example: plot survey, boundary map for a dispute, site progress,
+   contour map for a plan). Each becomes a wizard with fixed steps, fixed
+   layers, fixed export package. Staff never choose a CRS, a contour interval
+   or a layer name; the job type carries them.
+3. **Opinionated defaults, no settings pages.** Units, CRS, contour interval,
+   label style, sheet template: set once by you per job type, invisible to
+   staff.
+4. **Guided drawing, not CAD commands.** "Mark a plot", "Add a label", "Measure",
+   "Add a spot height". Snapping is always on and automatic; there are no snap
+   modes to toggle. Undo is one obvious button. No command line unless expert
+   mode is on.
+5. **Processing is a button with a progress bar.** Photos in, outputs appear.
+   Errors are translated into plain language ("12 photos have no GPS; remove
+   them and try again"), never a log dump. Logs stay available to you.
+6. **Export is a package, not a format.** "Deliver" produces the zip the job
+   type defines: PDF sheet, DXF, KML, GeoJSON, with a fixed naming scheme.
+   Staff never see a format picker.
+7. **Review before delivery.** A checklist view that shows what is missing
+   (unlabelled plots, open polygons, no north arrow) so you can approve a
+   staff member's work without opening QGIS.
+8. **Record who did what.** Every entity carries the user who drew it and
+   when. A simple name picker at login is enough; no accounts system in v1.
+9. **Nothing destructive without a safety net.** Autosave, version per
+   delivery, and a "restore" button. Staff should not be able to lose a job.
+
+**What this does to the free-stack trial.** Run it with a staff member, not
+only yourself, and write down every point where they stop and ask. Those stops,
+plus your three to five job types, are the requirements document. Measure
+success in v1 as "a new staff member completes a plot survey job unaided
+after a 30-minute walkthrough".
+
 ## 1. What "Terra + AutoCAD" means concretely
 
 **Consume or produce (Terra side)**
@@ -115,7 +168,10 @@ There is no reason to renew AutoCAD at 15 uses a year.
 
 **Build (CAD side)**
 
+- Job-type wizards with fixed steps, layers and export packages (staff mode)
+- Review checklist and one-button "Deliver" package
 - Layers; point, line, polyline, polygon, text, leader and dimension entities
+  (expert mode)
 - Object snaps (endpoint, midpoint, intersection, perpendicular, nearest,
   centre), ortho/polar lock, command line with typed coordinates and distances
 - Plot boundaries with live area and perimeter, attributes (name, survey no.,
@@ -144,6 +200,11 @@ Browser UI (TypeScript, Vite)        Local helper (Python)             NodeODM (
 
 Why each piece:
 
+- **Browser UI plus one office machine.** The helper and the engine run on
+  one PC you set up once; staff open a URL on the office network. That is the
+  cheapest way to meet "no skills involved": there is nothing on their
+  machines to break. The same build also runs on a single laptop for field
+  use.
 - **NodeODM in Docker.** The only sane way to get ODM with GPU feature
   extraction on Linux/Windows. The `:gpu` image needs an NVIDIA card plus the
   nvidia-container-toolkit; on macOS it is CPU only. Day-one alternative: skip
@@ -237,7 +298,20 @@ before the licence lapses.
 
 Exit: you look at a site here instead of in QGIS.
 
-### Phase 2 — CAD layer (3 to 6 weeks, the core of the project)
+### Phase 2 — Drawing layer (3 to 6 weeks, the core of the project)
+
+Build the staff-facing tools first and the expert toolbox second. The data
+model underneath is the same, so nothing is thrown away.
+
+Staff mode (the product):
+
+- Job-type wizard: pick type, pick processed site, draw, review, deliver.
+- Four guided tools: mark plot (closed polygon with auto-label and live
+  area), add label (text with leader), measure (distance and area), spot
+  height. Snapping is always on, automatic, and shows a clear marker.
+- One undo button, autosave, a visible "what is missing" checklist.
+
+Expert mode (for you):
 
 - Entities: point, line, polyline, polygon, text, leader, aligned dimension.
   Layers panel: visibility, colour, lock, linetype, lineweight.
@@ -255,18 +329,25 @@ Exit: you look at a site here instead of in QGIS.
   world file, sidecar `.prj` because DXF has no CRS. SHP/GPKG/GeoJSON/KML
   through `ogr2ogr`.
 
-Exit: draw a boundary set, label it, open the DXF in LibreCAD or CADCraft at
-the right coordinates.
+Exit: a staff member completes a plot survey job unaided after a 30-minute
+walkthrough, and the DXF opens in LibreCAD or CADCraft at the right
+coordinates.
 
 ### Phase 3 — Processing inside the app (1 week)
 
-- Photo folder in, NodeODM job out: upload, progress, cancel, logs.
-- Presets: Fast ortho / Survey (DSM, DTM, contours) / Full 3D.
+- Photo folder in, NodeODM job out: upload, progress, cancel. Errors shown
+  in plain language; logs behind an expert toggle.
+- Presets tied to job types, not exposed as ODM options: Fast ortho / Survey
+  (DSM, DTM, contours) / Full 3D.
+- Office deployment: one PC runs the helper and NodeODM (or forwards to
+  Lightning); staff reach it by URL. A job queue so two people can submit
+  without colliding.
 - Auto post-process to COG, COPC and contours on completion.
 - GCP file support (ODM takes a plain text file; a click-in-photo GCP editor
   is optional and later).
 
-Exit: no terminal between photos and drawing.
+Exit: a staff member goes from an SD card to a processed site without
+asking you anything.
 
 ### Phase 4 — Terrain tools (1 to 2 weeks)
 
@@ -282,17 +363,22 @@ Exit: "how much earth" and "where does it drain" answered without another tool.
 - deck.gl: COPC point cloud coloured by elevation or RGB, mesh as glb, CAD
   entities draped on the DTM. Orbit and measure. Read-only is enough.
 
-### Phase 6 — Sheets and print (1 week)
+### Phase 6 — Sheets, review and delivery (1 to 2 weeks)
 
 - Layout page: fixed scale (1:500 and so on), north arrow, scale bar, legend,
-  title block, grid. PDF through browser print or pdf-lib.
+  title block, grid. PDF through browser print or pdf-lib. One template per
+  job type.
+- Review checklist (unlabelled plots, open polygons, missing title fields)
+  and a "Deliver" button that writes the job type's package: PDF, DXF, KML,
+  GeoJSON, zipped with a fixed naming scheme, and records a version.
 
 ### Phase 7 — Packaging
 
-- `start.sh`, `start-windows.bat`, `start-mac.command` like
-  `markdown-to-latex`; `docker-compose.yml` for NodeODM.
-- Later, a Tauri 2 shell if you want one icon to click. Keep the plain browser
-  build working regardless.
+- Office machine: `start.sh` or `start-windows.bat` like `markdown-to-latex`
+  plus `docker-compose.yml` for NodeODM, set up once by you. Starts on boot.
+- Staff: a bookmark. Nothing else.
+- Later, a Tauri 2 shell for a single-laptop field setup if you want one icon
+  to click. Keep the plain browser build working regardless.
 
 Rough total for one person part-time: about three months to the end of
 Phase 4. Phase 2 is where the value is; do not start Phase 5 before Phase 2
@@ -332,12 +418,20 @@ ships.
   snap priority order fixed and documented.
 - **DXF consumers differ.** Test every export in LibreCAD and CADCraft (both
   free) before trusting it in AutoCAD.
-- **Scope creep.** Phases 5 and 6 are nice. Phase 2 is the product.
+- **Building AutoCAD instead of your jobs.** The expert toolbox is
+  satisfying to build and useless to staff. Ship the wizard and the four
+  guided tools first; add expert features only when a real job needs one.
+- **Office machine as a single point of failure.** Nightly copy of the
+  projects folder to a second disk or cloud storage; the helper should be
+  restartable by anyone with one double-click.
+- **Scope creep.** Phase 5 is nice. Phases 2 and 6 are the product.
 
 ## 7. What I need from you before Phase 0
 
 Answered: Matrice 4E (built-in RTK); DJI Terra available until March 2027;
-about ₹1 lakh a year each for Terra and AutoCAD; 10 to 15 jobs a year.
+about ₹1 lakh a year each for Terra and AutoCAD; 10 to 15 jobs a year; used
+by you and your staff; must need very little skill; own software is the end
+goal.
 
 Still open:
 
@@ -350,6 +444,12 @@ Still open:
 5. Who reads the DXF: you, a surveyor, a lawyer? This drives the DWG question
    and the sheet layouts.
 6. 2D only, or is the 3D view a must?
+7. How many staff will use it, and what do they use today (phone, laptop,
+   nothing)? Shared office PC on a LAN, or laptops in the field?
+8. Your three to five recurring job types, with one past example each. These
+   become the wizards.
+9. Is the office internet reliable enough for hosted processing (Lightning),
+   or must processing work offline?
 
 Where these are unknown the plan assumes the Terra export CRS, metres, 2D first.
 
