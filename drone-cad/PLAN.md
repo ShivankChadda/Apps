@@ -49,19 +49,61 @@ What the 4E gives you (reseller spec sheets; confirm against DJI's manual):
 
 Consequences for the phases:
 
-- **Terra stays the engine for now.** Phase 0 becomes "export one site from
-  Terra (GeoTIFF ortho, DSM, LAS, DXF contours) and build the viewer on that".
-  You get a usable tool after Phase 1 and Phase 2 without touching ODM.
-- **ODM moves to Phase 3 as a replacement, not a prerequisite.** When you get
-  there, run the same site through NodeODM and diff it against the Terra
-  export you kept. One thread on the Pix4D community reports blurry, distorted
-  orthos from Matrice 4E data in WebODM where the dense point cloud was not
-  generated. Treat that as a Phase 3 verification item: confirm the dense
-  cloud exists, process the wide camera only, and check the RTK tags with
-  `exiftool` before blaming the engine.
+- **Terra is the reference until March 2027, then it is gone.** Its exports
+  (GeoTIFF ortho, DSM, LAS, DXF contours) are the fixtures the viewer is
+  built on, and the yardstick ODM is measured against. Both uses end when the
+  licence does, so the comparison has to happen before then.
+- **ODM validation is Phase 0, not Phase 3.** Run the same site through
+  NodeODM and diff it against the Terra export while you still can. One thread
+  on the Pix4D community reports blurry, distorted orthos from Matrice 4E data
+  in WebODM where the dense point cloud was not generated. Treat that as a
+  Phase 0 verification item: confirm the dense cloud exists, process the wide
+  camera only, and check the RTK tags with `exiftool` before blaming the
+  engine.
 - **CRS and units come from Terra's export settings.** Use the same EPSG in
   the project so Terra outputs and your drawings line up without reprojection
   on day one.
+
+## 0.2 Constraints: cost, deadline, usage
+
+- DJI Terra: about ₹1 lakh a year, licence ends **March 2027**.
+- AutoCAD: about ₹1 lakh a year.
+- Usage: roughly **10 to 15 jobs a year**.
+
+Three things follow.
+
+**The money is saved by free tools, not by this app.** WebODM plus QGIS plus a
+free CAD (QCAD Community, LibreCAD, or CADCraft) replaces both subscriptions
+at ₹0 and needs no code. Install that stack first and run one real job
+through it. The app in this plan is then a convenience layer over the same
+engines, justified by how much the QGIS workflow annoys you across 15 jobs a
+year, not by the ₹2 lakh. Decide that honestly after the first free-stack
+job.
+
+**Processing speed does not matter at 15 jobs a year.** Do not buy a GPU. A
+CPU run of 400 photos overnight is fine. If Docker or an overnight wait is
+too much friction, WebODM Lightning (hosted ODM) charges by credits: at the
+calculator's rate of about 2.25 images per credit, a 400-photo site costs
+roughly 180 credits, about US$9 on the smallest pack, so a full year is in the
+₹7,000 to ₹10,000 range. Either path is two orders of magnitude under Terra.
+Free credits on sign-up cover the first test.
+
+**March 2027 is a hard deadline for Phase 0.** Target end of January 2027 so
+there is a buffer. Two things must happen before the licence ends:
+
+1. Export every site you may ever need again from Terra in open formats
+   (GeoTIFF ortho, DSM, LAS/LAZ, OBJ, DXF/SHP contours). Terra project files
+   are useless without the licence.
+2. Process at least two of those sites through ODM and confirm the outputs
+   match Terra within the tolerance you need (distances, elevations,
+   boundary positions). This is the only moment you can measure ODM against
+   a reference you trust.
+
+**On the AutoCAD side**, the app's CAD layer (Phase 2) is the long-term
+answer. Until it exists, QCAD Community and LibreCAD open and edit DXF for
+free; QCAD Professional (about €41, one-time, perpetual) adds DWG if someone
+you deliver to insists on it. CADCraft is free and improving but pre-alpha.
+There is no reason to renew AutoCAD at 15 uses a year.
 
 ## 1. What "Terra + AutoCAD" means concretely
 
@@ -157,11 +199,11 @@ metres, sampled from the DTM or DSM you pick per entity.
 
 ## 4. Phases
 
-### Phase 0 — Fixtures and a known-good pipeline (1 to 2 weekends, no app code)
+### Phase 0 — Replace Terra before it expires (finish by end of January 2027, no app code)
 
-With Terra in hand, the Terra export is the primary fixture and the ODM run
-below is optional until Phase 3. Do the ODM run early only if you want the
-timing numbers now.
+This phase is mandatory and time-boxed by the licence, whether or not the app
+is ever built. Order of work: archive all Terra sites first, then validate
+ODM against two of them, then try the free stack end to end.
 
 - Start NodeODM with `docker compose up`. Run one real dataset of yours
   (200 to 400 photos). Options to start from:
@@ -172,12 +214,17 @@ timing numbers now.
 - Open everything in QGIS. Check one known distance on site.
 - Record CPU vs GPU time, the CRS you settled on, and the contour intervals
   that make sense for your terrain.
-- If you still have DJI Terra, export the same site once (ortho, DSM, LAS,
-  DXF contours) and keep it as a second test fixture.
+- Export every site you may need again from Terra (ortho, DSM, LAS, OBJ,
+  DXF contours) into open formats. Keep two of them as reference fixtures.
+- Run the free stack once end to end: WebODM (Docker or Lightning) for
+  processing, QGIS for viewing and contours, QCAD or LibreCAD for the DXF.
+  Note what annoyed you. That list is the app's real requirements document.
 
 Deliverable: a `presets/` file with the ODM arguments that worked, timing
-numbers, and two fixture folders.
-Exit: ortho and 1 m contours that match Terra within tolerance.
+numbers, an archive of every Terra site in open formats, two fixture folders,
+and the list of free-stack annoyances.
+Exit: ortho and 1 m contours from ODM that match Terra within tolerance, done
+before the licence lapses.
 
 ### Phase 1 — Viewer (1 to 2 weeks)
 
@@ -255,7 +302,7 @@ ships.
 
 | Concern | Choice | Considered and not chosen |
 |---|---|---|
-| Photogrammetry | NodeODM in Docker, `:gpu` image | Metashape (paid), Meshroom (no georeferenced DEM pipeline), own SfM (no) |
+| Photogrammetry | NodeODM in Docker on CPU; WebODM Lightning credits if Docker is friction | GPU purchase (not worth it at 15 jobs a year), Metashape (paid), Meshroom (no georeferenced DEM pipeline), own SfM (no) |
 | Raster delivery | COG + HTTP range from the helper | Pre-tiling to XYZ (more disk, more code) |
 | 2D canvas | OpenLayers + proj4 | MapLibre (Mercator only), Konva/custom canvas (no geo) |
 | 3D view | deck.gl; Potree if clouds exceed ~50 M points | three.js from scratch |
@@ -270,8 +317,11 @@ ships.
 ## 6. Risks and how to kill them early
 
 - **No NVIDIA GPU.** ODM feature extraction on CPU; 400 photos takes hours.
-  Use `--fast-orthophoto` for drafts and run full jobs overnight. Measure in
-  Phase 0.
+  At 15 jobs a year that is an overnight run, not a problem. Use
+  `--fast-orthophoto` for drafts. Do not buy hardware for this.
+- **Missing the March deadline.** If Phase 0 slips past the licence, you lose
+  the reference to validate ODM against and will be tempted to renew under
+  pressure. Archive first, validate second, everything else after.
 - **Accuracy without GCPs.** Plain EXIF GPS gives roughly 1 to 3 m absolute
   error; relative accuracy is fine for plotting, not for legal boundaries. ODM
   reads the RTK accuracy tags in DJI image XMP, so an RTK drone brings
@@ -286,14 +336,15 @@ ships.
 
 ## 7. What I need from you before Phase 0
 
-Answered: Matrice 4E (built-in RTK), DJI Terra available for processing.
+Answered: Matrice 4E (built-in RTK); DJI Terra available until March 2027;
+about ₹1 lakh a year each for Terra and AutoCAD; 10 to 15 jobs a year.
 
 Still open:
 
 1. Do you fly with an RTK fix every time (NTRIP or D-RTK base), and do you
    place any checkpoints or GCPs?
 2. Typical site: area, photo count, flat or hilly.
-3. Machine: OS, RAM, GPU (NVIDIA model if any). Only matters from Phase 3.
+3. Machine: OS and RAM. Decides Docker-on-CPU versus Lightning credits.
 4. Units for area (m², ha, acres, a local unit) and the CRS or national grid
    you report in. What EPSG does Terra export in today?
 5. Who reads the DXF: you, a surveyor, a lawyer? This drives the DWG question
@@ -323,6 +374,8 @@ Where these are unknown the plan assumes the Terra export CRS, metres, 2D first.
 - JS DXF libraries surveyed: https://npmjs.com/package/dxf-doc,
   https://github.com/mmiscool/js-dxf, https://www.jsdelivr.com/package/npm/@mlightcad/libdxfrw-web
 - Potree: https://www.npmjs.com/package/potree-core
+- WebODM Lightning calculator and FAQ: https://www.webodm.net/calculator and https://www.webodm.net/faq
+- QCAD Professional shop price: https://qcad.org/prestashop/en/qcad/20-qcad-professional.html
 - Matrice 4E camera and RTK (reseller spec pages): https://www.dronefly.com/products/dji-matrice-4e-demo-unit
   and https://globaldronehq.com/collections/dji-matrice-4/products/dji-matrice-4e
 - Matrice 4E in WebODM, poor ortho report: https://community.pix4d.com/t/poor-ortho-output-with-dji-matrice-4e/33555
