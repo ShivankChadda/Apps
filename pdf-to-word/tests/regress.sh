@@ -3,7 +3,7 @@
 #   tests/regress.sh          show differences
 #   tests/regress.sh --accept record the current outlines as the new baseline
 cd "$(dirname "$0")/.."
-names="report paper invoice toc tables resume wordlike sample rl charts word2 ocr scan long"
+names="report paper invoice toc tables resume wordlike sample rl charts word2 ocr scan long sales"
 node tests/run.js $names --quiet >/tmp/regress.log 2>&1 || { cat /tmp/regress.log; exit 1; }
 grep -E "^==" /tmp/regress.log | sed 's/{.*//'
 status=0

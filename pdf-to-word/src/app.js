@@ -21,12 +21,10 @@
 
   const storeGet = (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } };
   const storeSet = (k, v) => { try { localStorage.setItem(k, v); } catch (e) { /* private mode */ } };
-  const fmtBytes = (n) => (n > 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB');
   const fmtN = (n) => n.toLocaleString('en-US');
   const tick = () => new Promise((r) => setTimeout(r, 0));
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   const ease = (u) => u * u * (3 - 2 * u);
-  const caseNo = (s) => { let h = 7; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % 9973; return 'P2W-' + String(h).padStart(4, '0'); };
 
   let toastTimer = 0;
   function toast(msg, ms = 3600) {
@@ -57,24 +55,6 @@
   readColors();
 
   /* ---------- flight log ---------- */
-
-  let logT0 = performance.now();
-  function stamp() {
-    const ms = Math.max(0, performance.now() - logT0);
-    const m = Math.floor(ms / 60000), s = Math.floor(ms / 1000) % 60, c = Math.floor(ms % 1000);
-    return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0') + '.' + String(c).padStart(3, '0');
-  }
-  function log(who, msg, cls = '') {
-    const li = document.createElement('li');
-    if (cls) li.className = cls;
-    const t = document.createElement('span'); t.className = 't'; t.textContent = stamp();
-    const w = document.createElement('span'); w.className = 'w' + (who === 'CVR' ? ' cvr' : ''); w.textContent = who;
-    const m = document.createElement('span'); m.className = 'm'; m.textContent = msg;
-    li.append(t, w, m);
-    $('#logList').appendChild(li);
-    const box = $('#logBox');
-    box.scrollTop = box.scrollHeight;
-  }
 
   /* ---------- file in ---------- */
 
@@ -143,7 +123,6 @@
     state.urls = [];
     if (state.session && state.session.pdf && state.session.pdf.destroy) { try { state.session.pdf.destroy(); } catch (e) { /* already gone */ } }
     state.session = null; state.result = null; state.hover = null;
-    $('#logList').textContent = '';
     $('#notes').textContent = '';
     $('#paper').textContent = '';
   }
@@ -156,16 +135,13 @@
     resetBench();
     state.name = name;
     state.sample = !!opts.sample;
-    logT0 = performance.now();
-    $('#trayFile').textContent = 'Receiving ' + name;
+    $('#trayFile').textContent = 'Reading ' + name;
     setStage('read', '');
-    log('FDR', 'Wreckage received: ' + name + ' (' + fmtBytes(bytes.length) + ').');
     await tick();
     let session = null;
     try {
       session = await openPdf(bytes, (stage, i, n) => {
         if (job !== state.job) return;
-        if (stage === 'open') log('FDR', 'Opened. ' + n + (n === 1 ? ' page.' : ' pages.'));
         if (stage === 'read') { setStage('read', i + ' / ' + n); $('#barFill').style.width = (8 + 50 * i / n) + '%'; }
       });
       if (job !== state.job) { try { session.pdf.destroy(); } catch (e) { /* superseded */ } return; }
@@ -194,29 +170,13 @@
 
   /* ---------- results ---------- */
 
-  function flavor(r) {
-    const lines = [
-      'No neural network was consulted. One wrote the code.',
-      'Passengers lost: ' + r.ledger.lost + '. Please remain seated.',
-      'Formatting survived the crash. Brace for editing.',
-      'Black box located. Contents readable.',
-    ];
-    let h = 0;
-    for (const c of state.name) h = (h * 7 + c.charCodeAt(0)) % 97;
-    return lines[h % lines.length];
-  }
-
   function showResult(mode) {
     const first = mode === 'user';
     const r = state.result, s = r.stats;
     $('#bench').hidden = false;
-    $('#caseNo').textContent = '';
-    const no = document.createElement('b'); no.textContent = caseNo(state.name);
-    $('#caseNo').append(no);
     $('#benchTag').hidden = !state.sample;
     $('#caseName').textContent = state.name;
     $('#caseMeta').textContent = s.pages + (s.pages === 1 ? ' page' : ' pages') + ' · ' + fmtN(s.fragments) + ' fragments · recovered in ' + ((r.ms + (state.session.readMs || 0)) / 1000).toFixed(1) + ' s';
-    writeLog(first);
     renderTiles(s);
     renderLedger(r.ledger);
     renderNotes();
@@ -228,26 +188,6 @@
       else { setScrub(1); if (mode === 'initial') state.pendingPlay = true; }
     });
     if (first) setTimeout(() => $('#bench').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }), 60);
-  }
-
-  function writeLog(first) {
-    const r = state.result, s = r.stats, doc = r.doc;
-    const tables = doc.blocks.filter((b) => b.type === 'table');
-    const ruled = tables.filter((t) => t.ruled).length;
-    log('FDR', fmtN(s.fragments) + ' text fragments read, ' + s.pictures + (s.pictures === 1 ? ' picture' : ' pictures') + ', ' + s.links + (s.links === 1 ? ' link.' : ' links.'));
-    if (doc.scannedPages.length) log('FDR', 'Pages ' + doc.scannedPages.join(', ') + ' hold no text. Set as pictures.', 'bad');
-    if (s.columns > 1) log('FDR', 'Columns found, up to ' + s.columns + ' across. Reading order restored.', 'ok');
-    log('FDR', s.paragraphs + ' paragraphs rebuilt from ' + fmtN(s.lines) + ' lines.');
-    if (s.headings) log('FDR', s.headings + (s.headings === 1 ? ' heading' : ' headings') + ' found. Styles applied.');
-    if (s.listItems) log('FDR', s.listItems + ' list items turned into real Word lists.');
-    if (tables.length) log('FDR', tables.length + (tables.length === 1 ? ' table' : ' tables') + ' found (' + ruled + ' ruled, ' + (tables.length - ruled) + ' from alignment).', 'ok');
-    if (s.headers) log('FDR', 'Repeated header and footer lifted out of the pages. Page numbers are fields.');
-    if (s.rotated) log('FDR', s.rotated + ' pieces of sideways text set aside.', 'bad');
-    const L = r.ledger;
-    if (L.charsIn === 0) log('FDR', 'Nothing to count. This PDF holds no text.', 'bad');
-    else if (L.lost === 0) log('FDR', 'Ledger balanced: ' + fmtN(L.charsIn) + ' letters and digits in, ' + fmtN(L.charsOut) + ' out.', 'ok');
-    else log('FDR', L.lost + ' letters or digits could not be placed.', 'bad');
-    log('CVR', first ? flavor(r) : 'Settings changed. Rebuilt in ' + Math.round(r.ms) + ' ms.');
   }
 
   function renderTiles(s) {
@@ -276,7 +216,7 @@
     }
     const v = $('#verdict');
     if (L.charsIn === 0) { v.className = 'verdict bad'; v.textContent = 'No text to count.'; }
-    else if (!L.lost) { v.className = 'verdict good'; v.textContent = 'Ledger balanced. No passengers lost.' + (L.rotated ? ' ' + L.rotated + ' characters of sideways text were set aside.' : ''); }
+    else if (!L.lost) { v.className = 'verdict good'; v.textContent = 'Every character made it across.' + (L.rotated ? ' ' + L.rotated + ' characters of sideways text were set aside.' : ''); }
     else { v.className = 'verdict bad'; v.textContent = L.lost + ' letters or digits could not be placed.'; }
   }
 
@@ -291,9 +231,9 @@
       d.append(b, p); box.appendChild(d);
     };
     const n = state.session.numPages;
-    if (doc.scannedPages.length === n) add('Scan', 'All ' + n + (n === 1 ? ' page is a scan.' : ' pages are scans.') + ' Reading pictures of text needs OCR, which is the one thing this tool refuses to do. Each page is placed in the Word file as a picture.');
+    if (doc.scannedPages.length === n) add('Scan', 'All ' + n + (n === 1 ? ' page is a scan.' : ' pages are scans.') + ' There is no text to read, so each page is placed in the Word file as a picture.');
     else if (doc.scannedPages.length) add('Scan', 'Page' + (doc.scannedPages.length > 1 ? 's ' : ' ') + doc.scannedPages.join(', ') + ' hold no text, so ' + (doc.scannedPages.length > 1 ? 'they were' : 'it was') + ' placed as ' + (doc.scannedPages.length > 1 ? 'pictures.' : 'a picture.'));
-    if (state.result.ledger.rotated) add('Sideways', state.result.ledger.rotated + ' characters of rotated text were left out. They are listed in the log, not in the Word file.');
+    if (state.result.ledger.rotated) add('Sideways', state.result.ledger.rotated + ' characters of rotated text were left out. They are not in the Word file.');
     for (const p of state.session.pages) for (const w of p.warnings) add('Page ' + p.num, w);
   }
 
@@ -475,18 +415,20 @@
   function updateScrubLabel() {
     const s = state.s;
     const name = (STAGES.find((x) => s < x[0]) || STAGES[STAGES.length - 1])[1];
-    if ($('#scrubOut').textContent !== name) $('#scrubOut').textContent = name;
+    const out = $('#scrubOut');
+    if (out && out.textContent !== name) out.textContent = name;
   }
   function setScrub(s) {
     state.s = clamp(s, 0, 1);
-    $('#scrub').value = String(Math.round(state.s * 1000));
+    const sc = $('#scrub');
+    if (sc) sc.value = String(Math.round(state.s * 1000));
     requestDraw();
   }
   function cancelPlay() { cancelAnimationFrame(state.raf); state.raf = 0; }
   function play() {
     cancelPlay();
     if (reduceMotion) { setScrub(1); return; }
-    const t0 = performance.now(), dur = 5200;
+    const t0 = performance.now(), dur = 2400;
     setScrub(0);
     const step = (now) => {
       const u = clamp((now - t0) / dur, 0, 1);
@@ -563,8 +505,6 @@
         if (token !== state.rebuildToken) return;
         state.result = r; state.hover = null;
         state.page = Math.min(state.page, r.stats.pages);
-        logT0 = logT0 || performance.now();
-        writeLog(false);
         renderTiles(r.stats); renderLedger(r.ledger); renderNotes(); renderPaper(); await renderPage();
         $('#rebuildNote').textContent = 'Rebuilt in ' + Math.round(r.ms) + ' ms';
       } catch (e) { $('#rebuildNote').textContent = 'Rebuild failed: ' + e.message; }
@@ -603,8 +543,6 @@
   $('#dlBtn').addEventListener('click', save);
   $('#prevPg').addEventListener('click', () => { if (state.page > 1) { state.page--; state.hover = null; renderPage(); } });
   $('#nextPg').addEventListener('click', () => { if (state.result && state.page < state.result.stats.pages) { state.page++; state.hover = null; renderPage(); } });
-  $('#scrub').addEventListener('input', (e) => { cancelPlay(); setScrub(+e.target.value / 1000); });
-  $('#rewindBtn').addEventListener('click', play);
   $$('.chip[data-layer]').forEach((b) => b.addEventListener('click', () => {
     const k = b.dataset.layer;
     state.layers[k] = !state.layers[k];

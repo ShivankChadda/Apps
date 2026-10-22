@@ -65,23 +65,56 @@ const Layout = (() => {
       r.segs = makeSegments(r);
     }
     rows.sort((a, b) => a.base - b.base);
+    splitAlignedGaps(rows);
     return rows;
   }
 
-  function makeSegments(row) {
+  /* Cell padding can leave a column gutter narrower than the word-space limit below. A gap that stays empty at the
+     same x for many rows in a row is a gutter, so the segments are cut there. Prose never lines gaps up like that. */
+  function splitAlignedGaps(rows) {
+    if (rows.length < 8) return;
+    const fine = rows.map((r) => {
+      const segs = [];
+      let cur = null;
+      for (const f of r.frags) {
+        if (cur && f.x0 - cur.x1 <= Math.max(0.3 * Math.max(f.fs, cur.fs), 2.5)) { cur.x1 = Math.max(cur.x1, f.x1); continue; }
+        cur = { x0: f.x0, x1: f.x1 }; segs.push(cur);
+      }
+      return { segs };
+    });
+    const strips = findStrips(fine, Math.max(4.5, 0.45 * median(rows.map((r) => r.fs)))).filter((st) => st.last - st.start + 1 >= 8);
+    const cuts = strips.filter((st) => {
+      let both = 0;
+      for (let i = st.start; i <= st.last; i++) {
+        const sg = fine[i].segs;
+        if (sg.some((g) => g.x1 <= st.x0 + 1) && sg.some((g) => g.x0 >= st.x1 - 1)) both++;
+      }
+      return both >= Math.max(5, 0.3 * (st.last - st.start + 1));
+    });
+    if (!cuts.length) return;
+    rows.forEach((r, i) => {
+      const mine = cuts.filter((st) => i >= st.start && i <= st.last);
+      if (!mine.length) return;
+      r.segs = makeSegments(r, mine);
+      r.cutX = mine.map((st) => [st.x0, st.x1]);
+    });
+  }
+
+  function makeSegments(row, cuts) {
     const segs = [];
     let cur = null;
     for (const f of row.frags) {
       if (cur) {
         const gap = f.x0 - cur.x1;
         const G = Math.max(0.85 * Math.max(f.fs, cur.fs), 5);
-        if (gap <= G) { cur.frags.push(f); cur.x1 = Math.max(cur.x1, f.x1); cur.fs = Math.max(cur.fs, f.fs); continue; }
+        const cut = cuts && cuts.some((st) => cur.x1 <= st.x0 + 1 && f.x0 >= st.x1 - 1);
+        if (gap <= G && !cut) { cur.frags.push(f); cur.x1 = Math.max(cur.x1, f.x1); cur.fs = Math.max(cur.fs, f.fs); continue; }
       }
       cur = { frags: [f], x0: f.x0, x1: f.x1, fs: f.fs, row };
       segs.push(cur);
     }
     // a justified line with few long words has wide gaps everywhere: keep it as one piece
-    if (segs.length >= 3) {
+    if (segs.length >= 3 && !cuts) {
       const words = segs.map((s) => s.frags.map((f) => f.s).join(' ').trim());
       const alpha = words.every((w) => /^[^\s\d]{3,}$/.test(w));
       if (alpha) {
@@ -89,7 +122,8 @@ const Layout = (() => {
         for (let i = 1; i < segs.length; i++) gaps.push(segs[i].x0 - segs[i - 1].x1);
         const mean = sum(gaps) / gaps.length;
         const sd = Math.sqrt(sum(gaps.map((g) => (g - mean) * (g - mean))) / gaps.length);
-        if (mean > 0 && sd / mean < 0.14) {
+        const fs = Math.max(...segs.map((x) => x.fs));
+        if (mean > 0 && sd / mean < 0.14 && mean < 5 * fs) {         // stretched word spaces, not column gaps
           const one = { frags: segs.flatMap((s) => s.frags), x0: segs[0].x0, x1: segs[segs.length - 1].x1, fs: Math.max(...segs.map((s) => s.fs)), row };
           segs.length = 0; segs.push(one);
         }
@@ -151,6 +185,15 @@ const Layout = (() => {
     if (rows.length < 3) return [];
     const minW = Math.max(7, 0.6 * fsBody);
     const raw = findStrips(rows, minW).filter((s) => s.last - s.start + 1 >= 3);
+    // gutters proven by splitAlignedGaps count even when narrower than minW
+    if (rows.some((r) => r.cutX)) {
+      for (const s of findStrips(rows, 4.5)) {
+        if (s.last - s.start + 1 < 3 || raw.some((q) => q.start === s.start && q.last === s.last && Math.abs(q.x0 - s.x0) < 1 && Math.abs(q.x1 - s.x1) < 1)) continue;
+        let inside = 0;
+        for (let i = s.start; i <= s.last; i++) if (rows[i].cutX && rows[i].cutX.some((c) => s.x0 >= c[0] - 1 && s.x1 <= c[1] + 1)) inside++;
+        if (inside >= 0.8 * (s.last - s.start + 1)) raw.push(s);
+      }
+    }
     const good = [];
     for (const s of raw) {
       let left = 0, right = 0, leftChars = 0, rightChars = 0;
@@ -515,13 +558,24 @@ const Layout = (() => {
 
   /* Cut a loose-table band at large vertical gaps and drop heading-like rows at its edges. */
   /* Returns the list of row ranges that should each be re-examined as a table. */
+  const vOverlap = (a, b) => Math.min(a.bot, b.bot) - Math.max(a.top, b.top);
+
   function refineTableBand(band, rows) {
     const idx = [];
     for (let i = band.start; i <= band.last; i++) if (!rows[i].barrier) idx.push(i);
     const colOf = (seg) => band.cols.findIndex((c) => seg.cx >= c.lo && seg.cx < c.hi);
     const nCols = (i) => new Set(rows[i].segs.map(colOf)).size;
-    const aligned = idx.filter((i) => nCols(i) >= 2).length / Math.max(1, idx.length);
-    band.aligned = aligned >= 0.5;
+    // wrapped cell text (a second line holding only some columns) does not count against a table
+    let considered = 0, multi = 0, prevCols = null;
+    const contRow = [];
+    idx.forEach((i, k) => {
+      const cols = new Set(rows[i].segs.map(colOf));
+      const pitch = k ? rows[i].base - rows[idx[k - 1]].base : 1e9;
+      const cont = !!(prevCols && cols.size < prevCols.size && [...cols].every((c) => prevCols.has(c)) && pitch < 1.55 * rows[i].fs);
+      contRow.push(cont);
+      if (!cont) { considered++; if (cols.size >= 2) multi++; prevCols = cols; }
+    });
+    band.aligned = multi >= 2 && multi / Math.max(1, considered) >= 0.5;
     if (!band.aligned) return { runs: [[idx[0], idx[idx.length - 1]]], cut: false };
     const pitches = [null];
     for (let k = 1; k < idx.length; k++) pitches.push(rows[idx[k]].base - rows[idx[k - 1]].base);
@@ -534,7 +588,14 @@ const Layout = (() => {
       const txt = segs.map((g) => g.frags.map((f) => f.s).join(' ').trim());
       return txt.slice(1).every((t) => /^[a-z]/.test(t));
     };
-    const apart = idx.map((i, k) => prose(i) || (nCols(i) < 2 && (k === 0 || k === idx.length - 1 || pitches[k] > 1.3 * med || rows[i].fs > 1.1 * bodyFs || rows[i].frags.every((f) => f.bold))));
+    // everything above the first multi-column row, and below the last, is not part of the table
+    const firstMulti = idx.findIndex((i) => nCols(i) >= 2 && !prose(i));
+    let lastMulti = -1;
+    idx.forEach((i, k) => { if (nCols(i) >= 2 && !prose(i)) lastMulti = k; });
+    while (lastMulti + 1 < idx.length && contRow[lastMulti + 1]) lastMulti++;      // the wrapped tail of the last row
+    // a one-line row stacked on the first row (a header cell that wraps while its neighbours sit centred) belongs to it
+    const lead = (k) => k < firstMulti && vOverlap(rows[idx[k]], rows[idx[firstMulti]]) >= 0.45 * rows[idx[k]].fs;
+    const apart = idx.map((i, k) => (k < firstMulti && !lead(k)) || k > lastMulti || (!lead(k) && !contRow[k] && (prose(i) || (nCols(i) < 2 && (pitches[k] > 1.3 * med || rows[i].fs > 1.1 * bodyFs || rows[i].frags.every((f) => f.bold))))));
     const runs = [];
     let cur = null;
     idx.forEach((i, k) => {
@@ -756,7 +817,9 @@ const Layout = (() => {
           const a = colsOf(it), f = colsOf(first);
           const sub = a.size < f.size && [...a].every((k) => f.has(k));
           const ruleBetween = hr.some((r) => r.y > items[i - 1].row.base && r.y < it.row.top + 1 && r.x0 < band.x1 && r.x1 > band.x0);
-          join = sub && pitch < 1.55 * it.row.fs && !ruleBetween;
+          const group = trows[trows.length - 1];
+          const stacked = vOverlap({ top: Math.min(...group.map((g) => g.row.top)), bot: Math.max(...group.map((g) => g.row.bot)) }, it.row) >= 0.45 * it.row.fs;
+          join = (stacked || (sub && pitch < 1.55 * it.row.fs)) && !ruleBetween;
         }
         if (join) trows[trows.length - 1].push(it); else trows.push([it]);
       });

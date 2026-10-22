@@ -9,20 +9,22 @@ IMG pg1 182x111
 P [center] pg1 L0/0 b14 9pt “Figure 3. Share of trips by mode”
 TABLE pg2 1x1 ruled cells=1
    [r0-1 c0-1 #fff4e8 center] (left) A shaded call-out box with a border, which must stay text and must not be taken for a chart.
-P [left] pg2 L0/0 b14 10pt bold “Mode Trips Share”
-TABLE pg2 5x3 loose cells=15
-   [r0-1 c0-1] (left) Rail
-   [r0-1 c1-2] (center) 12,400
-   [r0-1 c2-3] (right) 35%
-   [r1-2 c0-1 #eef1f4 center] (left) Bus
-   [r1-2 c1-2 #eef1f4 center] (left) 9,600
-   [r1-2 c2-3 #eef1f4 center] (right) 27%
-   [r2-3 c0-1 center] (left) Tram
-   [r2-3 c1-2 center] (left) 8,500
-   [r2-3 c2-3 center] (right) 24%
-   [r3-4 c0-1 #eef1f4 center] (left) Other
-   [r3-4 c1-2 #eef1f4 center] (left) 4,900
-   [r3-4 c2-3 #eef1f4 center] (right) 14%
-   [r4-5 c0-1] (left) Total
-   [r4-5 c1-2] (center) 35,400
-   [r4-5 c2-3] (right) 100%
+TABLE pg2 6x3 loose cells=18
+   [r0-1 c0-1 #222233] (left) Mode
+   [r0-1 c1-2 #222233] (left) Trips
+   [r0-1 c2-3 #222233] (right) Share
+   [r1-2 c0-1 center] (left) Rail
+   [r1-2 c1-2 center] (left) 12,400
+   [r1-2 c2-3 center] (left) 35%
+   [r2-3 c0-1 #eef1f4 center] (left) Bus
+   [r2-3 c1-2 #eef1f4 center] (left) 9,600
+   [r2-3 c2-3 #eef1f4 center] (left) 27%
+   [r3-4 c0-1 center] (left) Tram
+   [r3-4 c1-2 center] (left) 8,500
+   [r3-4 c2-3 center] (left) 24%
+   [r4-5 c0-1 #eef1f4 center] (left) Other
+   [r4-5 c1-2 #eef1f4 center] (left) 4,900
+   [r4-5 c2-3 #eef1f4 center] (left) 14%
+   [r5-6 c0-1] (left) Total
+   [r5-6 c1-2] (left) 35,400
+   [r5-6 c2-3] (right) 100%

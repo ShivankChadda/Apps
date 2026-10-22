@@ -1,0 +1,334 @@
+P [center] pg1 L0/0 b0 14pt “Fresh Produce Traders Private Limited”
+P [center] pg1 L0/0 b6 11pt “Sales by Item”
+P [center] pg1 L0/0 b4 8pt “From 01/06/2025 To 30/09/2025”
+TABLE pg1 66x5 loose cells=330
+   [r0-1 c0-1 #ececec] (left) Item Name
+   [r0-1 c1-2 #ececec] (right) Quantity Sold
+   [r0-1 c2-3 #ececec] (right) Amount
+   [r0-1 c3-4 #ececec] (right) Average Price
+   [r0-1 c4-5 #ececec] (left) Created ⏎ Time
+   [r1-2 c0-1] (left) Apple
+   [r1-2 c1-2] (right) 2,172.98
+   [r1-2 c2-3] (right) ₹1,30,943.77
+   [r1-2 c3-4] (right) ₹60.26
+   [r1-2 c4-5 center] (left) 10/01/2025 ⏎ 08:50 AM
+   [r2-3 c0-1] (left) Beans
+   [r2-3 c1-2] (right) 6,469.46
+   [r2-3 c2-3] (right) ₹1,66,459.21
+   [r2-3 c3-4] (right) ₹25.73
+   [r2-3 c4-5 center] (left) 06/10/2025 ⏎ 03:21 AM
+   [r3-4 c0-1] (left) Carrot
+   [r3-4 c1-2] (right) 4,675.08
+   [r3-4 c2-3] (right) ₹6,23,468.67
+   [r3-4 c3-4] (right) ₹133.36
+   [r3-4 c4-5 center] (left) 11/06/2025 ⏎ 08:23 AM
+   [r4-5 c0-1] (left) Dates
+   [r4-5 c1-2] (right) 6,605.40
+   [r4-5 c2-3] (right) ₹10,54,023.68
+   [r4-5 c3-4] (right) ₹159.57
+   [r4-5 c4-5 center] (left) 02/04/2025 ⏎ 02:34 AM
+   [r5-6 c0-1] (left) Eggplant
+   [r5-6 c1-2] (right) 3,263.30
+   [r5-6 c2-3] (right) ₹6,19,406.97
+   [r5-6 c3-4] (right) ₹189.81
+   [r5-6 c4-5 center] (left) 23/09/2025 ⏎ 11:02 AM
+   [r6-7 c0-1] (left) Fig
+   [r6-7 c1-2] (right) 6,989.84
+   [r6-7 c2-3] (right) ₹79,474.48
+   [r6-7 c3-4] (right) ₹11.37
+   [r6-7 c4-5 center] (left) 07/11/2025 ⏎ 02:16 PM
+   [r7-8 c0-1] (left) Garlic
+   [r7-8 c1-2] (right) 6,767.23
+   [r7-8 c2-3] (right) ₹13,03,300.83
+   [r7-8 c3-4] (right) ₹192.59
+   [r7-8 c4-5 center] (left) 21/02/2025 ⏎ 06:35 PM
+   [r8-9 c0-1] (left) Ginger
+   [r8-9 c1-2] (right) 3,724.34
+   [r8-9 c2-3] (right) ₹2,07,706.44
+   [r8-9 c3-4] (right) ₹55.77
+   [r8-9 c4-5 center] (left) 18/06/2025 ⏎ 01:45 AM
+   [r9-10 c0-1] (left) Herbs
+   [r9-10 c1-2] (right) 330.14
+   [r9-10 c2-3] (right) ₹47,348.68
+   [r9-10 c3-4] (right) ₹143.42
+   [r9-10 c4-5 center] (left) 12/07/2025 ⏎ 04:59 AM
+   [r10-11 c0-1] (left) Iceberg lettuce
+   [r10-11 c1-2] (right) 1,489.53
+   [r10-11 c2-3] (right) ₹19,453.26
+   [r10-11 c3-4] (right) ₹13.06
+   [r10-11 c4-5 center] (left) 15/04/2025 ⏎ 04:43 PM
+   [r11-12 c0-1] (left) Jackfruit
+   [r11-12 c1-2] (right) 1,832.27
+   [r11-12 c2-3] (right) ₹2,07,816.06
+   [r11-12 c3-4] (right) ₹113.42
+   [r11-12 c4-5 center] (left) 06/08/2025 ⏎ 05:08 AM
+   [r12-13 c0-1] (left) Kale
+   [r12-13 c1-2] (right) 6,293.21
+   [r12-13 c2-3] (right) ₹12,66,697.31
+   [r12-13 c3-4] (right) ₹201.28
+   [r12-13 c4-5 center] (left) 01/04/2025 ⏎ 05:47 AM
+   [r13-14 c0-1] (left) Lemon
+   [r13-14 c1-2] (right) 2,881.44
+   [r13-14 c2-3] (right) ₹5,76,576.14
+   [r13-14 c3-4] (right) ₹200.10
+   [r13-14 c4-5 center] (left) 16/09/2025 ⏎ 10:02 PM
+   [r14-15 c0-1] (left) Mango
+   [r14-15 c1-2] (right) 3,445.27
+   [r14-15 c2-3] (right) ₹1,29,783.32
+   [r14-15 c3-4] (right) ₹37.67
+   [r14-15 c4-5 center] (left) 11/11/2025 ⏎ 06:57 PM
+   [r15-16 c0-1] (left) Napa cabbage
+   [r15-16 c1-2] (right) 8,216.65
+   [r15-16 c2-3] (right) ₹4,16,091.16
+   [r15-16 c3-4] (right) ₹50.64
+   [r15-16 c4-5 center] (left) 17/06/2025 ⏎ 02:41 AM
+   [r16-17 c0-1] (left) Okra
+   [r16-17 c1-2] (right) 2,131.90
+   [r16-17 c2-3] (right) ₹2,33,592.28
+   [r16-17 c3-4] (right) ₹109.57
+   [r16-17 c4-5] (left) 19/06/2025 ⏎ 07:54 PM
+   [r17-18 c0-1] (left) Papaya
+   [r17-18 c1-2] (right) 4,984.33
+   [r17-18 c2-3] (right) ₹1,22,764.05
+   [r17-18 c3-4] (right) ₹24.63
+   [r17-18 c4-5 center] (left) 22/09/2025 ⏎ 09:10 AM
+   [r18-19 c0-1] (left) Quince
+   [r18-19 c1-2] (right) 3,251.53
+   [r18-19 c2-3] (right) ₹61,063.73
+   [r18-19 c3-4] (right) ₹18.78
+   [r18-19 c4-5 center] (left) 01/01/2025 ⏎ 02:34 PM
+   [r19-20 c0-1] (left) Radish
+   [r19-20 c1-2] (right) 3,891.18
+   [r19-20 c2-3] (right) ₹3,19,426.97
+   [r19-20 c3-4] (right) ₹82.09
+   [r19-20 c4-5 center] (left) 26/06/2025 ⏎ 10:45 AM
+   [r20-21 c0-1] (left) Spinach
+   [r20-21 c1-2] (right) 1,363.40
+   [r20-21 c2-3] (right) ₹1,84,399.85
+   [r20-21 c3-4] (right) ₹135.25
+   [r20-21 c4-5 center] (left) 14/05/2025 ⏎ 02:19 PM
+   [r21-22 c0-1] (left) Tomato
+   [r21-22 c1-2] (right) 4,523.55
+   [r21-22 c2-3] (right) ₹3,95,448.74
+   [r21-22 c3-4] (right) ₹87.42
+   [r21-22 c4-5 center] (left) 18/08/2025 ⏎ 03:29 AM
+   [r22-23 c0-1] (left) Ugli fruit
+   [r22-23 c1-2] (right) 5,749.29
+   [r22-23 c2-3] (right) ₹8,02,600.88
+   [r22-23 c3-4] (right) ₹139.60
+   [r22-23 c4-5 center] (left) 20/10/2025 ⏎ 09:15 AM
+   [r23-24 c0-1] (left) Vanilla pods
+   [r23-24 c1-2] (right) 6,463.84
+   [r23-24 c2-3] (right) ₹8,38,295.41
+   [r23-24 c3-4] (right) ₹129.69
+   [r23-24 c4-5 center] (left) 16/04/2025 ⏎ 08:04 PM
+   [r24-25 c0-1] (left) Watermelon
+   [r24-25 c1-2] (right) 1,261.40
+   [r24-25 c2-3] (right) ₹1,89,487.51
+   [r24-25 c3-4] (right) ₹150.22
+   [r24-25 c4-5 center] (left) 27/10/2025 ⏎ 02:58 PM
+   [r25-26 c0-1] (left) Yam
+   [r25-26 c1-2] (right) 2,043.01
+   [r25-26 c2-3] (right) ₹1,75,780.58
+   [r25-26 c3-4] (right) ₹86.04
+   [r25-26 c4-5 center] (left) 08/12/2025 ⏎ 02:30 AM
+   [r26-27 c0-1] (left) Zucchini
+   [r26-27 c1-2] (right) 5,888.59
+   [r26-27 c2-3] (right) ₹10,79,790.75
+   [r26-27 c3-4] (right) ₹183.37
+   [r26-27 c4-5 center] (left) 17/02/2025 ⏎ 09:03 AM
+   [r27-28 c0-1] (left) Apple 2
+   [r27-28 c1-2] (right) 8,955.37
+   [r27-28 c2-3] (right) ₹10,03,001.44
+   [r27-28 c3-4] (right) ₹112.00
+   [r27-28 c4-5 center] (left) 04/06/2025 ⏎ 01:09 PM
+   [r28-29 c0-1] (left) Beans 2
+   [r28-29 c1-2] (right) 1,380.11
+   [r28-29 c2-3] (right) ₹63,126.23
+   [r28-29 c3-4] (right) ₹45.74
+   [r28-29 c4-5 center] (left) 08/04/2025 ⏎ 02:40 PM
+   [r29-30 c0-1] (left) Carrot 2
+   [r29-30 c1-2] (right) 4,342.12
+   [r29-30 c2-3] (right) ₹1,75,725.60
+   [r29-30 c3-4] (right) ₹40.47
+   [r29-30 c4-5 center] (left) 10/09/2025 ⏎ 11:43 AM
+   [r30-31 c0-1] (left) Dates 2
+   [r30-31 c1-2] (right) 5,884.20
+   [r30-31 c2-3] (right) ₹10,04,374.10
+   [r30-31 c3-4] (right) ₹170.69
+   [r30-31 c4-5 center] (left) 06/01/2025 ⏎ 01:39 PM
+   [r31-32 c0-1] (left) Eggplant 2
+   [r31-32 c1-2] (right) 4,634.45
+   [r31-32 c2-3] (right) ₹5,79,677.01
+   [r31-32 c3-4] (right) ₹125.08
+   [r31-32 c4-5 center] (left) 22/11/2025 ⏎ 07:23 PM
+   [r32-33 c0-1] (left) Fig 2
+   [r32-33 c1-2] (right) 6,950.68
+   [r32-33 c2-3] (right) ₹10,06,945.01
+   [r32-33 c3-4] (right) ₹144.87
+   [r32-33 c4-5 center] (left) 04/07/2025 ⏎ 11:03 AM
+   [r33-34 c0-1] (left) Garlic 2
+   [r33-34 c1-2] (right) 6,248.93
+   [r33-34 c2-3] (right) ₹11,48,178.40
+   [r33-34 c3-4] (right) ₹183.74
+   [r33-34 c4-5 center] (left) 25/05/2025 ⏎ 01:40 PM
+   [r34-35 c0-1] (left) Ginger 2
+   [r34-35 c1-2] (right) 8,473.88
+   [r34-35 c2-3] (right) ₹16,36,984.14
+   [r34-35 c3-4] (right) ₹193.18
+   [r34-35 c4-5] (left) 13/03/2025 ⏎ 04:29 PM
+   [r35-36 c0-1] (left) Herbs 2
+   [r35-36 c1-2] (right) 3,459.23
+   [r35-36 c2-3] (right) ₹3,40,664.97
+   [r35-36 c3-4] (right) ₹98.48
+   [r35-36 c4-5 center] (left) 13/09/2025 ⏎ 07:16 PM
+   [r36-37 c0-1] (left) Iceberg lettuce 2
+   [r36-37 c1-2] (right) 5,778.61
+   [r36-37 c2-3] (right) ₹3,44,694.09
+   [r36-37 c3-4] (right) ₹59.65
+   [r36-37 c4-5 center] (left) 28/01/2025 ⏎ 07:48 AM
+   [r37-38 c0-1] (left) Jackfruit 2
+   [r37-38 c1-2] (right) 7,241.91
+   [r37-38 c2-3] (right) ₹1,45,634.81
+   [r37-38 c3-4] (right) ₹20.11
+   [r37-38 c4-5 center] (left) 27/09/2025 ⏎ 11:03 AM
+   [r38-39 c0-1] (left) Kale 2
+   [r38-39 c1-2] (right) 4,138.51
+   [r38-39 c2-3] (right) ₹8,39,082.90
+   [r38-39 c3-4] (right) ₹202.75
+   [r38-39 c4-5 center] (left) 08/05/2025 ⏎ 07:36 PM
+   [r39-40 c0-1] (left) Lemon 2
+   [r39-40 c1-2] (right) 7,922.32
+   [r39-40 c2-3] (right) ₹1,85,382.29
+   [r39-40 c3-4] (right) ₹23.40
+   [r39-40 c4-5 center] (left) 14/12/2025 ⏎ 11:14 PM
+   [r40-41 c0-1] (left) Mango 2
+   [r40-41 c1-2] (right) 5,126.51
+   [r40-41 c2-3] (right) ₹9,09,135.28
+   [r40-41 c3-4] (right) ₹177.34
+   [r40-41 c4-5 center] (left) 23/06/2025 ⏎ 09:35 AM
+   [r41-42 c0-1] (left) Napa cabbage 2
+   [r41-42 c1-2] (right) 4,842.21
+   [r41-42 c2-3] (right) ₹8,34,603.32
+   [r41-42 c3-4] (right) ₹172.36
+   [r41-42 c4-5 center] (left) 22/06/2025 ⏎ 03:48 AM
+   [r42-43 c0-1] (left) Okra 2
+   [r42-43 c1-2] (right) 8,393.58
+   [r42-43 c2-3] (right) ₹13,92,914.60
+   [r42-43 c3-4] (right) ₹165.95
+   [r42-43 c4-5 center] (left) 12/09/2025 ⏎ 01:53 PM
+   [r43-44 c0-1] (left) Papaya 2
+   [r43-44 c1-2] (right) 8,345.79
+   [r43-44 c2-3] (right) ₹8,32,242.18
+   [r43-44 c3-4] (right) ₹99.72
+   [r43-44 c4-5 center] (left) 20/08/2025 ⏎ 10:18 PM
+   [r44-45 c0-1] (left) Quince 2
+   [r44-45 c1-2] (right) 1,316.53
+   [r44-45 c2-3] (right) ₹13,415.44
+   [r44-45 c3-4] (right) ₹10.19
+   [r44-45 c4-5 center] (left) 04/05/2025 ⏎ 07:50 PM
+   [r45-46 c0-1] (left) Radish 2
+   [r45-46 c1-2] (right) 7,948.31
+   [r45-46 c2-3] (right) ₹7,17,573.43
+   [r45-46 c3-4] (right) ₹90.28
+   [r45-46 c4-5 center] (left) 10/04/2025 ⏎ 09:17 AM
+   [r46-47 c0-1] (left) Spinach 2
+   [r46-47 c1-2] (right) 511.24
+   [r46-47 c2-3] (right) ₹21,840.17
+   [r46-47 c3-4] (right) ₹42.72
+   [r46-47 c4-5 center] (left) 10/05/2025 ⏎ 09:41 PM
+   [r47-48 c0-1] (left) Tomato 2
+   [r47-48 c1-2] (right) 5,923.45
+   [r47-48 c2-3] (right) ₹11,78,292.67
+   [r47-48 c3-4] (right) ₹198.92
+   [r47-48 c4-5 center] (left) 06/04/2025 ⏎ 03:41 AM
+   [r48-49 c0-1] (left) Ugli fruit 2
+   [r48-49 c1-2] (right) 37.00
+   [r48-49 c2-3] (right) ₹3,441.74
+   [r48-49 c3-4] (right) ₹93.02
+   [r48-49 c4-5 center] (left) 18/02/2025 ⏎ 11:28 AM
+   [r49-50 c0-1] (left) Vanilla pods 2
+   [r49-50 c1-2] (right) 7,534.95
+   [r49-50 c2-3] (right) ₹10,71,319.19
+   [r49-50 c3-4] (right) ₹142.18
+   [r49-50 c4-5 center] (left) 23/01/2025 ⏎ 08:53 AM
+   [r50-51 c0-1] (left) Watermelon 2
+   [r50-51 c1-2] (right) 4,282.49
+   [r50-51 c2-3] (right) ₹4,23,538.26
+   [r50-51 c3-4] (right) ₹98.90
+   [r50-51 c4-5 center] (left) 08/04/2025 ⏎ 06:18 PM
+   [r51-52 c0-1] (left) Yam 2
+   [r51-52 c1-2] (right) 2,056.89
+   [r51-52 c2-3] (right) ₹1,84,276.78
+   [r51-52 c3-4] (right) ₹89.59
+   [r51-52 c4-5 center] (left) 21/06/2025 ⏎ 08:52 AM
+   [r52-53 c0-1] (left) Zucchini 2
+   [r52-53 c1-2] (right) 587.47
+   [r52-53 c2-3] (right) ₹95,786.98
+   [r52-53 c3-4] (right) ₹163.05
+   [r52-53 c4-5] (left) 07/12/2025 ⏎ 07:57 PM
+   [r53-54 c0-1] (left) Apple 3
+   [r53-54 c1-2] (right) 6,388.17
+   [r53-54 c2-3] (right) ₹3,91,403.18
+   [r53-54 c3-4] (right) ₹61.27
+   [r53-54 c4-5 center] (left) 22/11/2025 ⏎ 01:35 PM
+   [r54-55 c0-1] (left) Beans 3
+   [r54-55 c1-2] (right) 4,678.72
+   [r54-55 c2-3] (right) ₹5,23,876.28
+   [r54-55 c3-4] (right) ₹111.97
+   [r54-55 c4-5 center] (left) 28/07/2025 ⏎ 04:37 PM
+   [r55-56 c0-1] (left) Carrot 3
+   [r55-56 c1-2] (right) 2,782.48
+   [r55-56 c2-3] (right) ₹3,41,187.70
+   [r55-56 c3-4] (right) ₹122.62
+   [r55-56 c4-5 center] (left) 23/10/2025 ⏎ 07:47 PM
+   [r56-57 c0-1] (left) Dates 3
+   [r56-57 c1-2] (right) 3,546.56
+   [r56-57 c2-3] (right) ₹22,414.26
+   [r56-57 c3-4] (right) ₹6.32
+   [r56-57 c4-5 center] (left) 05/07/2025 ⏎ 06:25 AM
+   [r57-58 c0-1] (left) Eggplant 3
+   [r57-58 c1-2] (right) 4,798.35
+   [r57-58 c2-3] (right) ₹8,09,769.55
+   [r57-58 c3-4] (right) ₹168.76
+   [r57-58 c4-5 center] (left) 07/04/2025 ⏎ 07:39 PM
+   [r58-59 c0-1] (left) Fig 3
+   [r58-59 c1-2] (right) 8,522.05
+   [r58-59 c2-3] (right) ₹6,75,372.46
+   [r58-59 c3-4] (right) ₹79.25
+   [r58-59 c4-5 center] (left) 11/10/2025 ⏎ 05:57 PM
+   [r59-60 c0-1] (left) Garlic 3
+   [r59-60 c1-2] (right) 8,335.97
+   [r59-60 c2-3] (right) ₹10,23,573.76
+   [r59-60 c3-4] (right) ₹122.79
+   [r59-60 c4-5 center] (left) 11/04/2025 ⏎ 11:20 AM
+   [r60-61 c0-1] (left) Ginger 3
+   [r60-61 c1-2] (right) 4,597.20
+   [r60-61 c2-3] (right) ₹23,399.75
+   [r60-61 c3-4] (right) ₹5.09
+   [r60-61 c4-5 center] (left) 06/04/2025 ⏎ 01:43 AM
+   [r61-62 c0-1] (left) Herbs 3
+   [r61-62 c1-2] (right) 3,383.17
+   [r61-62 c2-3] (right) ₹1,54,509.37
+   [r61-62 c3-4] (right) ₹45.67
+   [r61-62 c4-5 center] (left) 25/03/2025 ⏎ 05:59 AM
+   [r62-63 c0-1] (left) Iceberg lettuce 3
+   [r62-63 c1-2] (right) 1,523.88
+   [r62-63 c2-3] (right) ₹1,34,208.11
+   [r62-63 c3-4] (right) ₹88.07
+   [r62-63 c4-5 center] (left) 18/07/2025 ⏎ 05:00 AM
+   [r63-64 c0-1] (left) Jackfruit 3
+   [r63-64 c1-2] (right) 5,151.70
+   [r63-64 c2-3] (right) ₹4,30,991.22
+   [r63-64 c3-4] (right) ₹83.66
+   [r63-64 c4-5 center] (left) 15/02/2025 ⏎ 06:05 AM
+   [r64-65 c0-1] (left) Kale 3
+   [r64-65 c1-2] (right) 2,493.28
+   [r64-65 c2-3] (right) ₹1,75,975.70
+   [r64-65 c3-4] (right) ₹70.58
+   [r64-65 c4-5 center] (left) 02/01/2025 ⏎ 07:40 AM
+   [r65-66 c0-1] (left) TOTAL
+   [r65-66 c1-2] (right) 2,95,226.43
+   [r65-66 c2-3] (right) ₹3,21,09,733.09
+   [r65-66 c3-4] 
+   [r65-66 c4-5] 

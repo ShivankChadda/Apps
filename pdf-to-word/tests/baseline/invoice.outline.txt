@@ -5,15 +5,15 @@ TABLE pg1 6x4 ruled cells=22
    [r0-1 c0-1 #0b5d7a center] (left) Description
    [r0-1 c1-2 #0b5d7a center] (left) Qty
    [r0-1 c2-3 #0b5d7a center] (left) Unit price
-   [r0-1 c3-4 #0b5d7a center] (left) Amount
+   [r0-1 c3-4 #0b5d7a center] (right) Amount
    [r1-2 c0-1 center] (left) Signal cable, 500 m drum
    [r1-2 c1-2 center] (right) 4
    [r1-2 c2-3 center] (right) 1,240.00
-   [r1-2 c3-4 center] (left) 4,960.00
+   [r1-2 c3-4 center] (right) 4,960.00
    [r2-3 c0-1 #eef5f8 center] (left) Junction boxes (weatherproof), pack of 20
    [r2-3 c1-2 #eef5f8 center] (right) 12
    [r2-3 c2-3 #eef5f8 center] (right) 86.50
-   [r2-3 c3-4 #eef5f8 center] (left) 1,038.00
+   [r2-3 c3-4 #eef5f8 center] (right) 1,038.00
    [r3-4 c0-1 center] (left) Fixings and brackets, mixed
    [r3-4 c1-2 center] (right) 30
    [r3-4 c2-3 center] (right) 14.25
@@ -25,7 +25,7 @@ TABLE pg1 6x4 ruled cells=22
    [r5-6 c2-3 center] (right) 250.00
    [r5-6 c3-4 center] (right) 250.00
 TABLE pg1 3x2 loose cells=6
-   [r0-1 c0-1] (left) Subtotal
+   [r0-1 c0-1] (right) Subtotal
    [r0-1 c1-2] (right) 6,855.50
    [r1-2 c0-1 center] (left) VAT 20%
    [r1-2 c1-2 center] (right) 1,371.10

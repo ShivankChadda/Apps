@@ -10,20 +10,20 @@ H2 [left] pg1 L0/0 b8 10.5pt bold “2.1 Cost models”
 P [both] pg1 L0/0 b0 10pt “Corridor from new from across single better regimes single ⏎ upgrades supply careful from lows. Volatile costs to ⏎ uncertain lows better regimes care”
 TABLE pg1 4x4 loose cells=16
    [r0-1 c0-1] (left) Option
-   [r0-1 c1-2] (left) Cost (M)
-   [r0-1 c2-3] (center) Delay (d)
-   [r0-1 c3-4] (center) Score
+   [r0-1 c1-2] (right) Cost (M)
+   [r0-1 c2-3] (right) Delay (d)
+   [r0-1 c3-4] (right) Score
    [r1-2 c0-1 center] (left) Baseline
-   [r1-2 c1-2 center] (left) 0.0
-   [r1-2 c2-3 center] (left) 412
+   [r1-2 c1-2 center] (right) 0.0
+   [r1-2 c2-3 center] (right) 412
    [r1-2 c3-4 center] (right) 1.00
    [r2-3 c0-1] (left) Incremental
-   [r2-3 c1-2] (left) 31.4
-   [r2-3 c2-3] (left) 188
+   [r2-3 c1-2] (right) 31.4
+   [r2-3 c2-3] (right) 188
    [r2-3 c3-4] (right) 1.74
    [r3-4 c0-1] (left) Single programme
-   [r3-4 c1-2] (left) 96.2
-   [r3-4 c2-3] (left) 240
+   [r3-4 c1-2] (right) 96.2
+   [r3-4 c2-3] (right) 240
    [r3-4 c3-4] (right) 1.31
 P [left] pg1 L0/0 b10 8.5pt “Table 1. Comparison of options.”
 P [both] pg1 L0/0 b4 10pt “Markets committee incremental incremental large ⏎ passenger continues different that rail careful continues. ⏎ New northern several programme volumes ”

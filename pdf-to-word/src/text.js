@@ -223,8 +223,9 @@ const Text = (() => {
     const centers = gn.map((l) => (l.x0 + l.x1) / 2);
     const nonLast = gn.slice(0, -1);
     const spread = Math.max(...gn.map((l) => l.x0)) - Math.min(...gn.map((l) => l.x0));
-    if (n >= 3 && nonLast.every((l) => Math.abs(l.x1 - px1) <= 2.2) && spread <= 4 && (n >= 4 || Math.abs(px1 - R) <= 14)) p.align = 'both';
-    else if (n === 2 && Math.abs(gn[0].x1 - R) <= 1.2 && Math.abs(gn[0].x0 - gn[1].x0) <= 3) p.align = 'both';
+    if (opts.noJustify && false) p.align = 'left';
+    else if (!opts.noJustify && n >= 3 && nonLast.every((l) => Math.abs(l.x1 - px1) <= 2.2) && spread <= 4 && (n >= 4 || Math.abs(px1 - R) <= 14)) p.align = 'both';
+    else if (!opts.noJustify && n === 2 && Math.abs(gn[0].x1 - R) <= 1.2 && Math.abs(gn[0].x0 - gn[1].x0) <= 3) p.align = 'both';
     else if (gn.every((l, k) => Math.abs(centers[k] - cC) <= 3.5) && (n >= 2 ? (gn.some((l) => l.x0 - L > 0.04 * colW) && spread > 4) : px0 - L > 0.04 * colW)) p.align = 'center';
     else if (gn.every((l) => Math.abs(l.x1 - R) <= 2.5) && px0 - L > 0.12 * colW && (n === 1 || spread > 4)) p.align = 'right';
     else if (n >= 2 && gn.every((l) => Math.abs(l.x1 - px1) <= 2.5) && gn.some((l) => l.x0 - L > 0.12 * colW) && Math.abs(px1 - R) <= 4 && spread > 4) p.align = 'right';
@@ -265,6 +266,8 @@ const Text = (() => {
         const beforeHyphen = last.text.slice(-2, -1);
         if (fixHyphens && lastCh === '-' && /[A-Za-zÀ-ɏ]/.test(beforeHyphen) && /[a-zß-ɏ]/.test(firstCh)) {
           last.text = last.text.slice(0, -1);
+        } else if (/\d[:\/]$/.test(last.text) && /^\d/.test(lr[0].text)) {
+          /* a time or date split at the colon or slash: no space */
         } else if (!/\s$/.test(last.text) && !/^\s/.test(lr[0].text)) {
           last.text += ' ';
         }

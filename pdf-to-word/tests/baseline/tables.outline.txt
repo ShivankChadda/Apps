@@ -21,24 +21,24 @@ TABLE pg1 5x5 ruled cells=18
 P [left] pg1 L0/0 b16 12pt bold “B. No borders, header rule only”
 TABLE pg1 5x4 loose cells=20
    [r0-1 c0-1] (left) Station
-   [r0-1 c1-2] (left) Boardings
-   [r0-1 c2-3] (center) Change
+   [r0-1 c1-2] (right) Boardings
+   [r0-1 c2-3] (right) Change
    [r0-1 c3-4] (right) Share
    [r1-2 c0-1 center] (left) Central
-   [r1-2 c1-2 center] (left) 18,204
-   [r1-2 c2-3 center] (left) +4.2%
+   [r1-2 c1-2 center] (right) 18,204
+   [r1-2 c2-3 center] (right) +4.2%
    [r1-2 c3-4 center] (right) 31%
    [r2-3 c0-1 center] (left) Riverside
-   [r2-3 c1-2 center] (left) 9,311
-   [r2-3 c2-3 center] (left) -1.0%
+   [r2-3 c1-2 center] (right) 9,311
+   [r2-3 c2-3 center] (right) -1.0%
    [r2-3 c3-4 center] (right) 16%
    [r3-4 c0-1 center] (left) Harbour
-   [r3-4 c1-2 center] (left) 7,880
-   [r3-4 c2-3 center] (left) +12.5%
+   [r3-4 c1-2 center] (right) 7,880
+   [r3-4 c2-3 center] (right) +12.5%
    [r3-4 c3-4 center] (right) 13%
    [r4-5 c0-1] (left) University
-   [r4-5 c1-2] (left) 6,452
-   [r4-5 c2-3] (left) +0.3%
+   [r4-5 c1-2] (right) 6,452
+   [r4-5 c2-3] (right) +0.3%
    [r4-5 c3-4] (right) 11%
 P [left] pg1 L0/0 b19 12pt bold “C. Zebra stripes, no lines”
 TABLE pg1 5x3 loose cells=15
@@ -49,7 +49,7 @@ TABLE pg1 5x3 loose cells=15
    [r1-2 c1-2 center] (left) Hartley
    [r1-2 c2-3 center] (left) Done
    [r2-3 c0-1 #f0f0f0 center] (left) Draft costings
-   [r2-3 c1-2 #f0f0f0 center] (center) Okonkwo
+   [r2-3 c1-2 #f0f0f0 center] (left) Okonkwo
    [r2-3 c2-3 #f0f0f0 center] (left) In progress
    [r3-4 c0-1 center] (left) Review with operators
    [r3-4 c1-2 center] (left) Brandt

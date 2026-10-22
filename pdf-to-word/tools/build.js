@@ -17,8 +17,9 @@ if (/<\/script/i.test(js)) throw new Error('a source file contains a closing scr
 const css = read('style.css');
 const body = read('index.template.html');
 
+const favicon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34"><rect x="2" y="7" width="30" height="20" rx="2" fill="#ff5a1f" stroke="#0f1720" stroke-width="2.4"/><rect x="8" y="7" width="4" height="20" fill="#0f1720"/><rect x="22" y="7" width="4" height="20" fill="#0f1720"/><rect x="14" y="13" width="6" height="8" fill="#fff" stroke="#0f1720" stroke-width="1.6"/></svg>';
 const title = 'Black Box';
-const desc = 'Turn a PDF back into a Word document without the formatting looking like it survived a plane crash.';
+const desc = 'Turn a PDF into an editable Word document with the headings, lists and tables intact.';
 const core = `<title>${title}</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,6 +45,12 @@ const full = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="${desc}">
+<meta name="theme-color" content="#ff5a1f">
+<meta property="og:type" content="website">
+<meta property="og:title" content="${title}: PDF to Word">
+<meta property="og:description" content="${desc} Runs in your browser. Nothing is uploaded.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,${encodeURIComponent(favicon)}">
 ${core.split('\n<div class="app"')[0]}
 </head>
 <body>

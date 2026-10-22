@@ -1,12 +1,18 @@
 # Black Box: PDF to Word
 
-Turn a PDF back into an editable Word document (`.docx`) without the formatting looking like it survived a plane crash. It runs entirely in your browser: nothing is uploaded, and the converter contains no AI. It reads where every piece of text sits on the page and rebuilds the structure from that. The page around it is a small investigation bench: the original on the left, the recovered document on the right, and a flight log between them.
+Turn a PDF back into an editable Word document (`.docx`) without the formatting looking like it survived a plane crash. It runs entirely in your browser: nothing is uploaded, and the converter contains no AI. It reads where every piece of text sits on the page and rebuilds the structure from that. The page shows the original on the left and the recovered document on the right, with a download button above them.
 
 ## Use it
 
-Open **`index.html`** in a browser (double-click it; it needs an internet connection to fetch pdf.js, JSZip and the fonts), drop a PDF on the tray, then press **Download .docx**.
+**Hosted:** once GitHub Pages is on for this repository (below) it lives at `https://shivankchadda.github.io/Apps/pdf-to-word/`. Send anyone that link. They need no account and nothing is uploaded.
 
-The page opens with a sample already on the bench so you can see what it does. Press **Rewind the crash** to watch the fragments of the original fall back into place, drag the timeline, switch the layers on and off, and hover a block on either side to find it on the other. **X-ray** labels every block in the recovered document.
+**Locally:** open **`index.html`** in a browser (it needs an internet connection to fetch pdf.js, JSZip and the fonts).
+
+Drop a PDF on the tray, then press **Download .docx**. The page opens with a sample so you can see the result first. Hover a block on either side to find it on the other, and use **Show structure** to label every block in the result. Settings (page breaks, tables, columns, headers) are under **Options** and re-run instantly.
+
+## Publish it
+
+The built page is a single static file, so any static host works. For GitHub Pages: **Settings, Pages, Build and deployment, Source: Deploy from a branch**, pick the default branch and the `/ (root)` folder, then Save. The site is live a minute later. Rebuild with `node tools/build.js` and commit `index.html` after any change to `src/`.
 
 ## What comes out
 

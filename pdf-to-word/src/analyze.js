@@ -22,6 +22,7 @@ const Analyze = (() => {
     const n = pages.length;
     if (n < 2) return null;
     const info = [];
+    const bodyKeys = new Set();
     for (const p of pages) {
       const frags = p.frags.filter((f) => f.s.trim()).map((f) => ({ ...f, s: Layout.cleanText(f.s) }));
       const rows = Layout.buildRows(p.frags.filter((f) => f.s.trim()));
@@ -30,7 +31,8 @@ const Analyze = (() => {
         const text = r.segs.map((s) => s.frags.map((f) => Layout.cleanText(f.s)).join(' ')).join(' ').replace(/\s+/g, ' ').trim();
         if (!text) continue;
         const zone = r.base < p.h * 0.1 ? 'top' : r.base > p.h * 0.9 ? 'bottom' : null;
-        if (!zone) continue;
+        if (!zone) { bodyKeys.add(normKey(text)); continue; }
+        if (r.segs.length >= 4) continue;          // four or more cells in a row: a table header, not a running head
         cand.push({ row: r, text, key: normKey(text), zone, y: r.base });
       }
       info.push(cand);
@@ -49,6 +51,7 @@ const Analyze = (() => {
       const pagesHit = new Set(arr.map((a) => a.page));
       const pageNumberOnly = PAGE_NO.test(k.split('|')[1]) && /#/.test(k.split('|')[1]);
       if (pagesHit.size < need && !pageNumberOnly) continue;
+      if (!pageNumberOnly && bodyKeys.has(k.split('|')[1])) continue;     // the same row also sits in the body of another page
       // same height on the pages it appears
       const ys = arr.map((a) => a.c.y);
       if (Math.max(...ys) - Math.min(...ys) > 8 && !PAGE_NO.test(k.split('|')[1])) continue;
@@ -152,6 +155,17 @@ const Analyze = (() => {
       const w = use.map((l) => l.chars);
       return { left: wq(use.map((l) => l.x0), w, 0.05), right: wq(use.map((l) => l.x1), w, 0.95) };
     });
+    // a table that is wider than the text pulls the margins out to meet it
+    laid.forEach((lp, i) => {
+      const tb = lp.blocks.filter((b) => b.kind === 'table').map((b) => b.table);
+      if (!tb.length) return;
+      const lo = Math.min(...tb.map((t) => t.x0)), hi = Math.max(...tb.map((t) => t.x1));
+      if (!pageStats[i]) { pageStats[i] = { left: lo, right: hi }; return; }
+      // borders sit a cell-padding outside the text; only a table that really overhangs moves the margin
+      const OVER = 12;
+      if (lo < pageStats[i].left - OVER) pageStats[i].left = lo;
+      if (hi > pageStats[i].right + OVER) pageStats[i].right = hi;
+    });
     const known = pageStats.filter(Boolean);
     const noText = !known.length && pages.some((p) => p.images.length);
     const gLeft = known.length ? median(known.map((s) => s.left)) : noText ? 18 : 72;
@@ -204,6 +218,7 @@ const Analyze = (() => {
 
     /* a table that runs over a page break is one table */
     mergeTables(items, pages);
+    for (const it of items) if (it.type === 'table') fitColumns(it);
 
     /* headings and title */
     classifyHeadings(items, bodyFs, laid);
@@ -330,6 +345,40 @@ const Analyze = (() => {
 
   function cellText(c) { return c.blocks.filter((b) => b.type === 'p').map((b) => b.lines.map((l) => l.text).join(' ')).join(' ').trim(); }
 
+  /* An unruled table has no drawn column edges to respect. Short text that wrapped only because its
+     column was narrow gets the room back from columns that have more than they use. */
+  function fitColumns(t) {
+    if (t.ruled || t.C < 2) return;
+    const C = t.C, FIT = 1.06, pad = 2 * t.padL + 2;
+    const w = [], natural = new Array(C).fill(0), joined = new Array(C).fill(0);
+    for (let c = 0; c < C; c++) w.push(t.xs[c + 1] - t.xs[c]);
+    for (const cell of t.cells) {
+      if (cell.c1 - cell.c0 !== 1) continue;
+      for (const b of cell.blocks) {
+        if (b.type !== 'p' || !b.lines.length) continue;
+        const lw = b.lines.map((l) => l.x1 - l.x0);
+        const widest = Math.max(...lw);
+        const whole = sum(lw) + (lw.length - 1) * 0.28 * b.fs;
+        natural[cell.c0] = Math.max(natural[cell.c0], widest);
+        joined[cell.c0] = Math.max(joined[cell.c0], lw.length > 1 && lw.length <= 3 && whole <= 170 ? whole : widest);
+      }
+    }
+    const grow = [], give = [];
+    let need = 0, spare = 0;
+    for (let c = 0; c < C; c++) {
+      const want = joined[c] * FIT + pad, keep = natural[c] * FIT + pad;
+      grow.push(Math.max(0, want - w[c]));
+      give.push(grow[c] > 0 ? 0 : Math.max(0, w[c] - keep - 2));
+      need += grow[c]; spare += give[c];
+    }
+    if (need < 1 || need > spare) return;
+    const k = need / spare;
+    const nw = w.map((x, c) => x + grow[c] - give[c] * k);
+    const xs = [t.xs[0]];
+    for (let c = 0; c < C; c++) xs.push(xs[c] + nw[c]);
+    t.xs = xs;
+  }
+
   function mergeTables(items, pages) {
     for (let i = 0; i + 1 < items.length; i++) {
       const t1 = items[i], t2 = items[i + 1];
@@ -337,7 +386,7 @@ const Analyze = (() => {
       const pg1 = pages[(t1.lastPage || t1.page) - 1], pg2 = pages[t2.page - 1];
       if (!pg1 || !pg2) continue;
       if (t2.top > 0.3 * pg2.h || (t1.lastBot || t1.bot) < 0.6 * pg1.h) continue;
-      if (t1.xs.some((x, k) => Math.abs(x - t2.xs[k]) > 3)) continue;
+      if (t1.xs.some((x, k) => Math.abs(x - t2.xs[k]) > (t1.ruled && t2.ruled ? 3 : 30))) continue;
       // a repeated header row is not repeated in Word: mark the first row as a header instead
       const row0 = (t) => t.cells.filter((c) => c.r0 === 0).sort((p, q) => p.c0 - q.c0).map(cellText).join('|');
       let skip = 0;
@@ -540,16 +589,40 @@ const Analyze = (() => {
     const q25 = (v) => { const s = v.filter((x) => x >= 0).sort((a, b) => a - b); return s.length ? s[Math.floor((s.length - 1) * 0.25)] : 0; };
     const padL = clamp(q25(padsL) || 4, 1, 14);
     const padT = clamp(q25(padsT) - 1, 0, 10), padB = clamp(q25(padsB) - 1, 0, 10);
+    // numbers line up on their right edge, labels on their left: decide once per column from the cells that agree
+    const colAlign = new Map();
+    for (let col = 0; col < C; col++) {
+      const ls = [];
+      for (const c of t.cells) {
+        if (c.c0 !== col || c.c1 !== col + 1) continue;
+        for (const l of c.lines) if (l.chars >= 1 && !l.parts) ls.push(l);
+      }
+      if (ls.length < 3) continue;
+      const sd = (v) => { const m = v.reduce((x, y) => x + y, 0) / v.length; return Math.sqrt(v.reduce((x, y) => x + (y - m) * (y - m), 0) / v.length); };
+      const sl = sd(ls.map((l) => l.x0)), sr = sd(ls.map((l) => l.x1)), sc = sd(ls.map((l) => (l.x0 + l.x1) / 2));
+      const best = Math.min(sl, sr, sc);
+      if (best > 2.2) continue;
+      if (Math.max(sl, sr, sc) - best < 1) continue;       // equal-width cells: the edges can't say which side they hug
+      colAlign.set(col, best === sl ? 'left' : best === sr ? 'right' : 'center');
+    }
     const cells = t.cells.map((c) => {
       const ref = { left: c.x0 + padL, right: c.x1 - padL };
       const cellFn = (p) => {
+        if (c.c1 - c.c0 === 1 && colAlign.has(c.c0) && p.lines.length === 1 && !p.lines[0].parts) {
+          const al = colAlign.get(c.c0);
+          const gl = p.nx0 - c.x0, gr = c.x1 - p.nx1;
+          // a cell that clearly sits on the other side keeps its own alignment (a header over numbers, say)
+          if (al === 'right' && gr > gl + 12) return null;
+          if (al === 'left' && gl > gr + 12) return null;
+          return al;
+        }
         if (p.lines.length > 1 && (p.lines.every((l) => l.x1 > ref.right - 3) || Math.max(...p.lines.map((l) => l.x0)) - Math.min(...p.lines.map((l) => l.x0)) <= 4)) return null;
         const gl = p.x0 - c.x0, gr = c.x1 - p.x1;
         if (Math.abs(gl - gr) <= 3.5 && gl > padL + 5) return 'center';
         if (gr <= padL + 5 && gl > padL + 7) return 'right';
         return null;
       };
-      const paras = Text.buildParagraphs(c.lines, ref, ctx, { cell: cellFn, fixHyphens: opts.fixHyphens });
+      const paras = Text.buildParagraphs(c.lines, ref, ctx, { cell: cellFn, fixHyphens: opts.fixHyphens, noJustify: true });
       const blocks = [...paras];
       for (const im of c.images) blocks.push({ type: 'img', page: pageNum, img: im, x0: im.x0, x1: im.x1, top: im.y0, bot: im.y1, ref });
       blocks.sort((a, b) => (a.top - b.top));

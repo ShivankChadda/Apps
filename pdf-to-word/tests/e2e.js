@@ -31,6 +31,7 @@ const skeleton = (body) => `<!doctype html><html><head><meta charset="utf-8"><me
   const problems = [];
   pg.on('console', (m) => { const t = m.text(); if (m.type() === 'error' || /Content Security|violat|Refused/i.test(t)) problems.push(m.type() + ': ' + t); });
   pg.on('pageerror', (e) => problems.push('pageerror: ' + e.message));
+  pg.on('response', (r) => { if (r.status() >= 400) problems.push('http ' + r.status() + ' ' + r.url()); });
   await pg.goto(`http://127.0.0.1:${port}/artifact`);
   await pg.waitForTimeout(800);
   const prefix = val('--shots', 'tests/out/shot');
@@ -39,16 +40,10 @@ const skeleton = (body) => `<!doctype html><html><head><meta charset="utf-8"><me
   if (val('--file')) await pg.setInputFiles('#file', val('--file')); else await pg.click('#sampleBtn');
   await pg.waitForSelector('#bench:not([hidden])', { timeout: 60000 });
   await pg.waitForTimeout(600);
-  const info = await pg.evaluate(() => ({ name: document.querySelector('#caseName').textContent, meta: document.querySelector('#caseMeta').textContent, verdict: document.querySelector('#verdict').textContent, log: [...document.querySelectorAll('#logList li')].map((l) => l.textContent).join('\n') }));
+  const info = await pg.evaluate(() => ({ name: document.querySelector('#caseName').textContent, meta: document.querySelector('#caseMeta').textContent, verdict: document.querySelector('#verdict').textContent }));
   console.log(JSON.stringify(info, null, 1));
-  // mid-crash and finished states
   await pg.evaluate(() => { document.querySelector('#bench').scrollIntoView(); });
-  await pg.fill('#scrub', '250').catch(() => {});
-  await pg.evaluate(() => { const s = document.querySelector('#scrub'); s.value = 250; s.dispatchEvent(new Event('input', { bubbles: true })); });
-  await pg.waitForTimeout(200);
-  await pg.screenshot({ path: `${prefix}-crash.png` });
-  await pg.evaluate(() => { const s = document.querySelector('#scrub'); s.value = 1000; s.dispatchEvent(new Event('input', { bubbles: true })); });
-  await pg.waitForTimeout(300);
+  await pg.waitForTimeout(2800);
   await pg.screenshot({ path: `${prefix}-bench.png` });
   await pg.screenshot({ path: `${prefix}-full.png`, fullPage: true });
   // download
