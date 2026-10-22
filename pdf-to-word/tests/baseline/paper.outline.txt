@@ -1,0 +1,41 @@
+Htitle [center] pg1 L0/0 b5 20pt bold “Incremental Investment in Rail Corridors”
+P [center] pg1 L0/0 b9 11pt “A. Hartley M. Okonkwo S. Brandt”
+P [left] pg1 L30/0 b9 9.5pt “Abstract. Recover towards continues than scheduling signalling incremental demand proposals reviewed and ⏎ recover the rail. And towards a than while ”
+H1 [left] pg1 L0/0 b21 12pt bold “1 Introduction”
+P [both] pg1 L0/0 b4 10pt “Although shift markets upgrades while than although ⏎ remain across. For signalling require would and slowly that ⏎ because and incremental earlier si”
+P [both] pg1 L0/0 b5 10pt “Require markets passenger passenger electrified are for ⏎ corridor and earlier corridor programme regimes. Proposals ⏎ than proposals programme routes”
+H1 [left] pg1 L0/0 b9 12pt bold “2 Related Work”
+P [both] pg1 L0/0 b4 10pt “Outcomes lows several that uncertain and tight electrified ⏎ although large incremental committee concluded careful ⏎ northern the committee. Several ”
+H2 [left] pg1 L0/0 b8 10.5pt bold “2.1 Cost models”
+P [both] pg1 L0/0 b0 10pt “Corridor from new from across single better regimes single ⏎ upgrades supply careful from lows. Volatile costs to ⏎ uncertain lows better regimes care”
+TABLE pg1 4x4 loose cells=16
+   [r0-1 c0-1] (left) Option
+   [r0-1 c1-2] (left) Cost (M)
+   [r0-1 c2-3] (center) Delay (d)
+   [r0-1 c3-4] (center) Score
+   [r1-2 c0-1 center] (left) Baseline
+   [r1-2 c1-2 center] (left) 0.0
+   [r1-2 c2-3 center] (left) 412
+   [r1-2 c3-4 center] (right) 1.00
+   [r2-3 c0-1] (left) Incremental
+   [r2-3 c1-2] (left) 31.4
+   [r2-3 c2-3] (left) 188
+   [r2-3 c3-4] (right) 1.74
+   [r3-4 c0-1] (left) Single programme
+   [r3-4 c1-2] (left) 96.2
+   [r3-4 c2-3] (left) 240
+   [r3-4 c3-4] (right) 1.31
+P [left] pg1 L0/0 b10 8.5pt “Table 1. Comparison of options.”
+P [both] pg1 L0/0 b4 10pt “Markets committee incremental incremental large ⏎ passenger continues different that rail careful continues. ⏎ New northern several programme volumes ”
+H1 [left] pg1 L0/0 b9 12pt bold “3 Method”
+P [both] pg1 L0/0 b4 10pt “Lows and and northern because and reviewed regimes ⏎ deliver single which the to freight and recover upgrades. ⏎ Continues deliver northern and corrid”
+P [both] pg2 L0/0 b0 10pt “Although shift would volatile large investment the corridor ⏎ earlier continues from continues that large. Lows the which ⏎ the that several remain be”
+H1 [left] pg2 L0/0 b9 12pt bold “4 Discussion”
+P [both] pg2 L0/0 b4 10pt “And tight signalling recover signalling labour towards ⏎ volatile deliver markets volatile from rail better shift. New ⏎ for and are large demand larg”
+P [both] pg2 L0/0 b5 10pt “Tight outcomes are and scheduling and committee and a ⏎ regimes. Upgrades new better the large signalling than costs ⏎ markets across and would market”
+H1 [left] pg2 L0/0 b9 12pt bold “References”
+P [left] pg2 L0/0 b5 8.5pt “[1] Hartley, A. Rail investment under uncertainty. Journal of”
+P [left] pg2 L14/0 b0 8.5pt “Transport, 2024.”
+P [left] pg2 L0/0 b6 8.5pt “[2] Brandt, S. and Okonkwo, M. Signalling costs revisited. Rail”
+P [left] pg2 L14/0 b0 8.5pt “Review, 2025.”
+P [left] pg2 L14/-14 b6 8.5pt “[3] Okonkwo, M. Corridor demand after the pandemic. Transport ⏎ Studies, 2023.”

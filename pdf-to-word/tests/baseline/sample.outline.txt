@@ -1,0 +1,46 @@
+P [left] pg1 L0/0 b0 8.5pt bold “INCIDENT FILE P2W-0412 · PRELIMINARY REPORT”
+Htitle [left] pg1 L0/0 b0 25pt bold “A PDF Was Asked to Become a Word ⏎ Document”
+P [left] pg1 L0/0 b7 12.5pt “Findings of the review into the formatting event of Tuesday afternoon”
+H1 [left] pg1 L0/0 b16 13pt bold “Summary”
+P [both] pg1 L0/0 b6 10.5pt “At 14:07 a routine request was made to turn a two-page PDF back into an editable Word document. Within ⏎ seconds the headings had separated from their”
+P [both] pg1 L0/0 b7 10.5pt “This report sets out what happened, why it keeps happening, and what the converter in use at the time was never ⏎ going to understand: a PDF records w”
+P [left] pg1 L13/0 b16 10pt “Key finding. The structure of the document was never lost. It was never in the file. It has to be rebuilt from ⏎ geometry: which pieces share a baseli”
+H1 [left] pg1 L0/0 b22 13pt bold “Timeline”
+TABLE pg1 6x3 ruled cells=18
+   [r0-1 c0-1 #0f2a43 center] (left) Time
+   [r0-1 c1-2 #0f2a43 center] (left) Event
+   [r0-1 c2-3 #0f2a43 center] (left) Severity
+   [r1-2 c0-1 center] (left) 14:07
+   [r1-2 c1-2 center] (left) PDF opened in the usual converter
+   [r1-2 c2-3 center] (left) None
+   [r2-3 c0-1 #f1f4f7 center] (left) 14:07
+   [r2-3 c1-2 #f1f4f7 center] (left) Two-column layout read straight across, left line then right line
+   [r2-3 c2-3 #f1f4f7 center] (left) High
+   [r3-4 c0-1 center] (left) 14:08
+   [r3-4 c1-2 center] (left) Bullet points converted to the letter o and a small square
+   [r3-4 c2-3 center] (left) Moderate
+   [r4-5 c0-1 #f1f4f7 center] (left) 14:08
+   [r4-5 c1-2 #f1f4f7 center] (left) Table borders drawn as separate floating lines
+   [r4-5 c2-3 #f1f4f7 center] (left) High
+   [r5-6 c0-1 center] (left) 14:11
+   [r5-6 c1-2 center] (left) User resumed typing the whole thing out by hand
+   [r5-6 c2-3 center] (left) Severe
+P [left] pg1 L0/0 b5 8pt “Table 1. Sequence of events, local time.”
+H1 [left] pg1 L0/0 b13 13pt bold “Findings”
+LI0 [left] pg1 L22/-13 b6 10.5pt “1. Headings were identified by size, not by position, so a bold sentence was promoted to chapter level.”
+LI0 [left] pg1 L22/-13 b3 10.5pt “2. Columns were never detected, so every second line belonged to a different paragraph.”
+LI0 [left] pg1 L22/-12 b2 10.5pt “3. List markers were kept as text, so editing a list meant renumbering it by hand.”
+LI0 [left] pg1 L23/-13 b3 10.5pt “4. Running headers and page numbers were treated as body text on every page.”
+H1 [left] pg1 L0/0 b16 13pt bold “Contributing factors”
+LI0 [left] pg1 L20/-11 b5 10.5pt “Text boxes are an easy way to make a PDF look right and a hard way to make it editable”
+LI0 [left] pg1 L20/-11 b3 10.5pt “Justified text produces wide gaps that look like table columns”
+LI1 [left] pg1 L40/-11 b0 10.5pt “Gaps that repeat down the page are columns”
+LI1 [left] pg1 L40/-11 b3 10.5pt “Gaps that do not repeat are just spaces”
+LI0 [left] pg1 L20/-11 b8 10.5pt “Scanned pages contain no text at all, only a picture of text”
+IMG pg2 225x112
+P [center] pg2 L0/0 b7 8pt “Figure 1. Share of original formatting kept after conversion, by method.”
+H1 [left] pg2 L0/0 b13 13pt bold “Recommendations”
+P [both] pg2 L0/0 b6 10.5pt “Read each page as geometry. Group fragments into ⏎ lines by baseline, split lines where gaps are wide, and ⏎ look for gaps that line up from one row t”
+P [both] pg2 L0/0 b7 10.5pt “Rebuild reading order before writing anything. A ⏎ column is finished when its last line ends, not when ⏎ the page does, so the left column comes befo”
+P [both] pg2 L0/0 b0 10.5pt “Write real structure: heading styles, list numbering, ⏎ table cells, page-number fields. A document that only ⏎ looks right is the problem that starte”
+P [both] pg2 L0/0 b7 10.5pt “Keep a ledger. Every character that went in should ⏎ come out, and the converter should say so when one ⏎ does not.”

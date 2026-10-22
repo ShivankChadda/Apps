@@ -1,0 +1,67 @@
+<style>
+@page { size: Letter; margin: 0.85in 0.9in 0.8in; }
+body { font-family: "Liberation Serif", serif; font-size: 10.5pt; line-height: 1.32; color: #14181d; margin: 0 }
+h1, h2, .kicker { font-family: "Liberation Sans", sans-serif }
+.kicker { font-size: 8.5pt; letter-spacing: 1.4pt; text-transform: uppercase; color: #c2410c; font-weight: bold; margin: 0 0 4pt }
+h1 { font-size: 25pt; line-height: 1.08; margin: 0 0 6pt }
+.lede { font-size: 12.5pt; color: #3d4752; margin: 0 0 14pt; font-style: italic }
+h2 { font-size: 13pt; margin: 15pt 0 5pt; color: #0f2a43 }
+p { margin: 0 0 7pt; text-align: justify }
+ul, ol { margin: 0 0 8pt; padding-left: 20pt } li { margin-bottom: 2.5pt }
+table { border-collapse: collapse; width: 100%; margin: 5pt 0 4pt; font-family: "Liberation Sans", sans-serif; font-size: 9pt }
+th { background: #0f2a43; color: #fff; text-align: left; padding: 4pt 6pt; border: 0.6pt solid #0f2a43 }
+td { padding: 4pt 6pt; border: 0.6pt solid #b9c2ca; vertical-align: top } td.n { text-align: right }
+tr:nth-child(even) td { background: #f1f4f7 }
+.cap { font-family: "Liberation Sans", sans-serif; font-size: 8pt; color: #5a6672; text-align: left; margin-bottom: 10pt }
+.cols { column-count: 2; column-gap: 20pt } .cols p, .cols li { break-inside: avoid }
+.box { background: #fff4e8; border-left: 3pt solid #ff5a1f; padding: 7pt 10pt; margin: 8pt 0 10pt; font-size: 10pt; text-align: left }
+</style>
+<div class="kicker">Incident file P2W-0412 &middot; Preliminary report</div>
+<h1>A PDF Was Asked to Become a Word Document</h1>
+<div class="lede">Findings of the review into the formatting event of Tuesday afternoon</div>
+<h2>Summary</h2>
+<p>At 14:07 a routine request was made to turn a two-page PDF back into an editable Word document. Within seconds the headings had separated from their paragraphs, a table had become eleven text boxes, and the page numbers were found in the middle of a sentence. No fonts were harmed. Several margins were not recovered.</p>
+<p>This report sets out what happened, why it keeps happening, and what the converter in use at the time was never going to understand: a PDF records where every fragment of text sits on the page and nothing about what the text means.</p>
+<div class="box"><b>Key finding.</b> The structure of the document was never lost. It was never in the file. It has to be rebuilt from geometry: which pieces share a baseline, which gaps are columns, which lines are rules.</div>
+<h2>Timeline</h2>
+<table>
+<thead><tr><th style="width:14%">Time</th><th>Event</th><th style="width:20%">Severity</th></tr></thead>
+<tbody>
+<tr><td>14:07</td><td>PDF opened in the usual converter</td><td>None</td></tr>
+<tr><td>14:07</td><td>Two-column layout read straight across, left line then right line</td><td>High</td></tr>
+<tr><td>14:08</td><td>Bullet points converted to the letter o and a small square</td><td>Moderate</td></tr>
+<tr><td>14:08</td><td>Table borders drawn as separate floating lines</td><td>High</td></tr>
+<tr><td>14:11</td><td>User resumed typing the whole thing out by hand</td><td>Severe</td></tr>
+</tbody></table>
+<div class="cap">Table 1. Sequence of events, local time.</div>
+<h2>Findings</h2>
+<ol>
+<li>Headings were identified by size, not by position, so a bold sentence was promoted to chapter level.</li>
+<li>Columns were never detected, so every second line belonged to a different paragraph.</li>
+<li>List markers were kept as text, so editing a list meant renumbering it by hand.</li>
+<li>Running headers and page numbers were treated as body text on every page.</li>
+</ol>
+<h2>Contributing factors</h2>
+<ul>
+<li>Text boxes are an easy way to make a PDF look right and a hard way to make it editable</li>
+<li>Justified text produces wide gaps that look like table columns
+<ul><li>Gaps that repeat down the page are columns</li><li>Gaps that do not repeat are just spaces</li></ul></li>
+<li>Scanned pages contain no text at all, only a picture of text</li>
+</ul>
+<p><img id="chart" width="300" height="150" style="display:block;margin:4pt auto 0"></p>
+<div class="cap" style="text-align:center">Figure 1. Share of original formatting kept after conversion, by method.</div>
+<h2>Recommendations</h2>
+<div class="cols">
+<p>Read each page as geometry. Group fragments into lines by baseline, split lines where gaps are wide, and look for gaps that line up from one row to the next.</p>
+<p>Rebuild reading order before writing anything. A column is finished when its last line ends, not when the page does, so the left column comes before the right.</p>
+<p>Write real structure: heading styles, list numbering, table cells, page-number fields. A document that only looks right is the problem that started this report.</p>
+<p>Keep a ledger. Every character that went in should come out, and the converter should say so when one does not.</p>
+</div>
+<script>
+ const c=document.createElement('canvas');c.width=600;c.height=300;const x=c.getContext('2d');
+ x.fillStyle='#f6f8fa';x.fillRect(0,0,600,300);
+ const rows=[['Copy and paste',12,'#9aa5b1'],['Print, pray, retype',31,'#9aa5b1'],['Online converter',54,'#9aa5b1'],['Black Box',98,'#ff5a1f']];
+ x.font='bold 17px Liberation Sans, sans-serif';x.textBaseline='middle';
+ rows.forEach((r,i)=>{const y=48+i*64;x.fillStyle='#14181d';x.textAlign='left';x.fillText(r[0],22,y-14);x.fillStyle='#e3e8ed';x.fillRect(22,y,556,22);x.fillStyle=r[2];x.fillRect(22,y,556*r[1]/100,22);x.fillStyle='#14181d';x.textAlign='right';x.fillText(r[1]+'%',578,y-14);});
+ document.getElementById('chart').src=c.toDataURL();
+</script>

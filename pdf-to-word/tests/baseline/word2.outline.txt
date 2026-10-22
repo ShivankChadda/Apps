@@ -1,0 +1,70 @@
+Htitle [left] pg1 L0/0 b38 26pt “Delivery Plan”
+P [left] pg1 L0/0 b22 10.5pt “Programme office, second revision”
+H1 [left] pg1 L0/0 b23 14pt bold “1. Overview”
+P [both] pg1 L0/0 b3 10.5pt “Between should change dependencies often between dates outcomes the often to suppliers and. ⏎ Delivery reviewed should measurable and be rather review”
+H2 [left] pg1 L0/0 b9 13pt bold “1.1 Workstreams”
+LI0 [left] pg1 L23/-23 b2 10.5pt “• Procurement”
+LI1 [left] pg1 L42/-24 b6 10.5pt “• Framework agreements”
+LI1 [left] pg1 L41/-23 b0 10.5pt “• Spot buys over the threshold”
+LI2 [left] pg1 L59/-23 b6 10.5pt “• Approval by the board”
+LI0 [left] pg1 L23/-23 b6 10.5pt “• Engineering”
+LI1 [left] pg1 L41/-23 b6 10.5pt “• Design authority review”
+P [left] pg1 L0/0 b6 10.5pt “Decisions needed:”
+LI0 [left] pg1 L23/-23 b6 10.5pt “1. Confirm the budget envelope”
+LI0 [left] pg1 L23/-23 b0 10.5pt “2. Name the programme sponsor”
+LI1 [left] pg1 L41/-23 b6 10.5pt “1. Interim sponsor from finance”
+LI0 [left] pg1 L23/-23 b6 10.5pt “3. Agree the reporting cadence”
+P [left] pg1 L0/0 b6 10.5pt “That milestones plan rather because dates plan delivery dependencies plan be. The should tied ⏎ delivery the agreed team milestones that often calenda”
+P [left] pg1 L0/0 b6 9pt “def plan(milestones):”
+P [left] pg1 L22/0 b0 9pt “return sorted(milestones, key=lambda m: m.date)”
+H1 [left] pg1 L0/0 b23 14pt bold “2. Schedule”
+TABLE pg1 4x4 ruled cells=13
+   [r0-2 c0-1] (left) Phase
+   [r0-1 c1-4] (left) Quarter
+   [r1-2 c1-2] (left) Q1
+   [r1-2 c2-3] (left) Q2
+   [r1-2 c3-4] (left) Q3
+   [r2-3 c0-1] (left) Design
+   [r2-3 c1-2] (left) done
+   [r2-3 c2-3] (left) active
+   [r2-3 c3-4] (left) -
+   [r3-4 c0-1] (left) Build
+   [r3-4 c1-2] (left) -
+   [r3-4 c2-3] (left) active
+   [r3-4 c3-4] (left) active
+P [left] pg2 L0/0 b0 10.5pt “Delivery Plan v2 - Confidential”
+IMG pg2 302x131
+P [center] pg2 L0/0 b8 8.5pt “Figure 1. Milestones delivered per quarter”
+H1 [left] pg2 L0/0 b22 14pt bold “3. Risks”
+P [both] pg2 L0/0 b3 10.5pt “Team that should often that measurable dependencies milestones delivery measurable ⏎ measurable dependencies delivery project. The between should be t”
+P [both] pg2 L0/0 b6 10.5pt “Measurable delivery between project team calendar rather be project and between calendar ⏎ should. To dates tied the project dates project change meas”
+H1 [left] pg3 L0/0 b0 14pt bold “Appendix A. Wide table”
+TABLE pg3 4x7 ruled cells=28
+   [r0-1 c0-1] (left) ID
+   [r0-1 c1-2] (left) Task
+   [r0-1 c2-3] (left) Owner
+   [r0-1 c3-4] (left) Start
+   [r0-1 c4-5] (left) End
+   [r0-1 c5-6] (left) Status
+   [r0-1 c6-7] (left) Notes
+   [r1-2 c0-1] (left) T1
+   [r1-2 c1-2] (left) Install monitoring
+   [r1-2 c2-3] (left) Ops
+   [r1-2 c3-4] (left) 2026-01-11
+   [r1-2 c4-5] (left) 2026-02-01
+   [r1-2 c5-6] (left) Open
+   [r1-2 c6-7] (left) Waiting on ⏎ supplier
+   [r2-3 c0-1] (left) T2
+   [r2-3 c1-2] (left) Install monitoring
+   [r2-3 c2-3] (left) Ops
+   [r2-3 c3-4] (left) 2026-01-12
+   [r2-3 c4-5] (left) 2026-02-02
+   [r2-3 c5-6] (left) Open
+   [r2-3 c6-7] (left) Waiting on ⏎ supplier
+   [r3-4 c0-1] (left) T3
+   [r3-4 c1-2] (left) Install monitoring
+   [r3-4 c2-3] (left) Ops
+   [r3-4 c3-4] (left) 2026-01-13
+   [r3-4 c4-5] (left) 2026-02-03
+   [r3-4 c5-6] (left) Open
+   [r3-4 c6-7] (left) Waiting on ⏎ supplier

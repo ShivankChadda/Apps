@@ -1,0 +1,44 @@
+Htitle [left] pg1 L0/0 b3 26pt “Quarterly Operations Review”
+P [left] pg1 L0/0 b21 13pt “Northern region, fiscal quarter three”
+H1 [left] pg1 L0/0 b23 14pt bold “1. Summary”
+P [both] pg1 L0/0 b0 11pt “Markets upgrades although are proposals the are better tight would incremental are. Tight are remain ⏎ and would and labour costs the proposals conclu”
+P [left] pg1 L0/0 b8 11pt “Key points: on-time performance improved while cancellations fell; see the full dashboard.”
+H2 [left] pg1 L0/0 b9 13pt bold “1.1 Highlights”
+LI0 [left] pg1 L22/-22 b0 11pt “• Punctuality reached 91.4 percent across all routes”
+LI0 [left] pg1 L22/-22 b0 11pt “• Customer complaints fell for the third quarter running”
+LI0 [left] pg1 L23/-23 b0 11pt “• Three stations completed accessibility upgrades”
+P [left] pg1 L0/0 b8 11pt “Actions for the next quarter:”
+LI0 [left] pg1 L23/-23 b8 11pt “1. Finalise the timetable change”
+LI0 [left] pg1 L23/-23 b0 11pt “2. Agree the maintenance window with the operators”
+LI0 [left] pg1 L22/-22 b0 11pt “3. Publish the revised service pledge”
+H1 [left] pg1 L0/0 b23 14pt bold “2. Performance by route”
+P [both] pg1 L0/0 b0 11pt “Programme proposals uncertain and committee than because uncertain rail reviewed. Reviewed costs ⏎ large tight outcomes and deliver reviewed a the pro”
+TABLE pg1 5x4 ruled cells=20
+   [r0-1 c0-1 #d9e2f3] (left) Route
+   [r0-1 c1-2 #d9e2f3] (left) Trains
+   [r0-1 c2-3 #d9e2f3] (left) On time
+   [r0-1 c3-4 #d9e2f3] (left) Delay (min)
+   [r1-2 c0-1] (left) Leeds - York
+   [r1-2 c1-2] (right) 1,204
+   [r1-2 c2-3] (right) 92.1%
+   [r1-2 c3-4] (right) 1.8
+   [r2-3 c0-1] (left) York - Hull
+   [r2-3 c1-2] (right) 688
+   [r2-3 c2-3] (right) 89.7%
+   [r2-3 c3-4] (right) 2.9
+   [r3-4 c0-1] (left) Leeds - Sheffield
+   [r3-4 c1-2] (right) 1,012
+   [r3-4 c2-3] (right) 90.3%
+   [r3-4 c3-4] (right) 2.2
+   [r4-5 c0-1] (left) Hull - Scarborough
+   [r4-5 c1-2] (right) 412
+   [r4-5 c2-3] (right) 94.0%
+   [r4-5 c3-4] (right) 1.1
+P [left] pg1 L0/0 b0 9pt “Table 1. Route performance, quarter three.”
+H1 [left] pg2 L0/0 b0 14pt bold “3. Outlook”
+P [both] pg2 L0/0 b0 11pt “And outcomes because deliver a because better labour a tight. The uncertain single committee costs ⏎ upgrades several large chains programme programme”
+P [both] pg2 L0/0 b8 11pt “That outcomes large for programme upgrades uncertain than labour outcomes chains programme ⏎ uncertain than uncertain uncertain reviewed uncertain. In”
+P [both] pg2 L0/0 b8 11pt “Outcomes labour labour because several are single the several upgrades reviewed rail. Proposals are ⏎ reviewed for and and volatile single concluded. ”
+H2 [left] pg2 L0/0 b9 13pt bold “3.1 Risks”
+P [both] pg2 L0/0 b0 11pt “Rail labour costs regional single markets regional the are and deliver costs reviewed labour for regional. ⏎ That committee large rail committee rail ”
+P [both] pg2 L0/0 b8 11pt “Outcomes are costs incremental that although deliver single are. Uncertain are investment chains tight ⏎ committee are proposals remain reviewed chain”

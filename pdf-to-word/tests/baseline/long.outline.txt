@@ -1,0 +1,702 @@
+H1 [left] pg1 L0/0 b18 17pt bold “1. Chapter 1”
+H2 [left] pg1 L0/0 b11 13pt bold “1.1 Section”
+P [both] pg1 L0/0 b4 11pt “Although rail because programme that deliver rail committee because reviewed for. Single proposals ⏎ because deliver incremental supply reviewed volat”
+P [both] pg1 L0/0 b7 11pt “Costs upgrades than chains committee large supply committee than volatile concluded volatile and ⏎ regional volatile regional. Although a than remain ”
+LI0 [left] pg1 L30/-11 b11 11pt “The remain volatile although proposals deliver committee rail upgrades.”
+LI0 [left] pg1 L30/-11 b0 11pt “Because better the reviewed are large incremental reviewed outcomes single investment.”
+LI0 [left] pg1 L30/-11 b0 11pt “Investment costs supply large upgrades proposals reviewed deliver volatile the supply remain the ⏎ deliver.”
+H2 [left] pg1 L0/0 b11 13pt bold “1.2 Section”
+P [both] pg1 L0/0 b3 11pt “Concluded programme proposals single and although chains upgrades better rail and that several are ⏎ chains supply. Upgrades for and concluded large p”
+P [both] pg1 L0/0 b8 11pt “Upgrades for because upgrades proposals upgrades supply outcomes because and remain supply. ⏎ Proposals reviewed a investment costs programme remain d”
+LI0 [left] pg1 L30/-11 b10 11pt “Because outcomes concluded regional the rail programme a upgrades investment and because ⏎ several.”
+LI0 [left] pg1 L30/-11 b0 11pt “Large a would large concluded better rail single supply single would a although.”
+LI0 [left] pg1 L30/-11 b0 11pt “Outcomes supply concluded committee investment proposals several supply a.”
+TABLE pg1 5x3 ruled cells=15
+   [r0-1 c0-1 center] (center) Item
+   [r0-1 c1-2 center] (center) Value
+   [r0-1 c2-3 center] (center) Share
+   [r1-2 c0-1 center] (left) Row 1
+   [r1-2 c1-2 center] (left) 4803
+   [r1-2 c2-3 center] (left) 16%
+   [r2-3 c0-1 center] (left) Row 2
+   [r2-3 c1-2 center] (left) 5678
+   [r2-3 c2-3 center] (left) 45%
+   [r3-4 c0-1 center] (left) Row 3
+   [r3-4 c1-2 center] (left) 6950
+   [r3-4 c2-3 center] (left) 58%
+   [r4-5 c0-1 center] (left) Row 4
+   [r4-5 c1-2 center] (left) 4703
+   [r4-5 c2-3 center] (left) 34%
+H2 [left] pg2 L0/0 b0 13pt bold “1.3 Section”
+P [both] pg2 L0/0 b3 11pt “Reviewed and reviewed would uncertain several regional chains would a volatile costs. Upgrades because ⏎ than would deliver volatile the single would ”
+P [both] pg2 L0/0 b7 11pt “Because remain costs proposals and are volatile because programme that outcomes regional committee ⏎ than costs investment. Incremental that a that th”
+LI0 [left] pg2 L30/-11 b11 11pt “Programme chains better several and regional than committee outcomes upgrades programme ⏎ committee than a the proposals.”
+LI0 [left] pg2 L30/-11 b0 11pt “Several committee programme volatile are reviewed upgrades for concluded concluded are ⏎ volatile.”
+LI0 [center] pg2 L0/0 b0 11pt “Remain than investment uncertain because than proposals would outcomes than for uncertain.”
+H1 [left] pg3 L0/0 b0 17pt bold “2. Chapter 2”
+H2 [left] pg3 L0/0 b11 13pt bold “2.1 Section”
+P [both] pg3 L0/0 b4 11pt “Remain would than large better volatile are than for and. Several costs regional because large several the ⏎ outcomes concluded. Supply proposals woul”
+P [both] pg3 L0/0 b7 11pt “Concluded rail would large proposals costs committee remain investment for. A a and large than because ⏎ committee deliver than the better volatile th”
+LI0 [left] pg3 L30/-11 b11 11pt “Rail concluded proposals committee chains incremental incremental remain that for and.”
+LI0 [left] pg3 L30/-11 b0 11pt “Costs and regional are and uncertain that and reviewed for incremental supply although.”
+LI0 [left] pg3 L30/-11 b0 11pt “Than a investment than chains regional a although committee outcomes chains reviewed”
+P [left] pg3 L30/0 b0 11pt “committee than are.”
+H2 [left] pg3 L0/0 b11 13pt bold “2.2 Section”
+P [both] pg3 L0/0 b3 11pt “Costs because several committee deliver remain for committee chains the costs programme large ⏎ reviewed. Programme chains rail chains outcomes supply”
+P [both] pg3 L0/0 b8 11pt “Outcomes proposals costs outcomes committee rail are the incremental a supply concluded uncertain ⏎ chains deliver investment supply. Because outcomes”
+LI0 [left] pg3 L30/-11 b10 11pt “Volatile and chains concluded and proposals investment chains investment remain costs.”
+LI0 [left] pg3 L30/-11 b0 11pt “For a than large large and several although would and volatile.”
+LI0 [left] pg3 L30/-11 b0 11pt “Costs uncertain volatile would would the supply than a the supply for better single.”
+TABLE pg3 5x3 ruled cells=15
+   [r0-1 c0-1 center] (center) Item
+   [r0-1 c1-2 center] (center) Value
+   [r0-1 c2-3 center] (center) Share
+   [r1-2 c0-1 center] (left) Row 1
+   [r1-2 c1-2 center] (left) 8320
+   [r1-2 c2-3 center] (left) 26%
+   [r2-3 c0-1 center] (left) Row 2
+   [r2-3 c1-2 center] (left) 3852
+   [r2-3 c2-3 center] (left) 56%
+   [r3-4 c0-1 center] (left) Row 3
+   [r3-4 c1-2 center] (left) 3658
+   [r3-4 c2-3 center] (left) 66%
+   [r4-5 c0-1 center] (left) Row 4
+   [r4-5 c1-2 center] (left) 7512
+   [r4-5 c2-3 center] (left) 25%
+H2 [left] pg4 L0/0 b0 13pt bold “2.3 Section”
+P [both] pg4 L0/0 b3 11pt “Volatile outcomes committee volatile costs several reviewed a several regional proposals than regional ⏎ deliver. Single because would volatile than t”
+P [both] pg4 L0/0 b7 11pt “Regional would uncertain committee supply better the that are upgrades and concluded and. Committee ⏎ concluded incremental than several several propo”
+LI0 [left] pg4 L30/-11 b11 11pt “That reviewed supply programme upgrades a because outcomes are costs chains reviewed a would ⏎ several regional outcomes.”
+LI0 [left] pg4 L30/-11 b0 11pt “Proposals supply the upgrades uncertain for committee because chains single remain upgrades ⏎ would committee than deliver.”
+LI0 [left] pg4 L30/-11 b0 11pt “Several outcomes rail for deliver better investment that are and are.”
+H1 [left] pg5 L0/0 b0 17pt bold “3. Chapter 3”
+H2 [left] pg5 L0/0 b11 13pt bold “3.1 Section”
+P [both] pg5 L0/0 b4 11pt “Regional volatile large although would outcomes outcomes upgrades volatile several would volatile ⏎ remain. Concluded uncertain a deliver remain are d”
+P [both] pg5 L0/0 b7 11pt “Than outcomes a regional are deliver large incremental are remain investment chains concluded would ⏎ than supply. Better although several volatile su”
+LI0 [left] pg5 L30/-11 b11 11pt “Deliver proposals although deliver incremental concluded investment incremental because would ⏎ supply single although reviewed.”
+LI0 [left] pg5 L30/-11 b0 11pt “Supply would committee large deliver for concluded although committee proposals incremental ⏎ committee single outcomes.”
+LI0 [center] pg5 L0/0 b0 11pt “Several remain concluded uncertain than large uncertain rail deliver several than proposals.”
+H2 [left] pg5 L0/0 b11 13pt bold “3.2 Section”
+P [both] pg5 L0/0 b3 11pt “A chains and supply remain the chains costs although the large than would would regional proposals. For ⏎ because better investment better costs deliv”
+P [both] pg5 L0/0 b7 11pt “Volatile regional several volatile deliver outcomes chains several uncertain a committee volatile although ⏎ committee committee remain. A upgrades fo”
+LI0 [left] pg5 L30/-11 b11 11pt “Investment rail upgrades a because regional volatile deliver upgrades proposals volatile a deliver ⏎ for costs rail single.”
+LI0 [left] pg5 L30/-11 b0 11pt “Reviewed chains although programme proposals supply several than costs that rail concluded the ⏎ regional chains outcomes.”
+LI0 [left] pg5 L30/-11 b0 11pt “Several committee remain committee costs although would a volatile regional a because because ⏎ uncertain programme.”
+TABLE pg6 5x3 ruled cells=15
+   [r0-1 c0-1 center] (center) Item
+   [r0-1 c1-2 center] (center) Value
+   [r0-1 c2-3 center] (center) Share
+   [r1-2 c0-1 center] (left) Row 1
+   [r1-2 c1-2 center] (left) 6648
+   [r1-2 c2-3 center] (left) 16%
+   [r2-3 c0-1 center] (left) Row 2
+   [r2-3 c1-2 center] (left) 1417
+   [r2-3 c2-3 center] (left) 89%
+   [r3-4 c0-1 center] (left) Row 3
+   [r3-4 c1-2 center] (left) 6495
+   [r3-4 c2-3 center] (left) 80%
+   [r4-5 c0-1 center] (left) Row 4
+   [r4-5 c1-2 center] (left) 8856
+   [r4-5 c2-3 center] (left) 30%
+H2 [left] pg6 L0/0 b12 13pt bold “3.3 Section”
+P [both] pg6 L0/0 b3 11pt “Because than programme the deliver uncertain committee reviewed chains remain incremental chains that ⏎ because although although. Costs a reviewed wo”
+P [both] pg6 L0/0 b8 11pt “Chains committee committee remain better are concluded regional would than although. Uncertain remain ⏎ a committee and chains investment outcomes tha”
+LI0 [center] pg6 L0/0 b10 11pt “Outcomes investment better deliver remain and better and rail outcomes concluded remain.”
+LI0 [left] pg6 L30/-11 b0 11pt “Because outcomes for incremental reviewed regional although incremental several for remain ⏎ proposals.”
+LI0 [center] pg6 L0/0 b0 11pt “Supply proposals although are and concluded remain costs large large rail upgrades remain.”
+H1 [left] pg7 L0/0 b0 17pt bold “4. Chapter 4”
+H2 [left] pg7 L0/0 b11 13pt bold “4.1 Section”
+P [both] pg7 L0/0 b4 11pt “Incremental committee and rail volatile programme uncertain although regional several remain. For ⏎ deliver large deliver chains regional rail investm”
+P [both] pg7 L0/0 b7 11pt “Because than programme would for investment incremental proposals incremental several proposals. ⏎ Large volatile uncertain single remain upgrades for”
+LI0 [left] pg7 L30/-11 b11 11pt “Reviewed volatile chains incremental uncertain the a and the large would chains rail.”
+LI0 [left] pg7 L30/-11 b0 11pt “Large than would uncertain the a remain outcomes investment regional.”
+LI0 [left] pg7 L30/-11 b0 11pt “Would several outcomes several uncertain committee costs volatile for regional outcomes ⏎ incremental uncertain remain reviewed because concluded.”
+H2 [left] pg7 L0/0 b11 13pt bold “4.2 Section”
+P [both] pg7 L0/0 b3 11pt “Committee the and large several that better the concluded several regional are are uncertain several ⏎ programme volatile. Although committee rail unc”
+P [both] pg7 L0/0 b7 11pt “Because that programme supply programme large costs proposals a programme costs and rail. Deliver a ⏎ although several incremental several uncertain f”
+LI0 [left] pg7 L30/-11 b11 11pt “Regional large the although rail that costs are proposals committee would several for reviewed ⏎ would remain.”
+LI0 [left] pg7 L30/-11 b0 11pt “The regional costs supply for regional regional would upgrades investment better supply remain ⏎ upgrades several upgrades would.”
+LI0 [left] pg7 L30/-11 b0 11pt “Although better supply that volatile for upgrades costs proposals investment several single single.”
+TABLE pg8 5x3 ruled cells=15
+   [r0-1 c0-1 center] (center) Item
+   [r0-1 c1-2 center] (center) Value
+   [r0-1 c2-3 center] (center) Share
+   [r1-2 c0-1 center] (left) Row 1
+   [r1-2 c1-2 center] (left) 2954
+   [r1-2 c2-3 center] (left) 52%
+   [r2-3 c0-1 center] (left) Row 2
+   [r2-3 c1-2 center] (left) 3771
+   [r2-3 c2-3 center] (left) 36%
+   [r3-4 c0-1 center] (left) Row 3
+   [r3-4 c1-2 center] (left) 5876
+   [r3-4 c2-3 center] (left) 73%
+   [r4-5 c0-1 center] (left) Row 4
+   [r4-5 c1-2 center] (left) 3424
+   [r4-5 c2-3 center] (left) 93%
+H2 [left] pg8 L0/0 b12 13pt bold “4.3 Section”
+P [both] pg8 L0/0 b3 11pt “Would programme uncertain remain programme although outcomes supply supply and investment ⏎ outcomes deliver. Remain programme better deliver a would ”
+P [both] pg8 L0/0 b8 11pt “Supply better uncertain are proposals reviewed volatile chains deliver and although for because costs rail. ⏎ Supply incremental programme programme a”
+LI0 [left] pg8 L30/-11 b10 11pt “Rail several are incremental for because that deliver large concluded committee than deliver large ⏎ the.”
+LI0 [left] pg8 L30/-11 b0 11pt “Although several investment the are because the because better are.”
+LI0 [left] pg8 L30/-11 b0 11pt “Volatile chains committee rail investment and single chains volatile that uncertain than programme ⏎ because concluded.”
+H1 [left] pg9 L0/0 b0 17pt bold “5. Chapter 5”
+H2 [left] pg9 L0/0 b11 13pt bold “5.1 Section”
+P [both] pg9 L0/0 b4 11pt “Although large than committee that that single upgrades single incremental several investment several ⏎ better rail costs. Upgrades volatile would a l”
+P [both] pg9 L0/0 b7 11pt “Better investment concluded would upgrades volatile reviewed deliver proposals incremental rail than. ⏎ Incremental proposals reviewed several increme”
+LI0 [left] pg9 L30/-11 b12 11pt “Rail better upgrades because would are deliver outcomes better although deliver investment chains ⏎ committee than remain a.”
+LI0 [left] pg9 L30/-11 b0 11pt “A rail would programme although and remain rail chains.”
+LI0 [left] pg9 L30/-11 b0 11pt “Chains deliver would programme the and deliver are investment.”
+H2 [left] pg9 L0/0 b11 13pt bold “5.2 Section”
+P [both] pg9 L0/0 b3 11pt “The regional committee than although the deliver better single. Incremental for remain chains a remain ⏎ several that outcomes are committee concluded”
+P [both] pg9 L0/0 b7 11pt “Proposals uncertain for costs remain proposals costs chains single that. Outcomes large proposals a ⏎ committee for upgrades several concluded. Severa”
+LI0 [left] pg9 L30/-11 b10 11pt “Than investment better reviewed committee single reviewed and reviewed committee programme ⏎ than several would for are although.”
+LI0 [left] pg9 L30/-11 b0 11pt “Several for investment would for several several committee committee several volatile.”
+LI0 [left] pg9 L30/-11 b0 11pt “A investment single regional and uncertain that deliver several remain investment.”
+TABLE pg9 5x3 ruled cells=15
+   [r0-1 c0-1 center] (center) Item
+   [r0-1 c1-2 center] (center) Value
+   [r0-1 c2-3 center] (center) Share
+   [r1-2 c0-1 center] (left) Row 1
+   [r1-2 c1-2 center] (left) 8421
+   [r1-2 c2-3 center] (left) 1%
+   [r2-3 c0-1 center] (left) Row 2
+   [r2-3 c1-2 center] (left) 5517
+   [r2-3 c2-3 center] (left) 80%
+   [r3-4 c0-1 center] (left) Row 3
+   [r3-4 c1-2 center] (left) 5649
+   [r3-4 c2-3 center] (left) 60%
+   [r4-5 c0-1 center] (left) Row 4
+   [r4-5 c1-2 center] (left) 901
+   [r4-5 c2-3 center] (left) 8%
+H2 [left] pg10 L0/0 b0 13pt bold “5.3 Section”
+P [both] pg10 L0/0 b3 11pt “Better chains reviewed chains a committee incremental because because several concluded proposals ⏎ several committee outcomes because incremental. Ou”
+P [both] pg10 L0/0 b7 11pt “Better incremental the rail proposals supply that concluded concluded. And and the rail several rail chains ⏎ chains rail volatile because better woul”
+LI0 [left] pg10 L30/-11 b11 11pt “Because rail and volatile a a uncertain because than costs programme.”
+LI0 [left] pg10 L30/-11 b0 11pt “Large are concluded although regional are a volatile concluded remain because that would ⏎ upgrades programme and.”
+LI0 [left] pg10 L30/-11 b0 11pt “Incremental outcomes uncertain single programme several and regional single uncertain volatile ⏎ the.”
+H1 [left] pg11 L0/0 b0 17pt bold “6. Chapter 6”
+H2 [left] pg11 L0/0 b11 13pt bold “6.1 Section”
+P [both] pg11 L0/0 b4 11pt “Committee investment would although upgrades although large volatile than the volatile upgrades ⏎ uncertain. Programme large because incremental than ”
+P [both] pg11 L0/0 b7 11pt “Committee large because several single several concluded for supply programme chains because ⏎ outcomes the remain outcomes. Incremental uncertain the”
+LI0 [left] pg11 L30/-11 b12 11pt “Volatile deliver and that large investment supply for costs rail regional than committee uncertain ⏎ better.”
+LI0 [left] pg11 L30/-11 b0 11pt “Large volatile committee supply although are regional reviewed a several for would programme ⏎ programme the.”
+LI0 [left] pg11 L30/-11 b0 11pt “Proposals proposals deliver a costs large incremental and investment rail.”
+H2 [left] pg11 L0/0 b11 13pt bold “6.2 Section”
+P [both] pg11 L0/0 b3 11pt “A for single although although committee are rail because costs proposals. Outcomes several investment ⏎ committee rail supply would than would. Than ”
+P [both] pg11 L0/0 b7 11pt “A that a committee large costs several although would chains committee supply chains because chains ⏎ costs. And volatile concluded upgrades chains co”
+LI0 [left] pg11 L30/-11 b10 11pt “Chains committee several investment and chains remain regional a than deliver reviewed supply ⏎ outcomes regional supply outcomes.”
+LI0 [left] pg11 L30/-11 b0 11pt “Chains the incremental rail because concluded regional for the outcomes concluded outcomes the ⏎ although supply are rail.”
+LI0 [center] pg11 L0/0 b0 11pt “Uncertain rail and several remain are investment are regional investment because reviewed.”
+TABLE pg11 5x3 ruled cells=15
+   [r0-1 c0-1 center] (center) Item
+   [r0-1 c1-2 center] (center) Value
+   [r0-1 c2-3 center] (center) Share
+   [r1-2 c0-1 center] (left) Row 1
+   [r1-2 c1-2 center] (left) 5706
+   [r1-2 c2-3 center] (left) 82%
+   [r2-3 c0-1 center] (left) Row 2
+   [r2-3 c1-2 center] (left) 4370
+   [r2-3 c2-3 center] (left) 42%
+   [r3-4 c0-1 center] (left) Row 3
+   [r3-4 c1-2 center] (left) 7933
+   [r3-4 c2-3 center] (left) 87%
+   [r4-5 c0-1 center] (left) Row 4
+   [r4-5 c1-2 center] (left) 5535
+   [r4-5 c2-3 center] (left) 73%
+H2 [left] pg12 L0/0 b0 13pt bold “6.3 Section”
+P [both] pg12 L0/0 b3 11pt “Proposals that deliver large better volatile a supply single upgrades although that although. Costs ⏎ investment deliver deliver for a are deliver lar”
+P [both] pg12 L0/0 b7 11pt “And are than supply than regional rail proposals upgrades rail for several single than single single costs. ⏎ The than supply than remain regional inc”
+LI0 [left] pg12 L30/-11 b11 11pt “Would reviewed the investment chains single volatile incremental than outcomes upgrades rail the ⏎ programme.”
+LI0 [left] pg12 L30/-11 b0 11pt “Supply that volatile reviewed would chains although investment that.”
+LI0 [left] pg12 L30/-11 b0 11pt “That are supply concluded reviewed rail chains are upgrades although uncertain incremental ⏎ uncertain uncertain a.”
+H1 [left] pg13 L0/0 b0 17pt bold “7. Chapter 7”
+H2 [left] pg13 L0/0 b11 13pt bold “7.1 Section”
+P [both] pg13 L0/0 b4 11pt “Costs are although the chains outcomes deliver and proposals reviewed single costs for. Outcomes better ⏎ costs and regional single incremental severa”
+P [both] pg13 L0/0 b7 11pt “Better reviewed volatile and volatile the reviewed that would upgrades incremental proposals upgrades. ⏎ Chains that upgrades outcomes proposals upgra”
+LI0 [center] pg13 L0/0 b11 11pt “Regional than deliver the and costs outcomes than reviewed better would investment would.”
+LI0 [left] pg13 L30/-11 b0 11pt “Deliver are supply concluded costs uncertain uncertain a uncertain committee programme.”
+LI0 [left] pg13 L30/-11 b0 11pt “Committee upgrades deliver because a concluded outcomes are investment for better are ⏎ concluded.”
+H2 [left] pg13 L0/0 b11 13pt bold “7.2 Section”
+P [both] pg13 L0/0 b3 11pt “Several committee remain volatile proposals remain costs are that that several outcomes chains because ⏎ would. Upgrades regional because outcomes cha”
+P [both] pg13 L0/0 b8 11pt “Programme outcomes costs uncertain concluded incremental several uncertain rail costs upgrades. ⏎ Concluded remain several investment are although are”
+LI0 [left] pg13 L30/-11 b10 11pt “Regional better deliver large upgrades remain supply better regional than.”
+LI0 [left] pg13 L30/-11 b0 11pt “Chains proposals single proposals chains investment would investment are.”
+LI0 [left] pg13 L30/-11 b0 11pt “Several incremental are reviewed proposals uncertain deliver that several investment outcomes ⏎ investment uncertain.”
+TABLE pg13 5x3 ruled cells=15
+   [r0-1 c0-1 center] (center) Item
+   [r0-1 c1-2 center] (center) Value
+   [r0-1 c2-3 center] (center) Share
+   [r1-2 c0-1 center] (left) Row 1
+   [r1-2 c1-2 center] (left) 4549
+   [r1-2 c2-3 center] (left) 83%
+   [r2-3 c0-1 center] (left) Row 2
+   [r2-3 c1-2 center] (left) 5376
+   [r2-3 c2-3 center] (left) 58%
+   [r3-4 c0-1 center] (left) Row 3
+   [r3-4 c1-2 center] (left) 6191
+   [r3-4 c2-3 center] (left) 2%
+   [r4-5 c0-1 center] (left) Row 4
+   [r4-5 c1-2 center] (left) 4301
+   [r4-5 c2-3 center] (left) 1%
+H2 [left] pg14 L0/0 b0 13pt bold “7.3 Section”
+P [both] pg14 L0/0 b3 11pt “Than upgrades chains for for committee single programme would would uncertain investment that that. ⏎ For and for are costs remain incremental program”
+P [both] pg14 L0/0 b7 11pt “For incremental than a for would deliver a large are. Than the would investment supply reviewed because ⏎ than remain incremental the reviewed upgrade”
+LI0 [left] pg14 L30/-11 b10 11pt “Volatile single chains better deliver upgrades and supply a for upgrades are although.”
+LI0 [left] pg14 L30/-11 b0 11pt “Deliver committee would supply proposals upgrades would investment uncertain uncertain costs.”
+LI0 [left] pg14 L30/-11 b0 11pt “Because upgrades although large and remain that chains would better the are better volatile several ⏎ uncertain.”
+H1 [left] pg15 L0/0 b0 17pt bold “8. Chapter 8”
+H2 [left] pg15 L0/0 b11 13pt bold “8.1 Section”
+P [both] pg15 L0/0 b4 11pt “Remain remain because chains single remain rail remain outcomes. Supply several costs that that chains ⏎ supply incremental although incremental. Revi”
+P [both] pg15 L0/0 b7 11pt “A several deliver for deliver that and upgrades a committee large proposals. Upgrades large for ⏎ incremental a for reviewed that the and a than the. ”
+LI0 [left] pg15 L30/-11 b11 11pt “Rail large the for incremental several upgrades would single single committee regional a for ⏎ uncertain.”
+LI0 [left] pg15 L30/-11 b0 11pt “Costs deliver remain the reviewed deliver investment rail single.”
+LI0 [left] pg15 L30/-11 b0 11pt “Would rail deliver the deliver because reviewed that regional costs for.”
+H2 [left] pg15 L0/0 b11 13pt bold “8.2 Section”
+P [both] pg15 L0/0 b3 11pt “Would single several deliver and regional are that and concluded a rail are although investment and. ⏎ Several uncertain outcomes investment volatile ”
+P [both] pg15 L0/0 b8 11pt “Concluded a committee a large proposals single single large uncertain regional costs remain upgrades ⏎ large programme. Costs large supply rail commit”
+LI0 [left] pg15 L30/-11 b10 11pt “Costs the better costs volatile incremental concluded better large chains several although several.”
+LI0 [left] pg15 L30/-11 b0 11pt “Chains that would regional committee several for investment rail would reviewed and.”
+LI0 [left] pg15 L30/-11 b0 11pt “A outcomes chains volatile would outcomes several several deliver deliver that incremental ⏎ although proposals regional supply uncertain.”
+TABLE pg15 5x3 ruled cells=15
+   [r0-1 c0-1 center] (center) Item
+   [r0-1 c1-2 center] (center) Value
+   [r0-1 c2-3 center] (center) Share
+   [r1-2 c0-1 center] (left) Row 1
+   [r1-2 c1-2 center] (left) 8474
+   [r1-2 c2-3 center] (left) 13%
+   [r2-3 c0-1 center] (left) Row 2
+   [r2-3 c1-2 center] (left) 5889
+   [r2-3 c2-3 center] (left) 1%
+   [r3-4 c0-1 center] (left) Row 3
+   [r3-4 c1-2 center] (left) 3724
+   [r3-4 c2-3 center] (left) 7%
+   [r4-5 c0-1 center] (left) Row 4
+   [r4-5 c1-2 center] (left) 7482
+   [r4-5 c2-3 center] (left) 40%
+H2 [left] pg16 L0/0 b0 13pt bold “8.3 Section”
+P [both] pg16 L0/0 b3 11pt “Chains rail are proposals better investment several a investment several chains supply the would volatile ⏎ because. Large large a and are programme r”
+P [both] pg16 L0/0 b7 11pt “Several for than would than remain supply uncertain uncertain and are are incremental. Concluded ⏎ investment remain regional for incremental conclude”
+LI0 [left] pg16 L30/-11 b11 11pt “Reviewed single reviewed reviewed costs supply would deliver uncertain chains better for that for.”
+LI0 [left] pg16 L30/-11 b0 11pt “Remain several remain uncertain chains better for upgrades a supply than for although concluded.”
+LI0 [center] pg16 L0/0 b0 11pt “For volatile committee are and reviewed rail better that committee committee volatile would.”
+H1 [left] pg17 L0/0 b0 17pt bold “9. Chapter 9”
+H2 [left] pg17 L0/0 b11 13pt bold “9.1 Section”
+P [both] pg17 L0/0 b4 11pt “Rail for a that costs the for committee volatile than the volatile although. Volatile investment single chains ⏎ regional committee although that unce”
+P [both] pg17 L0/0 b8 11pt “Remain supply upgrades regional deliver several concluded chains concluded reviewed. Upgrades and ⏎ uncertain outcomes several reviewed supply increme”
+LI0 [left] pg17 L30/-11 b11 11pt “Uncertain chains that than large for rail deliver reviewed deliver would proposals for.”
+LI0 [left] pg17 L30/-11 b0 11pt “Volatile chains outcomes are rail proposals the upgrades deliver rail single the.”
+LI0 [left] pg17 L30/-11 b0 11pt “Large because would rail reviewed single remain upgrades the a costs would investment remain.”
+H2 [left] pg17 L0/0 b11 13pt bold “9.2 Section”
+P [both] pg17 L0/0 b3 11pt “Because outcomes costs volatile large supply because that upgrades single than because regional better ⏎ rail. For several programme that remain progr”
+P [both] pg17 L0/0 b8 11pt “Supply than investment reviewed chains the reviewed and concluded remain better chains for would ⏎ deliver than single. Large several the uncertain th”
+LI0 [left] pg17 L30/-11 b10 11pt “Would rail programme upgrades uncertain for several remain single a large volatile incremental ⏎ concluded a.”
+LI0 [left] pg17 L30/-11 b0 11pt “Although committee remain investment uncertain although upgrades upgrades a programme that.”
+LI0 [left] pg17 L30/-11 b0 11pt “A programme several deliver supply upgrades remain upgrades concluded supply deliver because ⏎ single and programme and.”
+TABLE pg17 5x3 ruled cells=15
+   [r0-1 c0-1 center] (center) Item
+   [r0-1 c1-2 center] (center) Value
+   [r0-1 c2-3 center] (center) Share
+   [r1-2 c0-1 center] (left) Row 1
+   [r1-2 c1-2 center] (left) 2404
+   [r1-2 c2-3 center] (left) 28%
+   [r2-3 c0-1 center] (left) Row 2
+   [r2-3 c1-2 center] (left) 2242
+   [r2-3 c2-3 center] (left) 40%
+   [r3-4 c0-1 center] (left) Row 3
+   [r3-4 c1-2 center] (left) 1870
+   [r3-4 c2-3 center] (left) 41%
+   [r4-5 c0-1 center] (left) Row 4
+   [r4-5 c1-2 center] (left) 1202
+   [r4-5 c2-3 center] (left) 99%
+H2 [left] pg18 L0/0 b0 13pt bold “9.3 Section”
+P [both] pg18 L0/0 b3 11pt “Upgrades proposals investment deliver uncertain that large programme because costs. Outcomes large ⏎ large for would are outcomes costs better. Becaus”
+P [both] pg18 L0/0 b7 11pt “A proposals concluded supply programme because outcomes deliver because regional volatile concluded ⏎ chains that supply supply. Uncertain would revie”
+LI0 [left] pg18 L30/-11 b11 11pt “Better upgrades proposals reviewed volatile that single for regional single.”
+LI0 [left] pg18 L30/-11 b0 11pt “Chains committee rail for concluded proposals remain volatile rail that incremental incremental ⏎ single.”
+LI0 [left] pg18 L30/-11 b0 11pt “Would better supply the large chains deliver would volatile programme programme investment ⏎ uncertain reviewed large would proposals.”
+H1 [left] pg19 L0/0 b0 17pt bold “10. Chapter 10”
+H2 [left] pg19 L0/0 b11 13pt bold “10.1 Section”
+P [both] pg19 L0/0 b4 11pt “That because for a for regional committee because that the committee. Upgrades a the than volatile ⏎ volatile although upgrades would single programme”
+P [both] pg19 L0/0 b7 11pt “Are outcomes remain the that upgrades than than than than single proposals proposals rail better. Rail ⏎ supply proposals outcomes supply proposals fo”
+LI0 [left] pg19 L30/-11 b11 11pt “A supply supply several although upgrades chains regional reviewed incremental outcomes ⏎ upgrades and.”
+LI0 [left] pg19 L30/-11 b0 11pt “The rail concluded although concluded would a a proposals the than reviewed than the investment.”
+LI0 [left] pg19 L30/-11 b0 11pt “The regional chains single single rail because investment investment several better large.”
+H2 [left] pg19 L0/0 b11 13pt bold “10.2 Section”
+P [both] pg19 L0/0 b3 11pt “Outcomes supply and supply reviewed volatile committee a several and deliver reviewed. Several volatile ⏎ costs would several upgrades a committee reg”
+P [both] pg19 L0/0 b7 11pt “Outcomes large uncertain proposals uncertain are several rail chains proposals for the outcomes. Chains ⏎ rail uncertain programme are concluded uncer”
+LI0 [left] pg19 L30/-11 b10 11pt “Programme outcomes investment programme several would although than than volatile volatile ⏎ costs programme single a a and.”
+LI0 [left] pg19 L30/-11 b0 11pt “Investment volatile proposals are committee incremental would the single.”
+LI0 [left] pg19 L30/-11 b0 11pt “And concluded better committee upgrades incremental that are costs programme outcomes than ⏎ better chains outcomes investment because.”
+TABLE pg19 5x3 ruled cells=15
+   [r0-1 c0-1 center] (center) Item
+   [r0-1 c1-2 center] (center) Value
+   [r0-1 c2-3 center] (center) Share
+   [r1-2 c0-1 center] (left) Row 1
+   [r1-2 c1-2 center] (left) 3381
+   [r1-2 c2-3 center] (left) 23%
+   [r2-3 c0-1 center] (left) Row 2
+   [r2-3 c1-2 center] (left) 8098
+   [r2-3 c2-3 center] (left) 35%
+   [r3-4 c0-1 center] (left) Row 3
+   [r3-4 c1-2 center] (left) 6054
+   [r3-4 c2-3 center] (left) 94%
+   [r4-5 c0-1 center] (left) Row 4
+   [r4-5 c1-2 center] (left) 1075
+   [r4-5 c2-3 center] (left) 62%
+H2 [left] pg20 L0/0 b0 13pt bold “10.3 Section”
+P [both] pg20 L0/0 b3 11pt “Deliver chains several investment are that costs are proposals because than single supply are for would ⏎ although. Incremental for a for concluded re”
+P [both] pg20 L0/0 b7 11pt “Regional that outcomes than volatile are than outcomes and committee. Upgrades upgrades programme ⏎ upgrades several rail would although a that that t”
+LI0 [left] pg20 L30/-11 b11 11pt “Several for large chains costs proposals regional uncertain volatile a.”
+LI0 [left] pg20 L30/-11 b0 11pt “A upgrades because deliver rail upgrades committee single are outcomes although uncertain ⏎ although outcomes uncertain large.”
+LI0 [left] pg20 L30/-11 b0 11pt “Remain rail a incremental regional large committee remain and deliver investment large regional ⏎ although large upgrades.”
+H1 [left] pg21 L0/0 b0 17pt bold “11. Chapter 11”
+H2 [left] pg21 L0/0 b11 13pt bold “11.1 Section”
+P [both] pg21 L0/0 b4 11pt “Investment than costs costs and better the proposals costs and volatile regional deliver for concluded ⏎ remain. And that costs deliver reviewed costs”
+P [both] pg21 L0/0 b7 11pt “Regional upgrades supply supply upgrades regional remain rail would outcomes and investment upgrades ⏎ deliver because. Incremental reviewed deliver r”
+LI0 [center] pg21 L0/0 b11 11pt “Chains reviewed and would remain investment several uncertain large because are committee.”
+LI0 [left] pg21 L30/-11 b0 11pt “Are deliver better costs uncertain chains several because committee proposals uncertain for ⏎ investment the incremental.”
+LI0 [left] pg21 L30/-11 b0 11pt “Are are programme remain several regional for deliver than programme reviewed large”
+P [left] pg21 L30/0 b0 11pt “incremental supply that.”
+H2 [left] pg21 L0/0 b11 13pt bold “11.2 Section”
+P [both] pg21 L0/0 b3 11pt “Deliver because remain deliver better incremental would committee outcomes that regional investment ⏎ better uncertain a. Committee several that upgra”
+P [both] pg21 L0/0 b7 11pt “Than outcomes that that investment uncertain because regional upgrades upgrades would programme. ⏎ Volatile rail for than that upgrades investment bec”
+LI0 [left] pg21 L30/-11 b11 11pt “Deliver that upgrades large regional for for a upgrades.”
+LI0 [left] pg21 L30/-11 b0 11pt “Although costs although are regional than supply volatile better several for and reviewed several ⏎ rail concluded supply.”
+LI0 [left] pg21 L30/-11 b0 11pt “Proposals costs rail incremental and large upgrades several a chains and better.”
+TABLE pg22 5x3 ruled cells=15
+   [r0-1 c0-1 center] (center) Item
+   [r0-1 c1-2 center] (center) Value
+   [r0-1 c2-3 center] (center) Share
+   [r1-2 c0-1 center] (left) Row 1
+   [r1-2 c1-2 center] (left) 5461
+   [r1-2 c2-3 center] (left) 98%
+   [r2-3 c0-1 center] (left) Row 2
+   [r2-3 c1-2 center] (left) 7355
+   [r2-3 c2-3 center] (left) 18%
+   [r3-4 c0-1 center] (left) Row 3
+   [r3-4 c1-2 center] (left) 4798
+   [r3-4 c2-3 center] (left) 52%
+   [r4-5 c0-1 center] (left) Row 4
+   [r4-5 c1-2 center] (left) 3618
+   [r4-5 c2-3 center] (left) 84%
+H2 [left] pg22 L0/0 b12 13pt bold “11.3 Section”
+P [both] pg22 L0/0 b3 11pt “Chains single several chains upgrades deliver chains rail outcomes. Because chains several that proposals ⏎ that large better volatile. Regional would”
+P [both] pg22 L0/0 b7 11pt “Costs incremental uncertain supply for supply committee because and volatile. A several rail costs chains ⏎ chains better regional and remain chains u”
+LI0 [left] pg22 L30/-11 b12 11pt “Committee incremental several concluded volatile incremental incremental deliver concluded ⏎ uncertain deliver chains.”
+LI0 [left] pg22 L30/-11 b0 11pt “For committee incremental several incremental outcomes regional rail the.”
+LI0 [left] pg22 L30/-11 b0 11pt “Large and deliver several uncertain costs are rail better remain single.”
+H1 [left] pg23 L0/0 b0 17pt bold “12. Chapter 12”
+H2 [left] pg23 L0/0 b11 13pt bold “12.1 Section”
+P [both] pg23 L0/0 b4 11pt “Deliver volatile and single because are large proposals proposals large committee deliver a that. And large ⏎ would better large because supply that c”
+P [both] pg23 L0/0 b7 11pt “Outcomes proposals remain deliver several costs single costs chains. Large programme single a because ⏎ would regional that investment incremental rem”
+LI0 [left] pg23 L30/-11 b11 11pt “Better a supply incremental are although several better chains better reviewed deliver although and ⏎ supply.”
+LI0 [left] pg23 L30/-11 b0 11pt “Regional because uncertain chains rail than are rail are.”
+LI0 [left] pg23 L30/-11 b0 11pt “Single rail large uncertain uncertain outcomes deliver proposals better several committee deliver ⏎ better.”
+H2 [left] pg23 L0/0 b11 13pt bold “12.2 Section”
+P [both] pg23 L0/0 b3 11pt “Better reviewed regional and outcomes regional single better several remain although reviewed upgrades ⏎ better are are investment. Programme because ”
+P [both] pg23 L0/0 b7 11pt “Proposals deliver reviewed incremental chains regional are for regional incremental investment. Although ⏎ chains the better single costs although unc”
+LI0 [left] pg23 L30/-11 b10 11pt “Regional rail chains uncertain rail reviewed a for the better volatile incremental outcomes ⏎ concluded that.”
+LI0 [both] pg23 L30/-11 b0 11pt “The rail supply regional investment outcomes although are outcomes outcomes and incremental the ⏎ programme that costs concluded.”
+LI0 [left] pg23 L30/-11 b0 11pt “Regional reviewed costs large outcomes concluded proposals better reviewed investment.”
+TABLE pg23 5x3 ruled cells=15
+   [r0-1 c0-1 center] (center) Item
+   [r0-1 c1-2 center] (center) Value
+   [r0-1 c2-3 center] (center) Share
+   [r1-2 c0-1 center] (left) Row 1
+   [r1-2 c1-2 center] (left) 5942
+   [r1-2 c2-3 center] (left) 98%
+   [r2-3 c0-1 center] (left) Row 2
+   [r2-3 c1-2 center] (left) 5328
+   [r2-3 c2-3 center] (left) 11%
+   [r3-4 c0-1 center] (left) Row 3
+   [r3-4 c1-2 center] (left) 7216
+   [r3-4 c2-3 center] (left) 43%
+   [r4-5 c0-1 center] (left) Row 4
+   [r4-5 c1-2 center] (left) 3947
+   [r4-5 c2-3 center] (left) 57%
+H2 [left] pg24 L0/0 b0 13pt bold “12.3 Section”
+P [both] pg24 L0/0 b3 11pt “Proposals although regional reviewed that proposals and committee chains outcomes reviewed chains ⏎ because are a reviewed. Several investment and are”
+P [both] pg24 L0/0 b7 11pt “Programme proposals the would are rail that than incremental. That than better and are rail several ⏎ regional that. Are single that concluded upgrade”
+LI0 [left] pg24 L30/-11 b11 11pt “Investment costs investment a single are the committee incremental supply are rail a committee ⏎ although.”
+LI0 [left] pg24 L30/-11 b0 11pt “Costs supply regional reviewed for the costs because the proposals although remain.”
+LI0 [left] pg24 L30/-11 b0 11pt “Uncertain regional although single large the volatile uncertain than are uncertain.”
+H1 [left] pg25 L0/0 b0 17pt bold “13. Chapter 13”
+H2 [left] pg25 L0/0 b11 13pt bold “13.1 Section”
+P [both] pg25 L0/0 b4 11pt “That regional costs a than programme remain single programme volatile single that. Incremental uncertain ⏎ regional rail volatile for reviewed supply ”
+P [both] pg25 L0/0 b7 11pt “Uncertain concluded supply chains uncertain several incremental large for than single although single rail. ⏎ Chains for a a outcomes better would unc”
+LI0 [left] pg25 L30/-11 b12 11pt “Large a although are regional proposals large deliver rail supply several because proposals are ⏎ because although concluded.”
+LI0 [left] pg25 L30/-11 b0 11pt “Rail remain that programme than a that single several remain.”
+LI0 [left] pg25 L30/-11 b0 11pt “Remain for outcomes concluded reviewed for volatile are that that are although are large supply ⏎ volatile outcomes.”
+H2 [left] pg25 L0/0 b11 13pt bold “13.2 Section”
+P [both] pg25 L0/0 b3 11pt “Although supply better deliver programme committee that and because would volatile rail better the ⏎ regional would are. Better single because supply ”
+P [both] pg25 L0/0 b7 11pt “Although committee deliver although remain committee investment concluded single costs better ⏎ investment. Better single a upgrades for reviewed unce”
+LI0 [left] pg25 L30/-11 b12 11pt “Because reviewed concluded for chains costs than remain although investment single committee ⏎ upgrades the although volatile.”
+LI0 [left] pg25 L30/-11 b0 11pt “Would uncertain costs costs chains regional large proposals single a deliver.”
+LI0 [left] pg25 L30/-11 b0 11pt “Volatile than upgrades incremental large because remain and deliver chains that regional.”
+TABLE pg26 5x3 ruled cells=15
+   [r0-1 c0-1 center] (center) Item
+   [r0-1 c1-2 center] (center) Value
+   [r0-1 c2-3 center] (center) Share
+   [r1-2 c0-1 center] (left) Row 1
+   [r1-2 c1-2 center] (left) 2959
+   [r1-2 c2-3 center] (left) 49%
+   [r2-3 c0-1 center] (left) Row 2
+   [r2-3 c1-2 center] (left) 7116
+   [r2-3 c2-3 center] (left) 6%
+   [r3-4 c0-1 center] (left) Row 3
+   [r3-4 c1-2 center] (left) 5836
+   [r3-4 c2-3 center] (left) 69%
+   [r4-5 c0-1 center] (left) Row 4
+   [r4-5 c1-2 center] (left) 3437
+   [r4-5 c2-3 center] (left) 41%
+H2 [left] pg26 L0/0 b12 13pt bold “13.3 Section”
+P [both] pg26 L0/0 b3 11pt “Concluded uncertain supply because committee because than volatile several for. Investment reviewed are ⏎ better several better concluded chains concl”
+P [both] pg26 L0/0 b8 11pt “Committee are volatile because uncertain investment concluded a regional are better uncertain because ⏎ several. Costs concluded deliver several upgra”
+LI0 [left] pg26 L30/-11 b10 11pt “Concluded investment large committee because would and rail because uncertain programme that ⏎ than reviewed volatile investment.”
+LI0 [left] pg26 L30/-11 b0 11pt “Would single reviewed the deliver programme a would large volatile.”
+LI0 [left] pg26 L30/-11 b0 11pt “Reviewed would upgrades regional reviewed committee remain incremental reviewed.”
+H1 [left] pg27 L0/0 b0 17pt bold “14. Chapter 14”
+H2 [left] pg27 L0/0 b11 13pt bold “14.1 Section”
+P [both] pg27 L0/0 b4 11pt “And programme would proposals outcomes deliver uncertain rail for regional uncertain that the volatile ⏎ better committee. That are large remain progr”
+P [both] pg27 L0/0 b7 11pt “Deliver rail remain incremental are costs because upgrades proposals remain deliver several and large ⏎ uncertain large a. Although deliver proposals ”
+LI0 [left] pg27 L30/-11 b11 11pt “Upgrades deliver deliver regional although outcomes regional that better several chains remain.”
+LI0 [left] pg27 L30/-11 b0 11pt “Chains concluded regional uncertain single programme single large volatile although committee ⏎ would a and incremental programme better.”
+LI0 [left] pg27 L30/-11 b0 11pt “The single outcomes a outcomes regional incremental outcomes uncertain large and would ⏎ programme volatile would because.”
+H2 [left] pg27 L0/0 b11 13pt bold “14.2 Section”
+P [both] pg27 L0/0 b3 11pt “Although rail volatile the chains outcomes and would costs would than would because programme for ⏎ although. Concluded remain concluded remain for la”
+P [both] pg27 L0/0 b7 11pt “Rail although incremental are concluded proposals upgrades concluded concluded uncertain. Investment ⏎ than remain that costs investment outcomes larg”
+LI0 [left] pg27 L30/-11 b11 11pt “Upgrades uncertain rail although regional volatile regional regional would are incremental ⏎ investment regional better.”
+LI0 [left] pg27 L30/-11 b0 11pt “Large than would incremental better reviewed several single committee upgrades deliver large ⏎ uncertain large.”
+LI0 [left] pg28 L30/-11 b0 11pt “Uncertain concluded upgrades incremental proposals better costs single deliver than and and ⏎ outcomes rail.”
+TABLE pg28 5x3 ruled cells=15
+   [r0-1 c0-1 center] (center) Item
+   [r0-1 c1-2 center] (center) Value
+   [r0-1 c2-3 center] (center) Share
+   [r1-2 c0-1 center] (left) Row 1
+   [r1-2 c1-2 center] (left) 1872
+   [r1-2 c2-3 center] (left) 7%
+   [r2-3 c0-1 center] (left) Row 2
+   [r2-3 c1-2 center] (left) 5385
+   [r2-3 c2-3 center] (left) 80%
+   [r3-4 c0-1 center] (left) Row 3
+   [r3-4 c1-2 center] (left) 7685
+   [r3-4 c2-3 center] (left) 98%
+   [r4-5 c0-1 center] (left) Row 4
+   [r4-5 c1-2 center] (left) 522
+   [r4-5 c2-3 center] (left) 8%
+H2 [left] pg28 L0/0 b12 13pt bold “14.3 Section”
+P [both] pg28 L0/0 b4 11pt “Deliver committee proposals than deliver upgrades uncertain large outcomes concluded are supply. ⏎ Upgrades uncertain uncertain committee rail the sup”
+P [both] pg28 L0/0 b7 11pt “Investment single a are reviewed large deliver volatile outcomes reviewed remain. Programme that ⏎ volatile uncertain would single costs for single an”
+LI0 [left] pg28 L30/-11 b12 11pt “Volatile that incremental for reviewed costs although for costs although investment several and rail ⏎ programme concluded.”
+LI0 [left] pg28 L30/-11 b0 11pt “Several for concluded large regional are proposals because volatile.”
+LI0 [left] pg28 L30/-11 b0 11pt “For remain single investment although rail remain single regional costs deliver regional are for rail ⏎ would large.”
+H1 [left] pg29 L0/0 b0 17pt bold “15. Chapter 15”
+H2 [left] pg29 L0/0 b11 13pt bold “15.1 Section”
+P [both] pg29 L0/0 b4 11pt “Programme proposals incremental concluded for and regional rail that regional volatile that committee ⏎ concluded and reviewed chains. Rail would rema”
+P [both] pg29 L0/0 b7 11pt “Chains rail several for reviewed are costs concluded single remain concluded chains. Remain because for ⏎ because programme for than that programme in”
+LI0 [left] pg29 L30/-11 b11 11pt “Large committee for large single than regional because the outcomes deliver outcomes concluded ⏎ for.”
+LI0 [left] pg29 L30/-11 b0 11pt “Than because volatile rail reviewed investment single outcomes volatile.”
+LI0 [left] pg29 L30/-11 b0 11pt “Although chains costs supply proposals volatile the deliver and incremental.”
+H2 [left] pg29 L0/0 b11 13pt bold “15.2 Section”
+P [both] pg29 L0/0 b3 11pt “Proposals and several reviewed volatile costs a investment committee concluded are uncertain a single ⏎ programme. Investment rail large reviewed unce”
+P [both] pg29 L0/0 b8 11pt “Volatile outcomes remain supply rail reviewed incremental the reviewed and than the and. Supply single ⏎ chains costs that several chains that uncerta”
+LI0 [left] pg29 L30/-11 b10 11pt “Are costs remain and committee costs chains that reviewed than large incremental volatile.”
+LI0 [left] pg29 L30/-11 b0 11pt “Incremental outcomes volatile concluded regional large are outcomes the.”
+LI0 [left] pg29 L30/-11 b0 11pt “Programme costs and proposals concluded programme rail costs are outcomes concluded upgrades ⏎ reviewed although.”
+TABLE pg29 5x3 ruled cells=15
+   [r0-1 c0-1 center] (center) Item
+   [r0-1 c1-2 center] (center) Value
+   [r0-1 c2-3 center] (center) Share
+   [r1-2 c0-1 center] (left) Row 1
+   [r1-2 c1-2 center] (left) 6708
+   [r1-2 c2-3 center] (left) 56%
+   [r2-3 c0-1 center] (left) Row 2
+   [r2-3 c1-2 center] (left) 7064
+   [r2-3 c2-3 center] (left) 56%
+   [r3-4 c0-1 center] (left) Row 3
+   [r3-4 c1-2 center] (left) 4030
+   [r3-4 c2-3 center] (left) 63%
+   [r4-5 c0-1 center] (left) Row 4
+   [r4-5 c1-2 center] (left) 4940
+   [r4-5 c2-3 center] (left) 93%
+H2 [left] pg30 L0/0 b0 13pt bold “15.3 Section”
+P [both] pg30 L0/0 b3 11pt “Incremental because large several outcomes would uncertain programme the are for proposals uncertain ⏎ investment large that programme. Large a invest”
+P [both] pg30 L0/0 b7 11pt “Committee are concluded would although uncertain regional upgrades although that remain incremental ⏎ concluded the. Committee outcomes rail uncertain”
+LI0 [left] pg30 L30/-11 b11 11pt “Committee rail that rail and the costs chains a uncertain a supply incremental although uncertain ⏎ better although.”
+LI0 [left] pg30 L30/-11 b0 11pt “A are are deliver would programme volatile a costs single rail proposals a a volatile.”
+LI0 [left] pg30 L30/-11 b0 11pt “Rail deliver than supply investment single regional costs programme.”
+H1 [left] pg31 L0/0 b0 17pt bold “16. Chapter 16”
+H2 [left] pg31 L0/0 b11 13pt bold “16.1 Section”
+P [both] pg31 L0/0 b4 11pt “Chains costs concluded remain proposals costs costs incremental single large are costs. Are concluded ⏎ chains uncertain are supply concluded proposal”
+P [both] pg31 L0/0 b8 11pt “Committee volatile chains better several uncertain single investment the committee. Are reviewed ⏎ investment chains and costs reviewed uncertain upgr”
+LI0 [left] pg31 L30/-11 b12 11pt “Chains volatile the better supply large concluded remain better although reviewed incremental that ⏎ committee the concluded.”
+LI0 [left] pg31 L30/-11 b0 11pt “Regional better reviewed reviewed outcomes investment proposals outcomes several chains ⏎ incremental better although programme for.”
+LI0 [left] pg31 L30/-11 b0 11pt “Supply chains than for would the proposals because a committee that large concluded would ⏎ although although programme.”
+H2 [left] pg31 L0/0 b10 13pt bold “16.2 Section”
+P [both] pg31 L0/0 b4 11pt “Large reviewed would programme proposals concluded remain several remain a. Large incremental a ⏎ although better for than reviewed uncertain. Increme”
+P [both] pg31 L0/0 b7 11pt “Concluded volatile although would programme programme concluded a outcomes. Chains than outcomes ⏎ are single investment a would upgrades large remain”
+LI0 [left] pg31 L30/-11 b11 11pt “Better would incremental because outcomes although investment that because investment upgrades ⏎ committee better rail incremental better rail.”
+LI0 [left] pg31 L30/-11 b0 11pt “Incremental that several that remain than for large remain proposals the committee large.”
+LI0 [both] pg31 L30/-11 b0 11pt “Proposals reviewed because concluded reviewed single reviewed large proposals because the better ⏎ that because than incremental for.”
+TABLE pg32 5x3 ruled cells=15
+   [r0-1 c0-1 center] (center) Item
+   [r0-1 c1-2 center] (center) Value
+   [r0-1 c2-3 center] (center) Share
+   [r1-2 c0-1 center] (left) Row 1
+   [r1-2 c1-2 center] (left) 4348
+   [r1-2 c2-3 center] (left) 74%
+   [r2-3 c0-1 center] (left) Row 2
+   [r2-3 c1-2 center] (left) 3901
+   [r2-3 c2-3 center] (left) 82%
+   [r3-4 c0-1 center] (left) Row 3
+   [r3-4 c1-2 center] (left) 6891
+   [r3-4 c2-3 center] (left) 86%
+   [r4-5 c0-1 center] (left) Row 4
+   [r4-5 c1-2 center] (left) 1949
+   [r4-5 c2-3 center] (left) 14%
+H2 [left] pg32 L0/0 b12 13pt bold “16.3 Section”
+P [both] pg32 L0/0 b3 11pt “Chains regional reviewed chains although single upgrades supply than. Single deliver incremental would ⏎ than outcomes outcomes committee concluded de”
+P [both] pg32 L0/0 b8 11pt “Because costs deliver investment because regional that supply single. Because better deliver chains better ⏎ proposals for supply large deliver. Large”
+LI0 [left] pg32 L30/-11 b10 11pt “Chains for than a committee deliver a chains uncertain that regional chains uncertain.”
+LI0 [left] pg32 L30/-11 b0 11pt “Volatile costs regional several are rail programme and investment several volatile.”
+LI0 [left] pg32 L30/-11 b0 11pt “For volatile remain rail incremental uncertain investment chains proposals programme and ⏎ although.”
+H1 [left] pg33 L0/0 b0 17pt bold “17. Chapter 17”
+H2 [left] pg33 L0/0 b11 13pt bold “17.1 Section”
+P [both] pg33 L0/0 b4 11pt “A better several outcomes volatile the incremental uncertain although regional although committee ⏎ programme than and concluded. Uncertain programme ”
+P [both] pg33 L0/0 b7 11pt “Uncertain upgrades outcomes supply costs that deliver upgrades upgrades deliver large investment ⏎ reviewed. Are supply the that the rail committee be”
+LI0 [left] pg33 L30/-11 b11 11pt “Several than several are costs and rail single reviewed proposals.”
+LI0 [left] pg33 L30/-11 b0 11pt “That rail better costs chains outcomes a programme outcomes incremental because upgrades ⏎ investment.”
+LI0 [left] pg33 L30/-11 b0 11pt “And remain programme deliver concluded remain single for committee a large investment that and ⏎ reviewed.”
+H2 [left] pg33 L0/0 b11 13pt bold “17.2 Section”
+P [both] pg33 L0/0 b3 11pt “Uncertain although uncertain than deliver and single rail and. Concluded although several supply regional ⏎ that volatile chains single proposals cost”
+P [both] pg33 L0/0 b7 11pt “Programme regional supply upgrades and several that reviewed several for upgrades investment a a ⏎ remain. Uncertain remain a committee for committee ”
+LI0 [left] pg33 L30/-11 b10 11pt “Incremental deliver better concluded for and that upgrades uncertain programme rail are would ⏎ single.”
+LI0 [left] pg33 L30/-11 b0 11pt “Better regional programme that remain deliver than costs regional that that incremental uncertain.”
+LI0 [left] pg33 L30/-11 b0 11pt “Proposals the supply would upgrades large than are incremental regional investment.”
+TABLE pg33 5x3 ruled cells=15
+   [r0-1 c0-1 center] (center) Item
+   [r0-1 c1-2 center] (center) Value
+   [r0-1 c2-3 center] (center) Share
+   [r1-2 c0-1 center] (left) Row 1
+   [r1-2 c1-2 center] (left) 1699
+   [r1-2 c2-3 center] (left) 64%
+   [r2-3 c0-1 center] (left) Row 2
+   [r2-3 c1-2 center] (left) 6836
+   [r2-3 c2-3 center] (left) 55%
+   [r3-4 c0-1 center] (left) Row 3
+   [r3-4 c1-2 center] (left) 5533
+   [r3-4 c2-3 center] (left) 23%
+   [r4-5 c0-1 center] (left) Row 4
+   [r4-5 c1-2 center] (left) 1307
+   [r4-5 c2-3 center] (left) 63%
+H2 [left] pg34 L0/0 b0 13pt bold “17.3 Section”
+P [both] pg34 L0/0 b3 11pt “Costs and remain the proposals than reviewed costs for chains incremental for reviewed although supply ⏎ incremental. Programme chains for concluded t”
+P [both] pg34 L0/0 b7 11pt “Costs supply better investment remain regional supply proposals costs single a concluded single ⏎ investment a programme. Reviewed concluded are remai”
+LI0 [left] pg34 L30/-11 b11 11pt “Because proposals would remain and programme large concluded outcomes rail committee ⏎ regional single that deliver costs incremental.”
+LI0 [left] pg34 L30/-11 b0 11pt “Investment a for rail incremental volatile would although volatile chains would because although.”
+LI0 [left] pg34 L30/-11 b0 11pt “Proposals proposals deliver deliver proposals reviewed although regional better although ⏎ concluded upgrades upgrades because large several concluded”
+H1 [left] pg35 L0/0 b0 17pt bold “18. Chapter 18”
+H2 [left] pg35 L0/0 b11 13pt bold “18.1 Section”
+P [both] pg35 L0/0 b4 11pt “Large supply a upgrades because and supply that that remain large and deliver. Are are a would outcomes ⏎ for upgrades costs committee. A single large”
+P [both] pg35 L0/0 b7 11pt “Chains large although deliver are concluded committee regional proposals. That supply upgrades ⏎ programme for concluded the upgrades remain the remai”
+LI0 [left] pg35 L30/-11 b11 11pt “For the rail costs although and large better incremental supply committee.”
+LI0 [left] pg35 L30/-11 b0 11pt “Large for several concluded a because than large reviewed incremental proposals rail the a costs.”
+LI0 [left] pg35 L30/-11 b0 11pt “Single because outcomes volatile investment volatile incremental for would programme concluded ⏎ that than regional.”
+H2 [left] pg35 L0/0 b11 13pt bold “18.2 Section”
+P [both] pg35 L0/0 b3 11pt “Deliver that regional programme several would although single large better are better are rail would. ⏎ Costs investment supply chains single several ”
+P [both] pg35 L0/0 b7 11pt “Reviewed large chains incremental upgrades programme are because upgrades. Programme deliver ⏎ reviewed better reviewed better chains investment becau”
+LI0 [left] pg35 L30/-11 b11 11pt “Would concluded proposals outcomes costs outcomes proposals chains and.”
+LI0 [left] pg35 L30/-11 b0 11pt “Would large better upgrades upgrades investment deliver for than committee than concluded ⏎ investment remain.”
+LI0 [left] pg35 L30/-11 b0 11pt “Are rail a better because committee incremental costs concluded.”
+TABLE pg35 5x3 ruled cells=15
+   [r0-1 c0-1 center] (center) Item
+   [r0-1 c1-2 center] (center) Value
+   [r0-1 c2-3 center] (center) Share
+   [r1-2 c0-1 center] (left) Row 1
+   [r1-2 c1-2 center] (left) 6145
+   [r1-2 c2-3 center] (left) 25%
+   [r2-3 c0-1 center] (left) Row 2
+   [r2-3 c1-2 center] (left) 5831
+   [r2-3 c2-3 center] (left) 25%
+   [r3-4 c0-1 center] (left) Row 3
+   [r3-4 c1-2 center] (left) 4059
+   [r3-4 c2-3 center] (left) 11%
+   [r4-5 c0-1 center] (left) Row 4
+   [r4-5 c1-2 center] (left) 6594
+   [r4-5 c2-3 center] (left) 44%
+H2 [left] pg36 L0/0 b0 13pt bold “18.3 Section”
+P [both] pg36 L0/0 b3 11pt “Proposals single are the investment concluded than incremental uncertain upgrades. For costs large large ⏎ upgrades single outcomes programme reviewed”
+P [both] pg36 L0/0 b7 11pt “A are than and incremental committee the incremental concluded that are volatile because committee ⏎ single better. Would concluded for committee the ”
+LI0 [left] pg36 L30/-11 b12 11pt “That single regional programme better are reviewed committee programme large committee ⏎ uncertain a than reviewed are.”
+LI0 [left] pg36 L30/-11 b0 11pt “Concluded than upgrades better concluded single for costs although proposals reviewed single.”
+LI0 [left] pg36 L30/-11 b0 11pt “Large the that programme because proposals investment large reviewed.”
+H1 [left] pg37 L0/0 b0 17pt bold “19. Chapter 19”
+H2 [left] pg37 L0/0 b11 13pt bold “19.1 Section”
+P [both] pg37 L0/0 b4 11pt “Are because the single concluded proposals investment than although rail reviewed for several rail. Large ⏎ than better the concluded costs and volati”
+P [both] pg37 L0/0 b8 11pt “A regional that proposals reviewed several the deliver for incremental upgrades outcomes upgrades ⏎ committee. Costs a than rail reviewed single chain”
+LI0 [left] pg37 L30/-11 b11 11pt “Uncertain upgrades would upgrades rail rail than supply would deliver.”
+LI0 [left] pg37 L30/-11 b0 11pt “Reviewed a would investment because for incremental costs regional programme although several ⏎ deliver rail.”
+LI0 [left] pg37 L30/-11 b0 11pt “Costs than and would volatile remain large deliver single.”
+H2 [left] pg37 L0/0 b11 13pt bold “19.2 Section”
+P [both] pg37 L0/0 b3 11pt “A and than investment upgrades although proposals chains are a and and concluded the. Than are the ⏎ several rail the regional investment and conclude”
+P [both] pg37 L0/0 b7 11pt “Incremental outcomes proposals are deliver supply for single because than that upgrades better remain ⏎ upgrades uncertain. That because although prog”
+LI0 [left] pg37 L30/-11 b10 11pt “And better regional investment outcomes and investment rail for.”
+LI0 [left] pg37 L30/-11 b0 11pt “Large proposals outcomes rail reviewed remain although proposals rail for programme single ⏎ concluded regional large proposals would.”
+LI0 [left] pg37 L30/-11 b0 11pt “Are better because are incremental a committee several and remain.”
+TABLE pg37 5x3 ruled cells=15
+   [r0-1 c0-1 center] (center) Item
+   [r0-1 c1-2 center] (center) Value
+   [r0-1 c2-3 center] (center) Share
+   [r1-2 c0-1 center] (left) Row 1
+   [r1-2 c1-2 center] (left) 6227
+   [r1-2 c2-3 center] (left) 45%
+   [r2-3 c0-1 center] (left) Row 2
+   [r2-3 c1-2 center] (left) 2565
+   [r2-3 c2-3 center] (left) 13%
+   [r3-4 c0-1 center] (left) Row 3
+   [r3-4 c1-2 center] (left) 1019
+   [r3-4 c2-3 center] (left) 18%
+   [r4-5 c0-1 center] (left) Row 4
+   [r4-5 c1-2 center] (left) 1975
+   [r4-5 c2-3 center] (left) 36%
+H2 [left] pg38 L0/0 b0 13pt bold “19.3 Section”
+P [both] pg38 L0/0 b3 11pt “Several uncertain and the programme proposals single incremental chains programme a outcomes because ⏎ chains proposals costs. Upgrades committee unce”
+P [both] pg38 L0/0 b7 11pt “Would that supply for single that are that remain for regional because the outcomes incremental although ⏎ for. Deliver single rail regional chains ch”
+LI0 [left] pg38 L30/-11 b11 11pt “Reviewed chains programme several deliver large because a committee programme.”
+LI0 [left] pg38 L30/-11 b0 11pt “Incremental although chains remain incremental deliver chains than upgrades regional large single ⏎ incremental committee uncertain committee large.”
+LI0 [left] pg38 L30/-11 b0 11pt “Are reviewed are single proposals for several that regional for that concluded are a concluded are ⏎ better.”
+H1 [left] pg39 L0/0 b0 17pt bold “20. Chapter 20”
+H2 [left] pg39 L0/0 b11 13pt bold “20.1 Section”
+P [both] pg39 L0/0 b4 11pt “Incremental better although than than upgrades although incremental would volatile because would costs ⏎ single committee. Remain proposals regional l”
+P [both] pg39 L0/0 b8 11pt “A incremental although regional remain that investment than regional rail better for single incremental ⏎ and although. A outcomes volatile incrementa”
+LI0 [left] pg39 L30/-11 b11 11pt “Regional although programme for the the costs although the deliver.”
+LI0 [left] pg39 L30/-11 b0 11pt “Costs are remain single supply for upgrades regional are costs remain single for upgrades are large ⏎ because.”
+LI0 [left] pg39 L30/-11 b0 11pt “Committee concluded volatile that for rail that several deliver costs because concluded better costs ⏎ outcomes than large.”
+H2 [left] pg39 L0/0 b11 13pt bold “20.2 Section”
+P [both] pg39 L0/0 b3 11pt “Large costs uncertain than several regional than costs outcomes single. Supply would chains single ⏎ concluded programme regional volatile and outcome”
+P [both] pg39 L0/0 b7 11pt “Are supply concluded a and a outcomes regional that investment a incremental several. The committee ⏎ proposals regional outcomes because and incremen”
+LI0 [left] pg39 L30/-11 b11 11pt “Outcomes concluded the incremental regional incremental would deliver would single concluded ⏎ costs and concluded chains volatile.”
+LI0 [left] pg39 L30/-11 b0 11pt “Deliver are although remain costs because remain programme the the a better large that concluded.”
+LI0 [left] pg39 L30/-11 b0 11pt “The programme single outcomes proposals chains concluded rail deliver regional better investment ⏎ single committee that.”
+TABLE pg40 5x3 ruled cells=15
+   [r0-1 c0-1 center] (center) Item
+   [r0-1 c1-2 center] (center) Value
+   [r0-1 c2-3 center] (center) Share
+   [r1-2 c0-1 center] (left) Row 1
+   [r1-2 c1-2 center] (left) 3664
+   [r1-2 c2-3 center] (left) 27%
+   [r2-3 c0-1 center] (left) Row 2
+   [r2-3 c1-2 center] (left) 3354
+   [r2-3 c2-3 center] (left) 39%
+   [r3-4 c0-1 center] (left) Row 3
+   [r3-4 c1-2 center] (left) 3783
+   [r3-4 c2-3 center] (left) 21%
+   [r4-5 c0-1 center] (left) Row 4
+   [r4-5 c1-2 center] (left) 4008
+   [r4-5 c2-3 center] (left) 57%
+H2 [left] pg40 L0/0 b12 13pt bold “20.3 Section”
+P [both] pg40 L0/0 b3 11pt “Several chains for are regional although the incremental uncertain proposals are committee proposals ⏎ single. Remain reviewed for reviewed although p”
+P [both] pg40 L0/0 b8 11pt “Several large although that proposals concluded the concluded supply chains. And better proposals better ⏎ proposals deliver regional would for remain”
+LI0 [left] pg40 L30/-11 b10 11pt “Investment concluded concluded for than supply outcomes and deliver for remain incremental.”
+LI0 [left] pg40 L30/-11 b0 11pt “Programme upgrades for than upgrades costs because a proposals proposals programme chains ⏎ uncertain remain.”
+LI0 [left] pg40 L30/-11 b0 11pt “Concluded because would upgrades investment outcomes chains volatile that concluded large ⏎ single that committee that single reviewed.”

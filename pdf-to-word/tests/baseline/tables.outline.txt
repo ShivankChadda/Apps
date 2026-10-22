@@ -1,0 +1,63 @@
+P [left] pg1 L0/0 b0 12pt bold “A. Fully ruled with merged cells”
+TABLE pg1 5x5 ruled cells=18
+   [r0-2 c0-1 #dde4ee] (left) Region
+   [r0-1 c1-3 #dde4ee center] (left) 2025
+   [r0-1 c3-5 #dde4ee center] (left) 2026
+   [r1-2 c1-2 #dde4ee center] (left) Q1
+   [r1-2 c2-3 #dde4ee center] (left) Q2
+   [r1-2 c3-4 #dde4ee center] (left) Q1
+   [r1-2 c4-5 #dde4ee center] (left) Q2
+   [r2-3 c0-1 center] (left) North
+   [r2-3 c1-2 center] (left) 120
+   [r2-3 c2-3 center] (left) 134
+   [r2-3 c3-4 center] (left) 141
+   [r2-3 c4-5 center] (left) 150
+   [r3-4 c0-1 center] (left) South
+   [r3-4 c1-2 center] (left) 98
+   [r3-4 c2-3 center] (left) 101
+   [r3-4 c3-4 center] (left) 110
+   [r3-4 c4-5 center] (left) 113
+   [r4-5 c0-5 center] (left) Figures in thousands of passengers. Source: operator returns, wrapped here so the cell has two lines ⏎ of text in it.
+P [left] pg1 L0/0 b16 12pt bold “B. No borders, header rule only”
+TABLE pg1 5x4 loose cells=20
+   [r0-1 c0-1] (left) Station
+   [r0-1 c1-2] (left) Boardings
+   [r0-1 c2-3] (center) Change
+   [r0-1 c3-4] (right) Share
+   [r1-2 c0-1 center] (left) Central
+   [r1-2 c1-2 center] (left) 18,204
+   [r1-2 c2-3 center] (left) +4.2%
+   [r1-2 c3-4 center] (right) 31%
+   [r2-3 c0-1 center] (left) Riverside
+   [r2-3 c1-2 center] (left) 9,311
+   [r2-3 c2-3 center] (left) -1.0%
+   [r2-3 c3-4 center] (right) 16%
+   [r3-4 c0-1 center] (left) Harbour
+   [r3-4 c1-2 center] (left) 7,880
+   [r3-4 c2-3 center] (left) +12.5%
+   [r3-4 c3-4 center] (right) 13%
+   [r4-5 c0-1] (left) University
+   [r4-5 c1-2] (left) 6,452
+   [r4-5 c2-3] (left) +0.3%
+   [r4-5 c3-4] (right) 11%
+P [left] pg1 L0/0 b19 12pt bold “C. Zebra stripes, no lines”
+TABLE pg1 5x3 loose cells=15
+   [r0-1 c0-1 #333333] (left) Task
+   [r0-1 c1-2 #333333] (left) Owner
+   [r0-1 c2-3 #333333] (left) Status
+   [r1-2 c0-1 center] (left) Survey platforms
+   [r1-2 c1-2 center] (left) Hartley
+   [r1-2 c2-3 center] (left) Done
+   [r2-3 c0-1 #f0f0f0 center] (left) Draft costings
+   [r2-3 c1-2 #f0f0f0 center] (center) Okonkwo
+   [r2-3 c2-3 #f0f0f0 center] (left) In progress
+   [r3-4 c0-1 center] (left) Review with operators
+   [r3-4 c1-2 center] (left) Brandt
+   [r3-4 c2-3 center] (left) Not started
+   [r4-5 c0-1 #f0f0f0] (left) Publish findings
+   [r4-5 c1-2 #f0f0f0] (left) Hartley
+   [r4-5 c2-3 #f0f0f0] (left) Not started
+P [left] pg1 L0/0 b19 12pt bold “D. Key and value list”
+P [left] pg1 L6/0 b12 10pt “Project	Northern corridor study”
+P [left] pg1 L6/0 b9 10pt “Client	Regional Transport Authority”
+P [left] pg1 L6/0 b9 10pt “Duration	14 months”

@@ -1,0 +1,14 @@
+H1 [left] pg1 L0/0 b6 22pt bold “Contents”
+P [left] pg1 L0/0 b9 11pt “Executive summary ................................................. 3”
+P [left] pg1 L0/0 b5 11pt “1. Introduction .................................................... 4”
+P [left] pg1 L18/0 b5 11pt “1.1 Background ................................................. 4”
+P [left] pg1 L18/0 b5 11pt “1.2 Objectives .................................................. 6”
+P [left] pg1 L0/0 b4 11pt “2. Corridor analysis ................................................. 7”
+P [left] pg1 L0/0 b5 11pt “3. Costs and delivery ................................................ 11”
+P [left] pg1 L0/0 b5 11pt “Appendix A. Data sources ............................................. 15”
+H2 [left] pg2 L0/0 b0 17pt bold “Executive summary”
+P [both] pg2 L0/0 b7 11pt “Outcomes the shift tight volumes which concluded slowly programme which electrified labour investment ⏎ routes. Electrified remain which committee cor”
+H2 [left] pg2 L0/0 b16 17pt bold “1. Introduction”
+P [both] pg2 L0/0 b7 11pt “And from would labour which and better which northern. Chains that routes remain deliver reviewed ⏎ scheduling costs earlier uncertain upgrades. New l”
+H3 [left] pg2 L0/0 b13 13.5pt bold “1.1 Background”
+P [both] pg2 L0/0 b6 11pt “Routes concluded careful tight towards the markets outcomes passenger reviewed maintenance earlier ⏎ towards and and lows. Slowly the chains earlier b”
